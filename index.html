@@ -1,6 +1,8 @@
-<!DOCTYPE html>
 <meta name="description" content="Free online tools including calculators, QR generator, password generator and more.">
 <meta name="keywords" content="online tools, calculators, QR generator, password generator">
+
+<!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -18,7 +20,27 @@ box-sizing:border-box;
 body{
 font-family:Arial;
 margin:0;
-background:#f4f6f8;
+background:#eef2f7;
+}
+
+header{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+text-align:center;
+padding:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.08);
+transition:all .25s ease;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,0.12);
 }
 
 header{
@@ -34,6 +56,10 @@ display:flex;
 justify-content:center;
 gap:30px;
 padding:12px;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
 .navbar a{
@@ -130,7 +156,7 @@ margin-top:40px;
 <div class="grid">
 
 <div class="card">
-<h3>Age Calculator</h3>
+<h3>🧮 Age Calculator</h3>
 <input type="date" id="dob">
 <button onclick="calcAge()">Calculate</button>
 <button onclick="clearAge()">Clear</button>
@@ -138,7 +164,7 @@ margin-top:40px;
 </div>
 
 <div class="card">
-<h3>BMI Calculator</h3>
+<h3>⚖️ BMI Calculator</h3>
 <input id="weight" placeholder="Weight kg">
 <input id="height" placeholder="Height cm">
 <button onclick="calcBMI()">Calculate</button>
@@ -147,7 +173,7 @@ margin-top:40px;
 </div>
 
 <div class="card">
-<h3>Percentage Calculator</h3>
+<h3>📊 Percentage Calculator</h3>
 <input id="percent" placeholder="Percent">
 <input id="number" placeholder="Number">
 <button onclick="calcPercent()">Calculate</button>
@@ -156,7 +182,7 @@ margin-top:40px;
 </div>
 
 <div class="card">
-<h3>Loan EMI Calculator</h3>
+<h3>💰 Loan EMI Calculator</h3>
 <input id="loan" placeholder="Loan amount">
 <input id="rate" placeholder="Interest %">
 <input id="months" placeholder="Months">
@@ -172,14 +198,14 @@ margin-top:40px;
 <div class="grid">
 
 <div class="card">
-<h3>Password Generator</h3>
+<h3>🔐 Password Generator</h3>
 <button onclick="generatePassword()">Generate</button>
 <button onclick="clearPassword()">Clear</button>
 <p id="passwordResult"></p>
 </div>
 
 <div class="card">
-<h3>QR Code Generator</h3>
+<h3>📱 QR Code Generator</h3>
 <input id="qrText" placeholder="Enter text or URL">
 <button onclick="generateQR()">Generate</button>
 <button onclick="clearQR()">Clear</button>
@@ -188,7 +214,7 @@ margin-top:40px;
 </div>
 
 <div class="card">
-<h3>Text Repeater</h3>
+<h3>🔁 Text Repeater</h3>
 <input id="repeatText" placeholder="Text">
 <input id="repeatTimes" placeholder="Times">
 <button onclick="repeatText()">Generate</button>
@@ -197,7 +223,7 @@ margin-top:40px;
 </div>
 
 <div class="card">
-<h3>Word Counter</h3>
+<h3>📝 Word Counter</h3>
 <textarea id="wordText" placeholder="Enter text"></textarea>
 <button onclick="countWords()">Count</button>
 <button onclick="clearWord()">Clear</button>
@@ -216,6 +242,25 @@ margin-top:40px;
 
 /* calculators */
 
+function searchTools(){
+
+let input=document.getElementById("toolSearch").value.toLowerCase()
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+let title=card.innerText.toLowerCase()
+
+if(title.includes(input)){
+card.style.display="block"
+}else{
+card.style.display="none"
+}
+
+})
+
+}
+
 function calcAge(){
 let dob=document.getElementById("dob").value
 if(!dob){alert("Select date");return;}
@@ -230,6 +275,7 @@ function clearAge(){
 document.getElementById("dob").value=""
 document.getElementById("ageResult").innerText=""
 }
+
 
 function calcBMI(){
 let w=document.getElementById("weight").value
