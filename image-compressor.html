@@ -1,15 +1,113 @@
 <!DOCTYPE html>
+
 <html>
 <head>
-<title>Image Compressor</title>
+<title>Image Compressor - SmartToolsHub</title>
+<style>
+body{
+font-family:Arial;
+background:#f4f6f8;
+text-align:center;
+padding:40px;
+}
+
+.container{
+background:white;
+padding:30px;
+max-width:500px;
+margin:auto;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 15px;
+margin:10px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+img{
+max-width:100%;
+margin-top:15px;
+} </style>
+
 </head>
+
 <body>
+
+<div class="container">
 
 <h1>Image Compressor</h1>
 
 <input type="file" id="upload">
 
-<p>This is the starting page for the Image Compressor tool.</p>
+<br>
+
+<button onclick="previewImage()">Preview</button> <button onclick="compressImage()">Compress</button> <button onclick="downloadImage()">Download</button>
+
+<br>
+
+<img id="preview">
+
+</div>
+
+<script>
+
+let canvas = document.createElement("canvas")
+let ctx = canvas.getContext("2d")
+let compressedData
+
+function previewImage(){
+
+let file=document.getElementById("upload").files[0]
+
+if(!file) return alert("Please select an image")
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+
+document.getElementById("preview").src=e.target.result
+
+}
+
+reader.readAsDataURL(file)
+
+}
+
+function compressImage(){
+
+let img=document.getElementById("preview")
+
+canvas.width=img.width
+canvas.height=img.height
+
+ctx.drawImage(img,0,0)
+
+compressedData=canvas.toDataURL("image/jpeg",0.5)
+
+document.getElementById("preview").src=compressedData
+
+}
+
+function downloadImage(){
+
+if(!compressedData) return alert("Please compress image first")
+
+let link=document.createElement("a")
+
+link.href=compressedData
+link.download="compressed.jpg"
+
+link.click()
+
+}
+
+</script>
 
 </body>
 </html>
