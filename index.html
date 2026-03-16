@@ -115,7 +115,8 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-margin-right:6px;
+margin-right:8px;
+margin-top:6px;
 }
 
 button:hover{
@@ -352,11 +353,25 @@ document.getElementById("qrImage").src=
 }
 
 function downloadQR(){
-let img=document.getElementById("qrImage").src
+let img=document.getElementById("qrImage")
+if(!img.src){
+alert("Generate QR first")
+return
+}
+let canvas=document.createElement("canvas")
+let ctx=canvas.getContext("2d")
+let image=new Image()
+image.onload=function(){
+canvas.width=image.width
+canvas.height=image.height
+ctx.drawImage(image,0,0)
+let dataURL=canvas.toDataURL("image/png")
 let link=document.createElement("a")
-link.href=img
+link.href=dataURL
 link.download="qr-code.png"
 link.click()
+}
+image.src=img.src
 }
 
 function clearQR(){
