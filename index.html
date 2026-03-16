@@ -200,6 +200,7 @@ margin-top:40px;
 <div class="card">
 <h3>🔐 Password Generator</h3>
 <button onclick="generatePassword()">Generate</button>
+<button onclick="copyPassword()">Copy</button>
 <button onclick="clearPassword()">Clear</button>
 <p id="passwordResult"></p>
 </div>
@@ -208,6 +209,7 @@ margin-top:40px;
 <h3>📱 QR Code Generator</h3>
 <input id="qrText" placeholder="Enter text or URL">
 <button onclick="generateQR()">Generate</button>
+<button onclick="downloadQR()">Download</button>
 <button onclick="clearQR()">Clear</button>
 <br><br>
 <img id="qrImage">
@@ -332,6 +334,12 @@ pass+=chars.charAt(Math.floor(Math.random()*chars.length))
 document.getElementById("passwordResult").innerText=pass
 }
 
+function copyPassword(){
+let pass=document.getElementById("passwordResult").innerText
+navigator.clipboard.writeText(pass)
+alert("Password copied!")
+}
+
 function clearPassword(){
 document.getElementById("passwordResult").innerText=""
 }
@@ -341,6 +349,14 @@ let text=document.getElementById("qrText").value
 if(!text){alert("Enter text or URL");return;}
 document.getElementById("qrImage").src=
 "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="+encodeURIComponent(text)
+}
+
+function downloadQR(){
+let img=document.getElementById("qrImage").src
+let link=document.createElement("a")
+link.href=img
+link.download="qr-code.png"
+link.click()
 }
 
 function clearQR(){
