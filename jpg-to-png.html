@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+<body>
+
+<h1>JPG to PNG Converter</h1>
+
+<input type="file" id="upload">
+
+<br><br>
+
+<button onclick="convert()">Convert</button>
+
+<br><br>
+
+<canvas id="canvas"></canvas>
+
+<br>
+
+<button onclick="download()">Download PNG</button>
+
+<script>
+
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
+let imageData
+
+function convert(){
+
+let file=document.getElementById("upload").files[0]
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+
+let img=new Image()
+
+img.onload=function(){
+
+canvas.width=img.width
+canvas.height=img.height
+
+ctx.drawImage(img,0,0)
+
+imageData=canvas.toDataURL("image/png")
+
+}
+
+img.src=e.target.result
+
+}
+
+reader.readAsDataURL(file)
+
+}
+
+function download(){
+
+let link=document.createElement("a")
+
+link.href=imageData
+link.download="converted.png"
+
+link.click()
+
+}
+
+</script>
+
+</body>
+</html>
