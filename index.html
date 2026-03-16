@@ -9,6 +9,11 @@
 
 <style>
 
+/* IMPORTANT FIX */
+*{
+box-sizing:border-box;
+}
+
 body{
 font-family:Arial;
 margin:0;
@@ -59,13 +64,21 @@ border-radius:10px;
 box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-input,textarea{
+/* INPUT FIX */
+input,
+textarea{
 width:100%;
 padding:10px;
 margin-top:8px;
 margin-bottom:10px;
 border-radius:6px;
 border:1px solid #ccc;
+font-size:14px;
+}
+
+textarea{
+resize:none;
+height:70px;
 }
 
 button{
@@ -75,7 +88,11 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-margin-right:5px;
+margin-right:6px;
+}
+
+button:hover{
+background:#4338ca;
 }
 
 footer{
@@ -196,6 +213,8 @@ margin-top:40px;
 
 <script>
 
+/* calculators */
+
 function calcAge(){
 let dob=document.getElementById("dob").value
 if(!dob){alert("Select date");return;}
@@ -214,7 +233,7 @@ document.getElementById("ageResult").innerText=""
 function calcBMI(){
 let w=document.getElementById("weight").value
 let h=document.getElementById("height").value/100
-if(!w || !h){alert("Enter weight and height");return;}
+if(!w||!h){alert("Enter weight and height");return;}
 let bmi=(w/(h*h)).toFixed(2)
 document.getElementById("bmiResult").innerText="BMI: "+bmi
 }
@@ -228,7 +247,7 @@ document.getElementById("bmiResult").innerText=""
 function calcPercent(){
 let p=document.getElementById("percent").value
 let n=document.getElementById("number").value
-if(!p || !n){alert("Enter values");return;}
+if(!p||!n){alert("Enter values");return;}
 let res=(p/100)*n
 document.getElementById("percentResult").innerText="Result: "+res
 }
@@ -254,6 +273,8 @@ document.getElementById("rate").value=""
 document.getElementById("months").value=""
 document.getElementById("emiResult").innerText=""
 }
+
+/* tools */
 
 function generatePassword(){
 let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
