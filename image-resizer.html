@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Image Resizer</title>
+</head>
+<body>
+
+<h1>Image Resizer</h1>
+
+<input type="file" id="upload">
+
+<br><br>
+
+Width: <input id="width">
+
+Height: <input id="height">
+
+<br><br>
+
+<button onclick="resizeImage()">Resize</button>
+
+<br><br>
+
+<canvas id="canvas"></canvas>
+
+<script>
+
+function resizeImage(){
+
+let file=document.getElementById("upload").files[0]
+
+let width=document.getElementById("width").value
+let height=document.getElementById("height").value
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+
+let img=new Image()
+
+img.onload=function(){
+
+let canvas=document.getElementById("canvas")
+let ctx=canvas.getContext("2d")
+
+canvas.width=width
+canvas.height=height
+
+ctx.drawImage(img,0,0,width,height)
+
+}
+
+img.src=e.target.result
+
+}
+
+reader.readAsDataURL(file)
+
+}
+
+</script>
+
+</body>
+</html>
