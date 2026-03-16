@@ -1,53 +1,122 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartToolsHub - 100+ Free Online Tools</title>
-<meta name="description" content="SmartToolsHub offers 100+ free online tools including image tools, PDF tools, calculators, SEO tools and developer utilities.">
+<title>SmartToolsHub - Free Online Tools</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f4f6f8}
-header{background:#0f172a;color:#fff;padding:25px;text-align:center}
-header h1{margin:0}
-nav{background:#1e293b;color:white;padding:10px;text-align:center}
-nav a{color:white;margin:10px;text-decoration:none;font-weight:bold}
-.container{max-width:1200px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
-.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-button{padding:8px 14px;border:none;background:#2563eb;color:#fff;border-radius:6px;cursor:pointer}
-input,textarea{padding:8px;width:100%;margin-top:5px}
-.result{margin-top:10px;font-weight:bold}
-.category{margin-top:40px}
-footer{text-align:center;padding:20px;background:#0f172a;color:#fff;margin-top:40px}
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6f8;
+}
+
+header{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+}
+
+.navbar{
+background:#1e293b;
+display:flex;
+justify-content:center;
+gap:30px;
+padding:12px;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.navbar a:hover{
+color:#38bdf8;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:8px;
+margin-bottom:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+padding:8px 14px;
+background:#4f46e5;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:5px;
+}
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
 </style>
+
 </head>
+
 <body>
 
 <header>
 <h1>SmartToolsHub</h1>
-<p>100+ Free Online Tools for Images, PDF, SEO, Calculators & Developers</p>
 </header>
 
-<nav>
-<a href="#calculators">Calculators</a>
-<a href="#text">Text Tools</a>
-<a href="#image">Image Tools</a>
-<a href="#pdf">PDF Tools</a>
-<a href="#seo">SEO Tools</a>
+<nav class="navbar">
+<a href="index.html">Home</a>
+<a href="calculators.html">Calculators</a>
+<a href="image-tools.html">Image Tools</a>
+<a href="pdf-tools.html">PDF Tools</a>
+<a href="seo-tools.html">SEO Tools</a>
+<a href="text-tools.html">Text Tools</a>
 </nav>
 
 <div class="container">
 
-<div class="category" id="calculators">
 <h2>Popular Calculators</h2>
+
 <div class="grid">
 
 <div class="card">
 <h3>Age Calculator</h3>
 <input type="date" id="dob">
 <button onclick="calcAge()">Calculate</button>
-<div class="result" id="ageResult"></div>
+<button onclick="clearAge()">Clear</button>
+<p id="ageResult"></p>
 </div>
 
 <div class="card">
@@ -55,7 +124,8 @@ footer{text-align:center;padding:20px;background:#0f172a;color:#fff;margin-top:4
 <input id="weight" placeholder="Weight kg">
 <input id="height" placeholder="Height cm">
 <button onclick="calcBMI()">Calculate</button>
-<div class="result" id="bmiResult"></div>
+<button onclick="clearBMI()">Clear</button>
+<p id="bmiResult"></p>
 </div>
 
 <div class="card">
@@ -63,7 +133,8 @@ footer{text-align:center;padding:20px;background:#0f172a;color:#fff;margin-top:4
 <input id="percent" placeholder="Percent">
 <input id="number" placeholder="Number">
 <button onclick="calcPercent()">Calculate</button>
-<div class="result" id="percentResult"></div>
+<button onclick="clearPercent()">Clear</button>
+<p id="percentResult"></p>
 </div>
 
 <div class="card">
@@ -72,126 +143,170 @@ footer{text-align:center;padding:20px;background:#0f172a;color:#fff;margin-top:4
 <input id="rate" placeholder="Interest %">
 <input id="months" placeholder="Months">
 <button onclick="calcEMI()">Calculate</button>
-<div class="result" id="emiResult"></div>
+<button onclick="clearEMI()">Clear</button>
+<p id="emiResult"></p>
 </div>
 
 </div>
-</div>
 
-<div class="category" id="text">
-<h2>Text Tools</h2>
+<h2>Popular Text Tools</h2>
+
 <div class="grid">
 
 <div class="card">
-<h3>Word Counter</h3>
-<textarea id="textInput"></textarea>
-<button onclick="countWords()">Count</button>
-<div class="result" id="wordResult"></div>
+<h3>Password Generator</h3>
+<button onclick="generatePassword()">Generate</button>
+<button onclick="clearPassword()">Clear</button>
+<p id="passwordResult"></p>
 </div>
 
 <div class="card">
-<h3>Password Generator</h3>
-<button onclick="genPass()">Generate</button>
-<div class="result" id="passResult"></div>
+<h3>QR Code Generator</h3>
+<input id="qrText" placeholder="Enter text or URL">
+<button onclick="generateQR()">Generate</button>
+<button onclick="clearQR()">Clear</button>
+<br><br>
+<img id="qrImage">
 </div>
 
 <div class="card">
 <h3>Text Repeater</h3>
 <input id="repeatText" placeholder="Text">
-<input id="repeatCount" placeholder="Times">
+<input id="repeatTimes" placeholder="Times">
 <button onclick="repeatText()">Generate</button>
-<div class="result" id="repeatResult"></div>
+<button onclick="clearRepeater()">Clear</button>
+<p id="repeatResult"></p>
 </div>
 
-</div>
-</div>
-
-<div class="category" id="image">
-<h2>Image Tools</h2>
-<div class="grid">
-<a href="image-compressor.html" class="card"> <h3>Image Compressor</h3> <p>Upload image and compress size.</p> </a>
-<div class="card"><h3>Image Resizer</h3><p>Resize JPG or PNG images.</p></div>
-<div class="card"><h3>JPG to PNG</h3><p>Convert JPG images to PNG.</p></div>
-<div class="card"><h3>PNG to JPG</h3><p>Convert PNG images to JPG.</p></div>
-</div>
+<div class="card">
+<h3>Word Counter</h3>
+<textarea id="wordText" placeholder="Enter text"></textarea>
+<button onclick="countWords()">Count</button>
+<button onclick="clearWord()">Clear</button>
+<p id="wordResult"></p>
 </div>
 
-<div class="category" id="pdf">
-<h2>PDF Tools</h2>
-<div class="grid">
-<div class="card"><h3>Merge PDF</h3></div>
-<div class="card"><h3>Split PDF</h3></div>
-<div class="card"><h3>PDF to Word</h3></div>
-<div class="card"><h3>Compress PDF</h3></div>
-</div>
-</div>
-
-<div class="category" id="seo">
-<h2>SEO Tools</h2>
-<div class="grid">
-<div class="card"><h3>Meta Tag Generator</h3></div>
-<div class="card"><h3>Keyword Density Checker</h3></div>
-<div class="card"><h3>Plagiarism Checker</h3></div>
-<div class="card"><h3>Domain Age Checker</h3></div>
-</div>
 </div>
 
 </div>
 
 <footer>
-<p>© 2026 SmartToolsHub - 100+ Free Tools</p>
+<p>© 2026 SmartToolsHub</p>
 </footer>
 
 <script>
+
 function calcAge(){
-let dob=new Date(document.getElementById('dob').value);
-let diff=Date.now()-dob.getTime();
-let ageDate=new Date(diff);
-document.getElementById('ageResult').innerText="Age: "+Math.abs(ageDate.getUTCFullYear()-1970)+" years";
+let dob=document.getElementById("dob").value
+if(!dob){alert("Select date");return;}
+let birth=new Date(dob)
+let diff=Date.now()-birth.getTime()
+let ageDate=new Date(diff)
+let age=Math.abs(ageDate.getUTCFullYear()-1970)
+document.getElementById("ageResult").innerText="Age: "+age+" years"
+}
+
+function clearAge(){
+document.getElementById("dob").value=""
+document.getElementById("ageResult").innerText=""
 }
 
 function calcBMI(){
-let w=document.getElementById('weight').value;
-let h=document.getElementById('height').value/100;
-let bmi=(w/(h*h)).toFixed(2);
-document.getElementById('bmiResult').innerText="BMI: "+bmi;
+let w=document.getElementById("weight").value
+let h=document.getElementById("height").value/100
+if(!w || !h){alert("Enter weight and height");return;}
+let bmi=(w/(h*h)).toFixed(2)
+document.getElementById("bmiResult").innerText="BMI: "+bmi
+}
+
+function clearBMI(){
+document.getElementById("weight").value=""
+document.getElementById("height").value=""
+document.getElementById("bmiResult").innerText=""
 }
 
 function calcPercent(){
-let p=document.getElementById('percent').value;
-let n=document.getElementById('number').value;
-let res=(p/100)*n;
-document.getElementById('percentResult').innerText="Result: "+res;
+let p=document.getElementById("percent").value
+let n=document.getElementById("number").value
+if(!p || !n){alert("Enter values");return;}
+let res=(p/100)*n
+document.getElementById("percentResult").innerText="Result: "+res
+}
+
+function clearPercent(){
+document.getElementById("percent").value=""
+document.getElementById("number").value=""
+document.getElementById("percentResult").innerText=""
 }
 
 function calcEMI(){
-let P=document.getElementById('loan').value;
-let r=document.getElementById('rate').value/1200;
-let n=document.getElementById('months').value;
-let emi=(P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
-document.getElementById('emiResult').innerText="EMI: "+emi.toFixed(2);
+let P=document.getElementById("loan").value
+let r=document.getElementById("rate").value/1200
+let n=document.getElementById("months").value
+if(!P||!r||!n){alert("Enter all fields");return;}
+let emi=(P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1)
+document.getElementById("emiResult").innerText="EMI: "+emi.toFixed(2)
 }
 
-function countWords(){
-let text=document.getElementById('textInput').value.trim();
-let words=text?text.split(/\s+/).length:0;
-document.getElementById('wordResult').innerText="Words: "+words;
+function clearEMI(){
+document.getElementById("loan").value=""
+document.getElementById("rate").value=""
+document.getElementById("months").value=""
+document.getElementById("emiResult").innerText=""
 }
 
-function genPass(){
-let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-let pass="";
-for(let i=0;i<12;i++) pass+=chars.charAt(Math.floor(Math.random()*chars.length));
-document.getElementById('passResult').innerText=pass;
+function generatePassword(){
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+let pass=""
+for(let i=0;i<12;i++){
+pass+=chars.charAt(Math.floor(Math.random()*chars.length))
+}
+document.getElementById("passwordResult").innerText=pass
+}
+
+function clearPassword(){
+document.getElementById("passwordResult").innerText=""
+}
+
+function generateQR(){
+let text=document.getElementById("qrText").value
+if(!text){alert("Enter text or URL");return;}
+document.getElementById("qrImage").src=
+"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data="+encodeURIComponent(text)
+}
+
+function clearQR(){
+document.getElementById("qrText").value=""
+document.getElementById("qrImage").src=""
 }
 
 function repeatText(){
-let text=document.getElementById('repeatText').value;
-let count=document.getElementById('repeatCount').value;
-let output="";
-for(let i=0;i<count;i++){output+=text+" ";}
-document.getElementById('repeatResult').innerText=output;
+let text=document.getElementById("repeatText").value
+let count=document.getElementById("repeatTimes").value
+let result=""
+for(let i=0;i<count;i++){
+result+=text+" "
 }
+document.getElementById("repeatResult").innerText=result
+}
+
+function clearRepeater(){
+document.getElementById("repeatText").value=""
+document.getElementById("repeatTimes").value=""
+document.getElementById("repeatResult").innerText=""
+}
+
+function countWords(){
+let text=document.getElementById("wordText").value.trim()
+let words=text?text.split(/\s+/).length:0
+document.getElementById("wordResult").innerText="Words: "+words
+}
+
+function clearWord(){
+document.getElementById("wordText").value=""
+document.getElementById("wordResult").innerText=""
+}
+
 </script>
 
 </body>
