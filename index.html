@@ -53,23 +53,31 @@ padding:25px;
 .navbar{
 background:#1e293b;
 display:flex;
-justify-content:center;
-gap:30px;
-padding:12px;
+justify-content:space-between;
+align-items:center;
+padding:10px 30px;
 position:sticky;
 top:0;
 z-index:1000;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
-.navbar a{
+.nav-left a{
 color:white;
 text-decoration:none;
 font-weight:bold;
+margin-right:20px;
 }
 
-.navbar a:hover{
+.nav-left a:hover{
 color:#38bdf8;
+}
+
+.nav-right input{
+padding:7px 12px;
+border-radius:6px;
+border:none;
+outline:none;
+width:180px;
 }
 
 .container{
