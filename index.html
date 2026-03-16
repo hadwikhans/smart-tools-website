@@ -361,14 +361,14 @@ return
 let canvas=document.createElement("canvas")
 let ctx=canvas.getContext("2d")
 let image=new Image()
+image.crossOrigin="anonymous"
 image.onload=function(){
 canvas.width=image.width
 canvas.height=image.height
 ctx.drawImage(image,0,0)
-let dataURL=canvas.toDataURL("image/png")
 let link=document.createElement("a")
-link.href=dataURL
 link.download="qr-code.png"
+link.href=canvas.toDataURL("image/png")
 link.click()
 }
 image.src=img.src
