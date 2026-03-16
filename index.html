@@ -24,10 +24,13 @@ background:#eef2f7;
 }
 
 header{
-background:linear-gradient(135deg,#0f172a,#1e293b);
+background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
 color:white;
 text-align:center;
-padding:30px;
+padding:35px;
+font-size:22px;
+font-weight:bold;
+letter-spacing:1px;
 }
 
 .card{
@@ -40,7 +43,7 @@ transition:all .25s ease;
 
 .card:hover{
 transform:translateY(-6px);
-box-shadow:0 12px 25px rgba(0,0,0,0.12);
+box-shadow:0 15px 30px rgba(0,0,0,0.15);
 }
 
 header{
@@ -93,8 +96,8 @@ padding:30px;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
 }
 
 .card{
@@ -122,14 +125,15 @@ height:70px;
 }
 
 button{
-padding:8px 14px;
+padding:8px 16px;
 background:#4f46e5;
 color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-margin-right:8px;
+margin-right:6px;
 margin-top:6px;
+font-size:14px;
 }
 
 button:hover{
@@ -144,6 +148,25 @@ padding:20px;
 margin-top:40px;
 }
 
+@media(max-width:768px){
+
+.navbar{
+flex-direction:column;
+gap:10px;
+}
+
+.nav-left{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.nav-right input{
+width:100%;
+}
+
+}
+  
 </style>
 
 </head>
@@ -172,7 +195,7 @@ id="toolSearch"
 placeholder="Search tools..."
 onkeyup="searchTools()">
 </div>
-
+  
 </nav>
 
 <div class="container">
