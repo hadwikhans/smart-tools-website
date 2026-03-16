@@ -3,7 +3,13 @@
 <html>
 <head>
 <title>Image Resizer</title>
+<style>
+body{font-family:Arial;text-align:center;padding:40px}
+canvas{margin-top:20px}
+button{padding:10px 15px;margin-top:10px}
+</style>
 </head>
+
 <body>
 
 <h1>Image Resizer</h1>
@@ -13,14 +19,13 @@
 <br><br>
 
 Width: <input id="width">
-
 Height: <input id="height">
 
 <br><br>
 
 <button onclick="resizeImage()">Resize</button>
 
-<br><br>
+<br>
 
 <canvas id="canvas"></canvas>
 
