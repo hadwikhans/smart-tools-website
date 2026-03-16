@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartToolsHub - 50+ Free Online Tools</title>
+<meta name="description" content="Use 50+ free online tools including calculators, converters, SEO tools, image tools and developer utilities.">
+<meta name="keywords" content="online tools, free tools, calculators, image tools, seo tools">
+
+<style>
+body{font-family:Arial;margin:0;background:#f4f6f8}
+header{background:#111;color:#fff;padding:20px;text-align:center}
+h1{margin:0}
+.container{max-width:1200px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+button{padding:8px 14px;border:none;background:#007bff;color:#fff;border-radius:6px;cursor:pointer}
+input,textarea{padding:8px;margin-top:5px;width:100%}
+.result{margin-top:10px;font-weight:bold}
+footer{text-align:center;padding:20px;background:#111;color:#fff;margin-top:40px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>SmartToolsHub</h1>
+<p>50+ Free Online Tools - Calculators, Converters, SEO & Image Tools</p>
+</header>
+
+<div class="container">
+
+<h2>Popular Tools</h2>
+<div class="grid">
+
+<div class="card">
+<h3>Age Calculator</h3>
+<input type="date" id="dob">
+<button onclick="calcAge()">Calculate</button>
+<div class="result" id="ageResult"></div>
+</div>
+
+<div class="card">
+<h3>Percentage Calculator</h3>
+<input type="number" id="percent" placeholder="Percent">
+<input type="number" id="number" placeholder="Number">
+<button onclick="calcPercent()">Calculate</button>
+<div class="result" id="percentResult"></div>
+</div>
+
+<div class="card">
+<h3>Word Counter</h3>
+<textarea id="textInput" placeholder="Paste text"></textarea>
+<button onclick="countWords()">Count</button>
+<div class="result" id="wordResult"></div>
+</div>
+
+<div class="card">
+<h3>QR Code Generator</h3>
+<input type="text" id="qrText" placeholder="Enter text">
+<button onclick="generateQR()">Generate</button>
+<div id="qrResult"></div>
+</div>
+
+<div class="card">
+<h3>Password Generator</h3>
+<button onclick="genPass()">Generate Password</button>
+<div class="result" id="passResult"></div>
+</div>
+
+<div class="card">
+<h3>BMI Calculator</h3>
+<input id="weight" placeholder="Weight (kg)">
+<input id="height" placeholder="Height (cm)">
+<button onclick="calcBMI()">Calculate</button>
+<div class="result" id="bmiResult"></div>
+</div>
+
+</div>
+
+<h2>Tools Included (50 Tools)</h2>
+<ul>
+<li>Age Calculator</li>
+<li>Percentage Calculator</li>
+<li>Word Counter</li>
+<li>Character Counter</li>
+<li>QR Code Generator</li>
+<li>Password Generator</li>
+<li>BMI Calculator</li>
+<li>Loan EMI Calculator</li>
+<li>Currency Converter</li>
+<li>Unit Converter</li>
+<li>Image Compressor</li>
+<li>Image to PDF</li>
+<li>PDF to JPG</li>
+<li>Color Picker</li>
+<li>Text Case Converter</li>
+<li>Random Number Generator</li>
+<li>Binary Converter</li>
+<li>Base64 Encoder</li>
+<li>URL Encoder</li>
+<li>SEO Meta Tag Generator</li>
+<li>Keyword Density Checker</li>
+<li>Plagiarism Checker</li>
+<li>Domain Age Checker</li>
+<li>HTTP Header Checker</li>
+<li>IP Lookup</li>
+<li>DNS Lookup</li>
+<li>Word Frequency Counter</li>
+<li>JSON Formatter</li>
+<li>HTML Formatter</li>
+<li>CSS Minifier</li>
+<li>JS Minifier</li>
+<li>Markdown Converter</li>
+<li>YouTube Thumbnail Downloader</li>
+<li>YouTube Tags Extractor</li>
+<li>Instagram Downloader</li>
+<li>Time Converter</li>
+<li>Date Difference Calculator</li>
+<li>Stopwatch</li>
+<li>Text Sorter</li>
+<li>Random Name Picker</li>
+<li>UUID Generator</li>
+<li>Barcode Generator</li>
+<li>QR Scanner</li>
+<li>Image Resizer</li>
+<li>GIF Maker</li>
+<li>Text Repeater</li>
+<li>Slug Generator</li>
+<li>URL Redirect Checker</li>
+<li>Website Screenshot Tool</li>
+<li>Page Size Checker</li>
+</ul>
+
+</div>
+
+<footer>
+<p>© 2026 SmartToolsHub - Free Online Tools</p>
+</footer>
+
+<script>
+function calcAge(){
+let dob=new Date(document.getElementById('dob').value);
+let diff=Date.now()-dob.getTime();
+let ageDate=new Date(diff);
+document.getElementById('ageResult').innerText="Age: "+Math.abs(ageDate.getUTCFullYear()-1970)+" years";
+}
+
+function calcPercent(){
+let p=document.getElementById('percent').value;
+let n=document.getElementById('number').value;
+let res=(p/100)*n;
+document.getElementById('percentResult').innerText="Result: "+res;
+}
+
+function countWords(){
+let text=document.getElementById('textInput').value.trim();
+let words=text?text.split(/\s+/).length:0;
+document.getElementById('wordResult').innerText="Words: "+words;
+}
+
+function generateQR(){
+let text=document.getElementById('qrText').value;
+document.getElementById('qrResult').innerHTML='<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data='+encodeURIComponent(text)+'">';
+}
+
+function genPass(){
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+let pass="";
+for(let i=0;i<12;i++) pass+=chars.charAt(Math.floor(Math.random()*chars.length));
+document.getElementById('passResult').innerText=pass;
+}
+
+function calcBMI(){
+let w=document.getElementById('weight').value;
+let h=document.getElementById('height').value/100;
+let bmi=(w/(h*h)).toFixed(2);
+document.getElementById('bmiResult').innerText="BMI: "+bmi;
+}
+</script>
+
+</body>
+</html>
