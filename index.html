@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="theme-color" content="#0f172a">
+
+<title>SmartToolsHub - Free Online Tools & Calculators</title>
+
+<meta name="description" content="Free online tools including Age Calculator, BMI Calculator, Percentage Calculator, Loan EMI Calculator, QR Generator, Password Generator and more.">
+
+<meta name="keywords" content="online tools, calculators, age calculator, bmi calculator, percentage calculator, emi calculator, qr generator, password generator">
+
+<meta name="robots" content="index, follow">
+
+<meta name="google-site-verification" content="4Ytv0Y8dk2ftJwSFkLJfR3nhe9zNCwE71Jue6CtzqP4">
+
+<meta property="og:title" content="SmartToolsHub - Free Online Tools">
+<meta property="og:description" content="Free online calculators and tools including age calculator, BMI calculator, percentage calculator and more.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://smarttoolshub.netlify.app/">
+
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+<h1>SmartToolsHub - Free Online Tools</h1>
+</header>
+
+<nav class="navbar">
+
+<div class="nav-left">
+
+<a href="../index.html">Home</a>
+
+<div class="dropdown">
+<a href="../calculators.html">Calculators ▾</a>
+
+<div class="dropdown-content">
+<a href="../calculators/age-calculator.html">Age Calculator</a>
+<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
+<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
+<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
+</div>
+</div>
+
+<div class="dropdown">
+<a href="../text-tools.html">Text Tools ▾</a>
+
+<div class="dropdown-content">
+<a href="../text-tools/password-generator.html">Password Generator</a>
+<a href="../text-tools/qr-generator.html">QR Code Generator</a>
+<a href="../text-tools/word-counter.html">Word Counter</a>
+<a href="../text-tools/text-repeater.html">Text Repeater</a>
+</div>
+</div>
+
+<a href="../image-tools.html">Image Tools</a>
+<a href="../pdf-tools.html">PDF Tools</a>
+<a href="../seo-tools.html">SEO Tools</a>
+<a href="../all-tools.html">All Tools</a>
+
+</div>
+
+</nav>
+
+<div class="container">
+
+<h2>Popular Calculators</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🧮 Age Calculator</h3>
+<input type="date" id="dob">
+<button onclick="calcAge()">Calculate</button>
+<button onclick="clearAge()">Clear</button>
+<p id="ageResult"></p>
+</div>
+
+<div class="card">
+<h3>⚖️ BMI Calculator</h3>
+<input id="weight" placeholder="Weight kg">
+<input id="height" placeholder="Height cm">
+<button onclick="calcBMI()">Calculate</button>
+<button onclick="clearBMI()">Clear</button>
+<p id="bmiResult"></p>
+</div>
+
+<div class="card">
+<h3>📊 Percentage Calculator</h3>
+<input id="percent" placeholder="Percent">
+<input id="number" placeholder="Number">
+<button onclick="calcPercent()">Calculate</button>
+<button onclick="clearPercent()">Clear</button>
+<p id="percentResult"></p>
+</div>
+
+<div class="card">
+<h3>💰 Loan EMI Calculator</h3>
+<input id="loan" placeholder="Loan amount">
+<input id="rate" placeholder="Interest %">
+<input id="months" placeholder="Months">
+<button onclick="calcEMI()">Calculate</button>
+<button onclick="clearEMI()">Clear</button>
+<p id="emiResult"></p>
+</div>
+
+</div>
+
+<h2>Popular Text Tools</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🔐 Password Generator</h3>
+<button onclick="generatePassword()">Generate</button>
+<button onclick="copyPassword()">Copy</button>
+<button onclick="clearPassword()">Clear</button>
+<p id="passwordResult"></p>
+</div>
+
+<div class="card">
+<h3>📱 QR Code Generator</h3>
+<input id="qrText" placeholder="Enter text or URL">
+<button onclick="generateQR()">Generate</button>
+<button onclick="downloadQR()">Download</button>
+<button onclick="clearQR()">Clear</button>
+<br><br>
+<img id="qrImage">
+</div>
+
+<div class="card">
+<h3>🔁 Text Repeater</h3>
+<input id="repeatText" placeholder="Text">
+<input id="repeatTimes" placeholder="Times">
+<button onclick="repeatText()">Generate</button>
+<button onclick="clearRepeater()">Clear</button>
+<p id="repeatResult"></p>
+</div>
+
+<div class="card">
+<h3>📝 Word Counter</h3>
+<textarea id="wordText" placeholder="Enter text"></textarea>
+<button onclick="countWords()">Count</button>
+<button onclick="clearWord()">Clear</button>
+<p id="wordResult"></p>
+</div>
+
+</div>
+
+</div>
+
+<section class="container">
+<div class="card">
+<h2>About SmartToolsHub</h2>
+<p>
+SmartToolsHub provides free online tools and calculators including
+age calculator, BMI calculator, percentage calculator, loan EMI calculator,
+text utilities, and productivity tools that help you perform quick tasks directly in your browser.
+</p>
+<p>
+All tools on SmartToolsHub are designed to be simple, fast, and easy to use without requiring any downloads or registrations. Whether you need quick calculations or productivity tools, SmartToolsHub makes your work easier.
+</p>
+</div>
+</section>
+
+<footer>
+<p>© 2026 SmartToolsHub</p>
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
