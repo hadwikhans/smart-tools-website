@@ -1,99 +1,49 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>QR Code Generator | SmartToolsHub</title>
-
-<meta name="description" content="Create QR codes instantly for URLs or text using the free QR Code Generator on SmartToolsHub.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/text-tools/qr-generator.html">
-
+<title>📱 QR Code Generator | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 
+
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="../index.html">Home</a>
-
-<div class="dropdown">
-<a href="../calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="../calculators/age-calculator.html">Age Calculator</a>
-<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-</div>
-
-<div class="dropdown">
-<a href="../text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="../text-tools/password-generator.html">Password Generator</a>
-<a href="../text-tools/qr-generator.html">QR Code Generator</a>
-<a href="../text-tools/word-counter.html">Word Counter</a>
-<a href="../text-tools/text-repeater.html">Text Repeater</a>
-</div>
-</div>
-
-<a href="../image-tools.html">Image Tools</a>
-<a href="../pdf-tools.html">PDF Tools</a>
-<a href="../seo-tools.html">SEO Tools</a>
-<a href="../all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="../index.html">Home</a> >
-<a href="../text-tools.html">Text Tools</a> >
-<span>QR Generator</span>
-</div>
-
-<h1>QR Code Generator</h1>
-
-<div class="card">
-
-<input id="qrText" placeholder="Enter text or URL">
-
-<button onclick="generateQR()">Generate</button> <button onclick="downloadQR()">Download</button> <button onclick="clearQR()">Clear</button>
-
-<br><br>
-
-<img id="qrImage">
-
-</div>
-
-<section class="card">
-
-<h2>About QR Code Generator</h2>
-
-<p>
-This tool lets you generate QR codes for links, text, or other information instantly.
-</p>
-
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>📱 QR Code Generator</h1>
+    <p>Create QR codes for URLs or text instantly</p>
+  </div>
 </section>
-
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <a href="/text-tools.html">Text Tools</a> <span style="color:#c0cad8;">›</span> <span>QR Code Generator</span></div>
+  </div>
 </div>
-
+<div class="container">
+<div class="page-content">
+<div class="card">
+<h2>QR Code Generator</h2>
+<label>Enter text or URL</label>
+<input type="text" id="qrText" placeholder="https://example.com">
+<button onclick="generateQR()">Generate</button>
+<button class="secondary" onclick="downloadQR()">Download</button>
+<button class="secondary" onclick="clearQR()">Clear</button>
+<br>
+<img id="qrImage" style="display:none;max-width:200px;margin-top:16px;border-radius:8px;">
+</div>
+<div class="card">
+<h2>About QR Code Generator</h2>
+<p>Generate QR codes for any URL, text or data instantly. The generated QR code can be scanned by any smartphone camera.</p>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
 <script src="../js/script.js"></script>
-
+<script src="../js/sticky.js"></script>
 </body>
 </html>

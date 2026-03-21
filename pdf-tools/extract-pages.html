@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Extract Pages from PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/extract-pages.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>📤 Extract Pages</h1><p>Pull out specific pages into a new PDF</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Extract Pages</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Upload PDF</label>
+  <input type="file" id="exFile" accept=".pdf">
+  <div id="exPageInfo" style="font-size:12.5px;color:#5a4fcf;margin-top:6px;min-height:18px;"></div>
+  <label style="margin-top:6px;">Pages to extract <span style="color:#94a3b8;font-size:12px;">(e.g. 2, 4, 6-8)</span></label>
+  <input type="text" id="exPages" placeholder="e.g. 2, 4, 6-8">
+  <div style="display:flex;gap:8px;margin-top:4px;">
+    <button onclick="extractPages()">Extract Pages</button>
+    <button class="secondary" onclick="clearEX()">Clear</button>
+  </div>
+  <div id="exResult" style="margin-top:12px;font-size:13px;"></div>
+</div>
+<div class="card">
+  <h2>About Extract Pages</h2>
+  <p>Enter the page numbers you want to keep and extract them into a new PDF. For example: "2, 4, 6-8" extracts pages 2, 4, 6, 7 and 8. Works entirely in your browser.</p>
+</div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+document.getElementById('exFile').addEventListener('change', async function(){
+  var info = document.getElementById('exPageInfo');
+  if(!this.files||!this.files[0]){ info.textContent=''; return; }
+  try{
+    var ab  = await this.files[0].arrayBuffer();
+    var pdf = await PDFLib.PDFDocument.load(ab);
+    info.textContent = 'PDF loaded — ' + pdf.getPageCount() + ' pages total.';
+  }catch(e){ info.textContent='Could not read PDF.'; }
+});
+
+function parsePages(str, total){
+  var pages = [];
+  var seen  = new Set();
+  str.split(',').forEach(function(p){
+    p = p.trim();
+    if(p.indexOf('-')!==-1){
+      var b=p.split('-');
+      var a=parseInt(b[0]),e=parseInt(b[1]);
+      for(var i=a;i<=e;i++) if(i>=1&&i<=total&&!seen.has(i-1)){pages.push(i-1);seen.add(i-1);}
+    } else {
+      var n=parseInt(p);
+      if(!isNaN(n)&&n>=1&&n<=total&&!seen.has(n-1)){pages.push(n-1);seen.add(n-1);}
+    }
+  });
+  return pages;
+}
+
+async function extractPages(){
+  var file  = document.getElementById('exFile').files[0];
+  var input = document.getElementById('exPages').value.trim();
+  var r     = document.getElementById('exResult');
+  if(!file){ r.innerHTML='<span style="color:#e53e3e;">Please upload a PDF.</span>'; return; }
+  if(!input){ r.innerHTML='<span style="color:#e53e3e;">Enter page numbers to extract.</span>'; return; }
+  r.innerHTML='<span style="color:#5a4fcf;">Processing...</span>';
+  try{
+    var ab     = await file.arrayBuffer();
+    var src    = await PDFLib.PDFDocument.load(ab);
+    var total  = src.getPageCount();
+    var indices= parsePages(input, total);
+    if(!indices.length){ r.innerHTML='<span style="color:#e53e3e;">No valid pages found.</span>'; return; }
+
+    var newPdf = await PDFLib.PDFDocument.create();
+    var pages  = await newPdf.copyPages(src, indices);
+    pages.forEach(function(p){ newPdf.addPage(p); });
+
+    var bytes  = await newPdf.save();
+    var blob   = new Blob([bytes],{type:'application/pdf'});
+    var url    = URL.createObjectURL(blob);
+    var a      = document.createElement('a');
+    a.href=url; a.download='extracted.pdf';
+    a.textContent='⬇ Download Extracted PDF ('+ indices.length +' page'+(indices.length>1?'s':'')+')';
+    a.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;';
+    r.innerHTML=''; r.appendChild(a);
+  }catch(e){ r.innerHTML='<span style="color:#e53e3e;">Error: '+e.message+'</span>'; }
+}
+
+function clearEX(){
+  document.getElementById('exFile').value='';
+  document.getElementById('exPageInfo').textContent='';
+  document.getElementById('exPages').value='';
+  document.getElementById('exResult').innerHTML='';
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

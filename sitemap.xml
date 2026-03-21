@@ -1,59 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/</loc>
-<lastmod>2026-03-18</lastmod>
-<priority>1.0</priority>
-</url>
+<!-- Home -->
+<url><loc>https://smarttoolshub-pro.netlify.app/</loc><lastmod>2026-03-21</lastmod><priority>1.0</priority></url>
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/calculators.html</loc>
-<lastmod>2026-03-18</lastmod>
-<priority>0.9</priority>
-</url>
+<!-- Category Pages -->
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators.html</loc><lastmod>2026-03-21</lastmod><priority>0.9</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.9</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.9</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.9</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/seo-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.9</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/all-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/all-tools.html</loc>
-<lastmod>2026-03-18</lastmod>
-<priority>0.9</priority>
-</url>
-
-<!-- Calculator Tools -->
-
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/calculators/age-calculator.html</loc>
-</url>
-
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/calculators/bmi-calculator.html</loc>
-</url>
-
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/calculators/percentage-calculator.html</loc>
-</url>
-
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/calculators/loan-emi-calculator.html</loc>
-</url>
+<!-- Calculators -->
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators/age-calculator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators/bmi-calculator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators/percentage-calculator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators/loan-emi-calculator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
 <!-- Text Tools -->
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools/password-generator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools/qr-generator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools/word-counter.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools/text-repeater.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/text-tools/password-generator.html</loc>
-</url>
+<!-- Image Tools (all-in-one) -->
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/text-tools/qr-generator.html</loc>
-</url>
+<!-- PDF Tools -->
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/merge-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/split-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/remove-pages.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/extract-pages.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/compress-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/ocr-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/jpg-to-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/pdf-to-jpg.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/rotate-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/page-numbers.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/watermark-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/crop-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/unlock-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/protect-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/sign-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.7</priority></url>
 
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/text-tools/word-counter.html</loc>
-</url>
-
-<url>
-<loc>https://smarttoolshub-pro.netlify.app/text-tools/text-repeater.html</loc>
-</url>
+<!-- SEO Tools -->
+<url><loc>https://smarttoolshub-pro.netlify.app/seo-tools/meta-tag-generator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/seo-tools/keyword-density.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
 </urlset>

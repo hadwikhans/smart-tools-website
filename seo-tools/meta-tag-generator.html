@@ -1,74 +1,50 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculators | SmartToolsHub</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+<title>Meta Tag Generator | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/seo-tools/meta-tag-generator.html">
+<link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body>
-
-<!-- HEADER -->
-<header>
-<h1>SmartToolsHub</h1>
-<p>Free Online Tools for Images, PDF, SEO and Calculators</p>
-</header>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-
-<div class="nav-left">
-<a href="index.html">Home</a>
-<a href="calculators.html">Calculators</a>
-<a href="image-tools.html">Image Tools</a>
-<a href="pdf-tools.html">PDF Tools</a>
-<a href="seo-tools.html">SEO Tools</a>
-<a href="text-tools.html">Text Tools</a>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🏷️ Meta Tag Generator</h1><p>Generate optimized SEO meta tags for your pages</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/seo-tools.html">SEO Tools</a> &gt; <span>Meta Tag Generator</span></div></div>
 </div>
-
-<div class="nav-right">
-<input type="text" placeholder="Search tools...">
-</div>
-
-</nav>
-
-<!-- PAGE CONTENT -->
-<div class="container">
-
-<h2>🧮 Calculators</h2>
-
-<div class="grid">
-
+<div class="container"><div class="page-content">
 <div class="card">
-<h3>📅 Age Calculator</h3>
-<p>Calculate your exact age from date of birth.</p>
+<label>Page Title</label>
+<input type="text" id="metaTitle" placeholder="e.g. SmartToolsHub - Free Online Tools">
+<label>Description (150–160 chars)</label>
+<input type="text" id="metaDesc" placeholder="Brief page description">
+<label>Keywords</label>
+<input type="text" id="metaKeywords" placeholder="e.g. online tools, calculators">
+<label>Author</label>
+<input type="text" id="metaAuthor" placeholder="e.g. SmartToolsHub">
+<div style="display:flex;gap:8px;">
+<button onclick="generateMeta()">Generate Tags</button>
+<button class="secondary" onclick="clearMeta()">Clear</button>
 </div>
-
-<div class="card">
-<h3>⚖️ BMI Calculator</h3>
-<p>Calculate Body Mass Index.</p>
+<div id="metaResult" style="margin-top:14px;"></div>
 </div>
-
-<div class="card">
-<h3>📊 Percentage Calculator</h3>
-<p>Calculate percentages easily.</p>
-</div>
-
-<div class="card">
-<h3>💰 Loan EMI Calculator</h3>
-<p>Calculate EMI for loans.</p>
-</div>
-
-</div>
-
-</div>
-
-<script src="js/script.js"></script>
-
-</body>
-</html>
+<div class="card"><h2>About Meta Tag Generator</h2><p>Meta tags help search engines understand your page. A good title (50–60 chars) and description (150–160 chars) can significantly improve click-through rates in search results.</p></div>
+<script>
+function generateMeta(){var t=document.getElementById('metaTitle').value;var d=document.getElementById('metaDesc').value;var k=document.getElementById('metaKeywords').value;var a=document.getElementById('metaAuthor').value;var r=document.getElementById('metaResult');if(!t&&!d){r.textContent='Fill in at least title and description.';return;}var tags='';if(t)tags+='&lt;title&gt;'+t+'&lt;/title&gt;
+';if(d)tags+='&lt;meta name="description" content="'+d+'"&gt;
+';if(k)tags+='&lt;meta name="keywords" content="'+k+'"&gt;
+';if(a)tags+='&lt;meta name="author" content="'+a+'"&gt;
+';tags+='&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;';r.innerHTML='<pre style="background:#f4f3ff;border:1px solid #e0ddff;border-radius:9px;padding:14px;font-size:12.5px;white-space:pre-wrap;word-break:break-all;color:#4840b8;">'+tags+'</pre><button onclick="copyMeta()" style="margin-top:8px;">Copy Tags</button>';}
+function copyMeta(){var pre=document.querySelector('#metaResult pre');if(pre){navigator.clipboard.writeText(pre.textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>')).then(function(){alert('Copied!');});}}
+function clearMeta(){['metaTitle','metaDesc','metaKeywords','metaAuthor'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('metaResult').innerHTML='';}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

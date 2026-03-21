@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCR PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/ocr-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔍 OCR PDF</h1><p>Extract text from scanned PDF or images</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>OCR PDF</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Upload Scanned PDF or Image (JPG, PNG)</label>
+  <input type="file" id="ocrFile" accept=".pdf,image/*">
+  <label style="margin-top:6px;">Language</label>
+  <select id="ocrLang">
+    <option value="eng">English</option>
+    <option value="hin">Hindi</option>
+    <option value="fra">French</option>
+    <option value="deu">German</option>
+    <option value="spa">Spanish</option>
+    <option value="por">Portuguese</option>
+    <option value="ara">Arabic</option>
+    <option value="chi_sim">Chinese (Simplified)</option>
+  </select>
+  <div style="display:flex;gap:8px;margin-top:6px;">
+    <button onclick="runOCR()">Extract Text</button>
+    <button class="secondary" onclick="clearOCR()">Clear</button>
+  </div>
+  <div id="ocrStatus" style="margin-top:10px;font-size:13px;color:#5a4fcf;min-height:18px;"></div>
+  <div id="ocrProgressBar" style="display:none;margin-top:8px;">
+    <div style="background:#e8eaf2;border-radius:20px;height:8px;overflow:hidden;">
+      <div id="ocrProgress" style="background:#5a4fcf;height:8px;width:0%;transition:width 0.3s;border-radius:20px;"></div>
+    </div>
+  </div>
+  <div id="ocrResult" style="margin-top:14px;display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <label style="margin:0;font-weight:600;color:#1e2740;">Extracted Text</label>
+      <button onclick="copyOCR()" style="padding:6px 14px;font-size:12px;margin:0;">Copy Text</button>
+    </div>
+    <textarea id="ocrText" style="height:220px;font-size:13px;line-height:1.7;background:#f8f9fc;border:1px solid #e2e8f0;border-radius:9px;padding:12px;width:100%;resize:vertical;font-family:inherit;color:#1e2740;" readonly></textarea>
+    <button onclick="downloadOCR()" style="margin-top:8px;">⬇ Download as .txt</button>
+  </div>
+</div>
+<div class="card">
+  <h2>About OCR PDF</h2>
+  <p>OCR (Optical Character Recognition) reads text from scanned documents and images. Uses Tesseract.js — a powerful open-source OCR engine that runs entirely in your browser. <strong>No data is uploaded to any server.</strong></p>
+  <p style="margin-top:8px;font-size:12.5px;color:#94a3b8;">Note: For scanned PDFs, upload the first page as an image (JPG/PNG) for best results. Processing may take 10–30 seconds depending on the document size.</p>
+</div>
+<script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+async function runOCR(){
+  var file   = document.getElementById('ocrFile').files[0];
+  var lang   = document.getElementById('ocrLang').value;
+  var status = document.getElementById('ocrStatus');
+  var pbar   = document.getElementById('ocrProgressBar');
+  var prog   = document.getElementById('ocrProgress');
+  var result = document.getElementById('ocrResult');
+  var txtArea= document.getElementById('ocrText');
+
+  if(!file){ status.innerHTML='<span style="color:#e53e3e;">Please upload a file.</span>'; return; }
+
+  result.style.display='none';
+  pbar.style.display='block';
+  prog.style.width='0%';
+  status.textContent='Preparing...';
+
+  try{
+    var imageDataUrl;
+
+    if(file.type === 'application/pdf'){
+      status.textContent = 'Rendering PDF page...';
+      var ab  = await file.arrayBuffer();
+      var pdf = await pdfjsLib.getDocument({data: ab}).promise;
+      var page= await pdf.getPage(1);
+      var vp  = page.getViewport({scale: 2});
+      var canvas = document.createElement('canvas');
+      canvas.width=vp.width; canvas.height=vp.height;
+      await page.render({canvasContext:canvas.getContext('2d'), viewport:vp}).promise;
+      imageDataUrl = canvas.toDataURL('image/png');
+    } else {
+      imageDataUrl = await new Promise(function(res){
+        var fr=new FileReader(); fr.onload=function(e){res(e.target.result);}; fr.readAsDataURL(file);
+      });
+    }
+
+    status.textContent = 'Running OCR — this may take 15–30 seconds...';
+
+    var worker = await Tesseract.createWorker(lang, 1, {
+      logger: function(m){
+        if(m.status === 'recognizing text'){
+          var pct = Math.round(m.progress*100);
+          prog.style.width = pct+'%';
+          status.textContent = 'Recognizing text... '+pct+'%';
+        }
+      }
+    });
+
+    var { data: { text } } = await worker.recognize(imageDataUrl);
+    await worker.terminate();
+
+    prog.style.width='100%';
+    status.textContent = '✅ Text extracted successfully!';
+    txtArea.value = text.trim() || '(No text found — try a clearer image)';
+    result.style.display='block';
+
+  }catch(e){
+    pbar.style.display='none';
+    status.innerHTML='<span style="color:#e53e3e;">Error: '+e.message+'</span>';
+  }
+}
+
+function copyOCR(){
+  var t = document.getElementById('ocrText').value;
+  if(t) navigator.clipboard.writeText(t).then(function(){ alert('Text copied!'); });
+}
+
+function downloadOCR(){
+  var t    = document.getElementById('ocrText').value;
+  var blob = new Blob([t],{type:'text/plain'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href=url; a.download='extracted-text.txt'; a.click();
+}
+
+function clearOCR(){
+  document.getElementById('ocrFile').value='';
+  document.getElementById('ocrStatus').textContent='';
+  document.getElementById('ocrProgressBar').style.display='none';
+  document.getElementById('ocrProgress').style.width='0%';
+  document.getElementById('ocrResult').style.display='none';
+  document.getElementById('ocrText').value='';
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

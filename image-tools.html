@@ -1,100 +1,234 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Image Tools | SmartToolsHub</title>
-
-<meta name="description" content="Free online image tools including image compressor, image resizer, JPG to PNG converter and PNG to JPG converter.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/image-tools.html">
-
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/image-tools.html">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.css">
+<style>
+.drop-area {
+    border: 2px dashed #c0c5d8;
+    border-radius: 12px;
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    background: #f8f9fc;
+    transition: 0.2s;
+}
+.drop-area:hover { border-color: #5a4fcf; background: #f4f3ff; }
+.drop-area p { color: #94a3b8; font-size: 14px; margin: 4px 0; }
+.drop-area .ico { font-size: 36px; display: block; margin-bottom: 8px; }
 
+.image-tool-layout {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+@media(max-width:900px){ .image-tool-layout{ grid-template-columns: 1fr; } }
+
+.image-preview-card {
+    background: #fff;
+    border: 1px solid #e8eaf2;
+    border-radius: 14px;
+    padding: 20px;
+}
+.image-preview-card h3 {
+    font-size: 14px; font-weight: 700; color: #1e2740; margin-bottom: 12px;
+}
+#originalPreview {
+    max-width: 100%; border-radius: 8px;
+    display: none; border: 1px solid #e8eaf2;
+}
+#originalSize { font-size: 12px; color: #94a3b8; margin-top: 6px; }
+
+/* Toolbar */
+.image-toolbar {
+    display: none;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 14px;
+}
+.image-toolbar button {
+    background: #f0f2f8;
+    color: #5a4fcf;
+    font-size: 12px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-weight: 600;
+    margin: 0;
+}
+.image-toolbar button:hover { background: #5a4fcf; color: #fff; border-color: #5a4fcf; }
+.image-toolbar button.primary { background: #5a4fcf; color: #fff; border-color: #5a4fcf; }
+.image-toolbar button.primary:hover { background: #4840b8; }
+
+/* Crop controls */
+#cropControls { display: none; margin-top: 10px; }
+#cropControls .image-toolbar { display: flex; }
+
+/* Settings panel */
+.image-settings { display: flex; flex-direction: column; gap: 16px; }
+
+.operation-group { display: flex; flex-direction: column; gap: 10px; }
+.operation-group label {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 13.5px; color: #334155; cursor: pointer; font-weight: 500;
+}
+.operation-group input[type="radio"] { accent-color: #5a4fcf; width: 15px; height: 15px; }
+
+/* Output card */
+#outputCard { display: none; }
+#outputPreview { max-width: 100%; border-radius: 8px; margin-bottom: 8px; }
+</style>
 </head>
-
 <body>
 
-<header>
-<h1>SmartToolsHub</h1>
-</header>
+<div id="navbar"></div>
 
-<nav class="navbar">
+<section class="page-hero">
+  <div class="container">
+    <h1>🖼️ Image Tools</h1>
+    <p>Compress, resize, convert and crop images — all in one place</p>
+  </div>
+</section>
 
-<div class="nav-left">
-
-<a href="index.html">Home</a>
-
-<div class="dropdown">
-<a href="calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="calculators/age-calculator.html">Age Calculator</a>
-<a href="calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/index.html">Home</a> &gt; <span>Image Tools</span>
+    </div>
+  </div>
 </div>
-
-</div>
-
-<div class="dropdown">
-<a href="text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="text-tools/password-generator.html">Password Generator</a>
-<a href="text-tools/qr-generator.html">QR Code Generator</a>
-<a href="text-tools/word-counter.html">Word Counter</a>
-<a href="text-tools/text-repeater.html">Text Repeater</a>
-</div>
-
-</div>
-
-<a href="image-tools.html">Image Tools</a> <a href="pdf-tools.html">PDF Tools</a> <a href="seo-tools.html">SEO Tools</a> <a href="all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
 
 <div class="container">
+<div class="page-content">
 
-<div class="breadcrumb">
-<a href="index.html">Home</a> >
-<span>Image Tools</span>
+  <!-- Upload -->
+  <div class="card">
+    <h3 style="margin-top:0;">Upload Image</h3>
+    <div id="dropArea" class="drop-area" onclick="document.getElementById('uploadImage').click()">
+      <span class="ico">📂</span>
+      <p><strong style="color:#5a4fcf;">Click to upload</strong> or drag & drop</p>
+      <p style="font-size:12px;">JPG, PNG, WEBP, GIF supported</p>
+      <input type="file" id="uploadImage" accept="image/*" style="display:none;">
+    </div>
+  </div>
+
+  <!-- Tool Layout -->
+  <div class="image-tool-layout">
+
+    <!-- LEFT: Preview + Toolbar -->
+    <div class="image-preview-card">
+      <h3>Preview</h3>
+      <img id="originalPreview" alt="Preview">
+      <p id="originalSize"></p>
+
+      <!-- Crop Controls — shown only when cropping -->
+      <div id="cropControls">
+        <div class="image-toolbar">
+          <button class="primary" onclick="applyCrop()">✅ Apply Crop</button>
+          <button onclick="cancelCrop()">❌ Cancel</button>
+          <button onclick="zoomIn()">Zoom +</button>
+          <button onclick="zoomOut()">Zoom −</button>
+          <button onclick="rotateLeft()">↺ Rotate L</button>
+          <button onclick="rotateRight()">↻ Rotate R</button>
+          <button onclick="flipH()">↔ Flip H</button>
+          <button onclick="flipV()">↕ Flip V</button>
+        </div>
+      </div>
+
+      <!-- Main Toolbar — shown after upload -->
+      <div class="image-toolbar" id="mainToolbar">
+        <button class="primary" onclick="processImage()">⚙️ Process</button>
+        <button onclick="startCrop()">✂️ Crop</button>
+        <button onclick="resetTool()">🔄 Reset</button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Settings + Output -->
+    <div class="image-settings">
+
+      <!-- Operation selector -->
+      <div class="card" style="margin-top:0;">
+        <h2>Select Operation</h2>
+        <div class="operation-group">
+          <label><input type="radio" name="mode" value="compress" checked> 🗜️ Compress Image</label>
+          <label><input type="radio" name="mode" value="resize">           📐 Resize Image</label>
+          <label><input type="radio" name="mode" value="convert">          🔄 Convert Format</label>
+        </div>
+      </div>
+
+      <!-- Compress Panel -->
+      <div class="card compress-panel" style="margin-top:0;">
+        <h2>Compression Settings</h2>
+        <label>Quality: <strong><span id="qualityValue">80%</span></strong></label>
+        <input type="range" id="qualityRange" min="0.1" max="1" step="0.05" value="0.8">
+        <label>Target File Size (KB) — optional</label>
+        <input type="number" id="targetSize" placeholder="e.g. 200">
+      </div>
+
+      <!-- Resize Panel -->
+      <div class="card resize-panel" style="margin-top:0; display:none;">
+        <h2>Resize Settings</h2>
+        <label>Preset Size</label>
+        <select id="resizePreset">
+          <option value="">Custom Size</option>
+          <option value="1080x1080">Instagram Post (1080×1080)</option>
+          <option value="1080x1920">Instagram Story (1080×1920)</option>
+          <option value="1200x630">Facebook Post (1200×630)</option>
+          <option value="1280x720">HD (1280×720)</option>
+          <option value="1920x1080">Full HD (1920×1080)</option>
+          <option value="3840x2160">4K (3840×2160)</option>
+        </select>
+        <label>Width (px)</label>
+        <input type="number" id="resizeWidth" placeholder="e.g. 800">
+        <label>Height (px)</label>
+        <input type="number" id="resizeHeight" placeholder="e.g. 600">
+      </div>
+
+      <!-- Convert Panel -->
+      <div class="card convert-panel" style="margin-top:0; display:none;">
+        <h2>Convert Format</h2>
+        <label>Output Format</label>
+        <select id="formatSelect">
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WEBP</option>
+        </select>
+      </div>
+
+      <!-- Output Card -->
+      <div class="card" id="outputCard" style="margin-top:0;">
+        <h2>Output</h2>
+        <img id="outputPreview" alt="Output">
+        <p id="outputSize" style="font-size:12px;color:#94a3b8;margin-bottom:8px;"></p>
+        <a id="downloadLink" style="display:none;"></a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="card">
+    <h2>About Image Tools</h2>
+    <p>All image processing happens directly in your browser — nothing is uploaded to any server. Your images stay completely private and secure.</p>
+    <h3>Available Operations</h3>
+    <p><strong>Compress</strong> — Reduce file size using JPEG quality control. Adjust the quality slider or set a target KB size.<br>
+    <strong>Resize</strong> — Change image dimensions. Use presets (Instagram, HD, 4K) or set custom width and height.<br>
+    <strong>Convert</strong> — Convert between JPG, PNG and WEBP formats.<br>
+    <strong>Crop</strong> — Click "Crop" after uploading to enter crop mode. Draw selection, zoom, rotate and flip before applying.</p>
+  </div>
+
+</div>
 </div>
 
-<h1>Image Tools</h1>
-
-<div class="card">
-
-<h2>Image Tools Coming Soon</h2>
-
-<p>
-We are currently building powerful image tools for SmartToolsHub.
-Soon you will be able to use tools like:
-</p>
-
-<ul>
-<li>Image Compressor</li>
-<li>Image Resizer</li>
-<li>JPG to PNG Converter</li>
-<li>PNG to JPG Converter</li>
-</ul>
-
-<p>
-These tools will help you optimize and convert images directly in your browser.
-</p>
-
-</div>
-
-</div>
-
-<footer>
-<p>© 2026 SmartToolsHub</p>
-</footer>
-
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.1/dist/cropper.min.js"></script>
+<script src="js/image-tools.js"></script>
+<script src="js/sticky.js"></script>
 </body>
 </html>

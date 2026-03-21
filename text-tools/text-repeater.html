@@ -1,98 +1,49 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Text Repeater | SmartToolsHub</title>
-
-<meta name="description" content="Repeat text multiple times easily using the free Text Repeater tool on SmartToolsHub.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/text-tools/text-repeater.html">
-
+<title>🔁 Text Repeater | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 
+
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="../index.html">Home</a>
-
-<div class="dropdown">
-<a href="../calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="../calculators/age-calculator.html">Age Calculator</a>
-<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-</div>
-
-<div class="dropdown">
-<a href="../text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="../text-tools/password-generator.html">Password Generator</a>
-<a href="../text-tools/qr-generator.html">QR Code Generator</a>
-<a href="../text-tools/word-counter.html">Word Counter</a>
-<a href="../text-tools/text-repeater.html">Text Repeater</a>
-</div>
-</div>
-
-<a href="../image-tools.html">Image Tools</a>
-<a href="../pdf-tools.html">PDF Tools</a>
-<a href="../seo-tools.html">SEO Tools</a>
-<a href="../all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="../index.html">Home</a> >
-<a href="../text-tools.html">Text Tools</a> >
-<span>Text Repeater</span>
-</div>
-
-<h1>Text Repeater</h1>
-
-<div class="card">
-
-<input id="repeatText" placeholder="Enter text">
-<input id="repeatTimes" placeholder="Number of repetitions">
-
-<button onclick="repeatText()">Generate</button> <button onclick="clearRepeater()">Clear</button>
-
-<p id="repeatResult"></p>
-
-</div>
-
-<section class="card">
-
-<h2>About Text Repeater</h2>
-
-<p>
-The text repeater tool allows you to repeat text multiple times instantly.
-</p>
-
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>🔁 Text Repeater</h1>
+    <p>Repeat any text multiple times instantly</p>
+  </div>
 </section>
-
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <a href="/text-tools.html">Text Tools</a> <span style="color:#c0cad8;">›</span> <span>Text Repeater</span></div>
+  </div>
 </div>
-
+<div class="container">
+<div class="page-content">
+<div class="card">
+<h2>Text Repeater</h2>
+<label>Text to repeat</label>
+<input type="text" id="repeatText" placeholder="Enter your text">
+<label>Number of repetitions</label>
+<input type="number" id="repeatTimes" placeholder="e.g. 10">
+<button onclick="repeatText()">Generate</button>
+<button class="secondary" onclick="clearRepeater()">Clear</button>
+<div id="repeatResult" style="display:none;margin-top:12px;word-break:break-all;max-height:120px;overflow:auto;"></div>
+</div>
+<div class="card">
+<h2>About Text Repeater</h2>
+<p>Repeat any word, phrase or sentence multiple times. Useful for testing, creating patterns or generating repeated content.</p>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
 <script src="../js/script.js"></script>
-
+<script src="../js/sticky.js"></script>
 </body>
 </html>

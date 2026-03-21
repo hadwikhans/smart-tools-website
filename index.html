@@ -1,183 +1,317 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
-
-<title>SmartToolsHub - Free Online Tools & Calculators</title>
-
-<meta name="description" content="Free online tools including Age Calculator, BMI Calculator, Percentage Calculator, Loan EMI Calculator, QR Generator, Password Generator and more.">
-
-<meta name="keywords" content="online tools, calculators, age calculator, bmi calculator, percentage calculator, emi calculator, qr generator, password generator">
-
-<meta name="robots" content="index, follow">
-
-<meta name="google-site-verification" content="4Ytv0Y8dk2ftJwSFkLJfR3nhe9zNCwE71Jue6CtzqP4">
-
-<meta property="og:title" content="SmartToolsHub - Free Online Tools">
-<meta property="og:description" content="Free online calculators and tools including age calculator, BMI calculator, percentage calculator and more.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://smarttoolshub.netlify.app/">
-
-
+<title>SmartToolsHub - Free Online Tools</title>
+<meta name="description" content="SmartToolsHub offers free online tools including calculators, image tools, text tools, PDF tools and SEO tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ── Hero ── */
+.home-hero {
+    background: #1e2433;
+    text-align: center;
+    padding: 52px 20px 42px;
+    position: sticky;
+    top: 58px;
+    z-index: 999;
+}
+.home-hero h1 { font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -0.8px; margin-bottom: 10px; line-height: 1.2; }
+.home-hero h1 span { color: #7c6ff7; }
+.home-hero p  { font-size: 16px; color: #8896b3; max-width: 500px; margin: 0 auto; }
 
+/* ── Main wrap ── */
+.home-main { max-width: 1200px; margin: 0 auto; padding: 36px 24px 72px; }
+
+/* ── Section heading ── */
+.sec-title { font-size: 17px; font-weight: 700; color: #1e2433; margin-bottom: 18px; margin-top: 36px; }
+.sec-title:first-child { margin-top: 0; }
+
+/* ── Calculator & text tool cards ── */
+.hp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(218px, 1fr));
+    gap: 16px;
+}
+.hp-card {
+    background: #fff;
+    border: 1.5px solid #e8eaf0;
+    border-radius: 14px;
+    padding: 20px 18px 18px;
+    transition: 0.18s;
+}
+.hp-card:hover { border-color: #b5aeee; box-shadow: 0 4px 18px rgba(90,79,207,0.09); }
+
+.hp-card-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 700; color: #1e2433;
+    margin-bottom: 14px;
+}
+.hp-card-title .ico {
+    width: 32px; height: 32px;
+    background: #f0effe;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+}
+
+.hp-card input[type="date"],
+.hp-card input[type="number"],
+.hp-card input[type="text"],
+.hp-card textarea {
+    width: 100%;
+    padding: 8px 11px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #1e2433;
+    background: #f7f8fc;
+    margin-bottom: 8px;
+    outline: none;
+    transition: 0.15s;
+    box-sizing: border-box;
+}
+.hp-card input:focus, .hp-card textarea:focus { border-color: #5a4fcf; background: #fff; }
+.hp-card input::placeholder, .hp-card textarea::placeholder { color: #c0c9d8; }
+.hp-card textarea { height: 68px; resize: none; }
+
+.hp-btn-row { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
+.hp-btn {
+    background: #5a4fcf; color: #fff; border: none;
+    padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+    cursor: pointer; transition: 0.15s;
+}
+.hp-btn:hover { background: #4840b8; }
+.hp-btn.sec {
+    background: #f0effe; color: #5a4fcf;
+    border: 1.5px solid #ddd9f9;
+}
+.hp-btn.sec:hover { background: #e2deff; }
+
+.hp-result {
+    margin-top: 10px; font-size: 13px; font-weight: 600; color: #3d35a8;
+    background: #f0effe; border: 1.5px solid #ddd9f9;
+    border-radius: 8px; padding: 9px 12px;
+    min-height: 18px; display: none;
+}
+.hp-result.show { display: block; }
+#hp-pass-display {
+    background: #f0effe; border: 1.5px solid #ddd9f9;
+    border-radius: 8px; padding: 9px 12px;
+    font-size: 13px; font-weight: 600; color: #3d35a8;
+    word-break: break-all; min-height: 36px;
+    margin-bottom: 10px;
+}
+#hp-qr-img { max-width: 100%; margin-top: 10px; border-radius: 8px; display: none; }
+</style>
 </head>
-
 <body>
 
-<header>
-<h1>SmartToolsHub - Free Online Tools</h1>
-</header>
+<div id="navbar"></div>
 
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="../index.html">Home</a>
-
-<div class="dropdown">
-<a href="../calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="../calculators/age-calculator.html">Age Calculator</a>
-<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-</div>
-
-<div class="dropdown">
-<a href="../text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="../text-tools/password-generator.html">Password Generator</a>
-<a href="../text-tools/qr-generator.html">QR Code Generator</a>
-<a href="../text-tools/word-counter.html">Word Counter</a>
-<a href="../text-tools/text-repeater.html">Text Repeater</a>
-</div>
-</div>
-
-<a href="../image-tools.html">Image Tools</a>
-<a href="../pdf-tools.html">PDF Tools</a>
-<a href="../seo-tools.html">SEO Tools</a>
-<a href="../all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<h2>Popular Calculators</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>🧮 Age Calculator</h3>
-<input type="date" id="dob">
-<button onclick="calcAge()">Calculate</button>
-<button onclick="clearAge()">Clear</button>
-<p id="ageResult"></p>
-</div>
-
-<div class="card">
-<h3>⚖️ BMI Calculator</h3>
-<input id="weight" placeholder="Weight kg">
-<input id="height" placeholder="Height cm">
-<button onclick="calcBMI()">Calculate</button>
-<button onclick="clearBMI()">Clear</button>
-<p id="bmiResult"></p>
-</div>
-
-<div class="card">
-<h3>📊 Percentage Calculator</h3>
-<input id="percent" placeholder="Percent">
-<input id="number" placeholder="Number">
-<button onclick="calcPercent()">Calculate</button>
-<button onclick="clearPercent()">Clear</button>
-<p id="percentResult"></p>
-</div>
-
-<div class="card">
-<h3>💰 Loan EMI Calculator</h3>
-<input id="loan" placeholder="Loan amount">
-<input id="rate" placeholder="Interest %">
-<input id="months" placeholder="Months">
-<button onclick="calcEMI()">Calculate</button>
-<button onclick="clearEMI()">Clear</button>
-<p id="emiResult"></p>
-</div>
-
-</div>
-
-<h2>Popular Text Tools</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>🔐 Password Generator</h3>
-<button onclick="generatePassword()">Generate</button>
-<button onclick="copyPassword()">Copy</button>
-<button onclick="clearPassword()">Clear</button>
-<p id="passwordResult"></p>
-</div>
-
-<div class="card">
-<h3>📱 QR Code Generator</h3>
-<input id="qrText" placeholder="Enter text or URL">
-<button onclick="generateQR()">Generate</button>
-<button onclick="downloadQR()">Download</button>
-<button onclick="clearQR()">Clear</button>
-<br><br>
-<img id="qrImage">
-</div>
-
-<div class="card">
-<h3>🔁 Text Repeater</h3>
-<input id="repeatText" placeholder="Text">
-<input id="repeatTimes" placeholder="Times">
-<button onclick="repeatText()">Generate</button>
-<button onclick="clearRepeater()">Clear</button>
-<p id="repeatResult"></p>
-</div>
-
-<div class="card">
-<h3>📝 Word Counter</h3>
-<textarea id="wordText" placeholder="Enter text"></textarea>
-<button onclick="countWords()">Count</button>
-<button onclick="clearWord()">Clear</button>
-<p id="wordResult"></p>
-</div>
-
-</div>
-
-</div>
-
-<section class="container">
-<div class="card">
-<h2>About SmartToolsHub</h2>
-<p>
-SmartToolsHub provides free online tools and calculators including
-age calculator, BMI calculator, percentage calculator, loan EMI calculator,
-text utilities, and productivity tools that help you perform quick tasks directly in your browser.
-</p>
-<p>
-All tools on SmartToolsHub are designed to be simple, fast, and easy to use without requiring any downloads or registrations. Whether you need quick calculations or productivity tools, SmartToolsHub makes your work easier.
-</p>
-</div>
+<!-- Sticky hero -->
+<section class="home-hero">
+  <div>
+    <h1>Free Online Tools — <span>All in One Place</span></h1>
+    <p>Simple, fast and powerful tools for everyday tasks. 100% free.</p>
+  </div>
 </section>
 
-<footer>
-<p>© 2026 SmartToolsHub</p>
-</footer>
+<div class="home-main">
 
-<script src="js/script.js"></script>
+  <!-- POPULAR CALCULATORS -->
+  <div class="sec-title">Popular Calculators</div>
+  <div class="hp-grid">
 
+    <!-- Age -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">📅</div>Age Calculator</div>
+      <input type="date" id="hp-dob">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpCalcAge()">Calculate</button>
+        <button class="hp-btn sec" onclick="hpClear('hp-dob','hp-age-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-age-r"></div>
+    </div>
+
+    <!-- BMI -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">⚖️</div>BMI Calculator</div>
+      <input type="number" id="hp-weight" placeholder="Weight kg">
+      <input type="number" id="hp-height" placeholder="Height cm">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpCalcBMI()">Calculate</button>
+        <button class="hp-btn sec" onclick="hpClearM(['hp-weight','hp-height'],'hp-bmi-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-bmi-r"></div>
+    </div>
+
+    <!-- Percentage -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">📊</div>Percentage Calculator</div>
+      <input type="number" id="hp-pct" placeholder="Percent">
+      <input type="number" id="hp-num" placeholder="Number">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpCalcPct()">Calculate</button>
+        <button class="hp-btn sec" onclick="hpClearM(['hp-pct','hp-num'],'hp-pct-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-pct-r"></div>
+    </div>
+
+    <!-- EMI -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">💰</div>Loan EMI Calculator</div>
+      <input type="number" id="hp-loan" placeholder="Loan amount">
+      <input type="number" id="hp-rate" placeholder="Interest %">
+      <input type="number" id="hp-months" placeholder="Months">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpCalcEMI()">Calculate</button>
+        <button class="hp-btn sec" onclick="hpClearM(['hp-loan','hp-rate','hp-months'],'hp-emi-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-emi-r"></div>
+    </div>
+
+  </div>
+
+  <!-- POPULAR TEXT TOOLS -->
+  <div class="sec-title">Popular Text Tools</div>
+  <div class="hp-grid">
+
+    <!-- Password -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">🔐</div>Password Generator</div>
+      <div id="hp-pass-display"></div>
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpGenPass()">Generate</button>
+        <button class="hp-btn sec" onclick="hpCopyPass()">Copy</button>
+        <button class="hp-btn sec" onclick="document.getElementById('hp-pass-display').textContent=''">Clear</button>
+      </div>
+    </div>
+
+    <!-- QR -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">📱</div>QR Code Generator</div>
+      <input type="text" id="hp-qr-text" placeholder="Enter text or URL">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpGenQR()">Generate</button>
+        <button class="hp-btn sec" onclick="hpDlQR()">Download</button>
+        <button class="hp-btn sec" onclick="hpClearQR()">Clear</button>
+      </div>
+      <img id="hp-qr-img">
+    </div>
+
+    <!-- Text Repeater -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">🔁</div>Text Repeater</div>
+      <input type="text" id="hp-rep-text" placeholder="Text">
+      <input type="number" id="hp-rep-times" placeholder="Times">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpRepeat()">Generate</button>
+        <button class="hp-btn sec" onclick="hpClearM(['hp-rep-text','hp-rep-times'],'hp-rep-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-rep-r" style="word-break:break-all;max-height:60px;overflow:auto;"></div>
+    </div>
+
+    <!-- Word Counter -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">📝</div>Word Counter</div>
+      <textarea id="hp-word-text" placeholder="Enter text"></textarea>
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpCountWords()">Count</button>
+        <button class="hp-btn sec" onclick="hpClear('hp-word-text','hp-word-r')">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-word-r"></div>
+    </div>
+
+  </div>
+
+</div><!-- end home-main -->
+
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/sticky.js"></script>
+<script>
+function show(id,txt){ var e=document.getElementById(id); e.textContent=txt; e.classList.add('show'); }
+function hpCalcAge(){
+    var dob=document.getElementById('hp-dob').value;
+    if(!dob){show('hp-age-r','Select your date of birth.');return;}
+    var b=new Date(dob),t=new Date();
+    var y=t.getFullYear()-b.getFullYear(),m=t.getMonth()-b.getMonth(),d=t.getDate()-b.getDate();
+    if(d<0){m--;d+=new Date(t.getFullYear(),t.getMonth(),0).getDate();}
+    if(m<0){y--;m+=12;}
+    show('hp-age-r',y+' yrs, '+m+' months, '+d+' days');
+}
+function hpCalcBMI(){
+    var w=parseFloat(document.getElementById('hp-weight').value),h=parseFloat(document.getElementById('hp-height').value);
+    if(!w||!h){show('hp-bmi-r','Enter weight and height.');return;}
+    var bmi=(w/((h/100)*(h/100))).toFixed(1);
+    var c=bmi<18.5?'Underweight':bmi<25?'Normal weight':bmi<30?'Overweight':'Obese';
+    show('hp-bmi-r','BMI: '+bmi+' — '+c);
+}
+function hpCalcPct(){
+    var p=parseFloat(document.getElementById('hp-pct').value),n=parseFloat(document.getElementById('hp-num').value);
+    if(isNaN(p)||isNaN(n)){show('hp-pct-r','Enter both values.');return;}
+    show('hp-pct-r',p+'% of '+n+' = '+((p/100)*n).toFixed(2));
+}
+function hpCalcEMI(){
+    var p=parseFloat(document.getElementById('hp-loan').value),r=parseFloat(document.getElementById('hp-rate').value),mo=parseInt(document.getElementById('hp-months').value);
+    if(!p||!r||!mo){show('hp-emi-r','Fill all three fields.');return;}
+    var ri=r/12/100,emi=(p*ri*Math.pow(1+ri,mo))/(Math.pow(1+ri,mo)-1);
+    show('hp-emi-r','EMI: ₹'+emi.toFixed(2)+'/month');
+}
+function hpGenPass(){
+    var c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    var p=Array.from({length:16},function(){return c[Math.floor(Math.random()*c.length)];}).join('');
+    document.getElementById('hp-pass-display').textContent=p;
+}
+function hpCopyPass(){
+    var t=document.getElementById('hp-pass-display').textContent;
+    if(t) navigator.clipboard.writeText(t).then(function(){alert('Copied!');});
+}
+function hpGenQR(){
+    var text=document.getElementById('hp-qr-text').value.trim();
+    if(!text){alert('Enter text or URL.');return;}
+    var img=document.getElementById('hp-qr-img');
+    img.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&data='+encodeURIComponent(text);
+    img.style.display='block';
+}
+function hpDlQR(){
+    var img=document.getElementById('hp-qr-img');
+    if(!img.src||img.style.display==='none'){alert('Generate a QR code first.');return;}
+    var a=document.createElement('a');a.href=img.src;a.download='qrcode.png';a.click();
+}
+function hpClearQR(){
+    document.getElementById('hp-qr-text').value='';
+    var img=document.getElementById('hp-qr-img');img.src='';img.style.display='none';
+}
+function hpRepeat(){
+    var t=document.getElementById('hp-rep-text').value,n=parseInt(document.getElementById('hp-rep-times').value);
+    if(!t||isNaN(n)||n<1){show('hp-rep-r','Enter text and a number.');return;}
+    if(n>500){show('hp-rep-r','Max 500 repetitions.');return;}
+    show('hp-rep-r',Array(n).fill(t).join(' '));
+}
+function hpCountWords(){
+    var t=document.getElementById('hp-word-text').value.trim();
+    if(!t){show('hp-word-r','Enter some text.');return;}
+    var w=t.split(/\s+/).filter(Boolean).length;
+    show('hp-word-r','Words: '+w+' | Chars: '+t.length);
+}
+function hpClear(a,b){
+    document.getElementById(a).value='';
+    var e=document.getElementById(b);e.textContent='';e.classList.remove('show');
+}
+function hpClearM(ids,r){
+    ids.forEach(function(id){document.getElementById(id).value='';});
+    var e=document.getElementById(r);e.textContent='';e.classList.remove('show');
+}
+function searchTools(){
+    var q=document.getElementById('toolSearch');
+    if(q) console.log(q.value);
+}
+</script>
 </body>
 </html>

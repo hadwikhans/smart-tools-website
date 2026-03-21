@@ -1,136 +1,41 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Text Tools | SmartToolsHub</title>
-
-<meta name="description" content="Free online text tools including Word Counter, Password Generator, QR Code Generator, and Text Repeater.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/text-tools.html">
-
+<title>✍️ Text Tools | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 
+
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="../index.html">Home</a>
-
-<div class="dropdown">
-<a href="../calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="../calculators/age-calculator.html">Age Calculator</a>
-<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-</div>
-
-<div class="dropdown">
-<a href="../text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="../text-tools/password-generator.html">Password Generator</a>
-<a href="../text-tools/qr-generator.html">QR Code Generator</a>
-<a href="../text-tools/word-counter.html">Word Counter</a>
-<a href="../text-tools/text-repeater.html">Text Repeater</a>
-</div>
-</div>
-
-<a href="../image-tools.html">Image Tools</a>
-<a href="../pdf-tools.html">PDF Tools</a>
-<a href="../seo-tools.html">SEO Tools</a>
-<a href="../all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="index.html">Home</a> >
-<span>Text Tools</span>
-</div>
-
-<h1>Text Tools</h1>
-
-<p>
-SmartToolsHub provides free online text tools to help you work with text quickly and efficiently.
-These tools are simple, fast, and work directly in your browser.
-</p>
-
-<div class="grid">
-
-<div class="card">
-<h3>Password Generator</h3>
-<p>Create secure random passwords instantly.</p>
-<button onclick="location.href='text-tools/password-generator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>QR Code Generator</h3>
-<p>Generate QR codes for URLs or text easily.</p>
-<button onclick="location.href='text-tools/qr-generator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Word Counter</h3>
-<p>Count the number of words in your text quickly.</p>
-<button onclick="location.href='text-tools/word-counter.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Text Repeater</h3>
-<p>Repeat text multiple times instantly.</p>
-<button onclick="location.href='text-tools/text-repeater.html'">
-Open Tool
-</button>
-</div>
-
-</div>
-
-<section class="card">
-
-<h2>About Text Tools</h2>
-
-<p>
-Text tools help users perform common text processing tasks quickly.
-These utilities are useful for writers, students, developers, and anyone working with text content.
-</p>
-
-<p>
-SmartToolsHub offers simple and efficient tools like word counting, password generation,
-QR code creation, and text repetition to make everyday tasks easier.
-</p>
-
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>✍️ Text Tools</h1>
+    <p>Free online text utilities and generators</p>
+  </div>
 </section>
-
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <span>Text Tools</span></div>
+  </div>
 </div>
-
-<footer>
-<p>© 2026 SmartToolsHub</p>
-</footer>
-
+<div class="container">
+<div class="page-content">
+<div class="tools-grid">
+<a href="/text-tools/password-generator.html" class="tool-card"><div class="tool-card-icon">🔐</div><h3>Password Generator</h3><p>Generate strong, secure random passwords.</p></a>
+<a href="/text-tools/qr-generator.html" class="tool-card"><div class="tool-card-icon">📱</div><h3>QR Code Generator</h3><p>Create QR codes for URLs or text instantly.</p></a>
+<a href="/text-tools/word-counter.html" class="tool-card"><div class="tool-card-icon">📝</div><h3>Word Counter</h3><p>Count words and characters in your text.</p></a>
+<a href="/text-tools/text-repeater.html" class="tool-card"><div class="tool-card-icon">🔁</div><h3>Text Repeater</h3><p>Repeat any text multiple times instantly.</p></a>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/script.js"></script>
+<script src="js/sticky.js"></script>
 </body>
 </html>

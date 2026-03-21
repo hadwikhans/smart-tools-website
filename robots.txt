@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://smarttoolshub.netlify.app/sitemap.xml
+Sitemap: https://smarttoolshub-pro.netlify.app/sitemap.xml

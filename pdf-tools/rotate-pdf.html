@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotate PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/rotate-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔄 Rotate PDF</h1><p>Rotate PDF pages in any direction</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Rotate PDF</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+<div class="card">
+<label>Upload PDF</label>
+<input type="file" id="rotateFile" accept=".pdf">
+<label style="margin-top:6px;">Rotation</label>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;">
+  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13.5px;">
+    <input type="radio" name="rot" value="90"  checked style="accent-color:#5a4fcf;"> 90° Clockwise
+  </label>
+  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13.5px;">
+    <input type="radio" name="rot" value="180" style="accent-color:#5a4fcf;"> 180°
+  </label>
+  <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13.5px;">
+    <input type="radio" name="rot" value="270" style="accent-color:#5a4fcf;"> 90° Counter-clockwise
+  </label>
+</div>
+<label>Apply to</label>
+<select id="rotatePages">
+  <option value="all">All pages</option>
+  <option value="odd">Odd pages only</option>
+  <option value="even">Even pages only</option>
+  <option value="first">First page only</option>
+  <option value="last">Last page only</option>
+</select>
+<div style="display:flex;gap:8px;">
+  <button onclick="rotatePDF()">Rotate PDF</button>
+  <button class="secondary" onclick="clearRotate()">Clear</button>
+</div>
+<div id="rotateResult" style="margin-top:12px;font-size:13px;"></div>
+</div>
+<div class="card"><h2>About Rotate PDF</h2>
+<p>Rotate all or specific pages in your PDF — clockwise, counter-clockwise or 180°. Processing happens entirely in your browser. No upload to any server.</p>
+</div>
+<script>
+async function rotatePDF(){
+  var f=document.getElementById('rotateFile');
+  var r=document.getElementById('rotateResult');
+  if(!f.files||!f.files[0]){r.textContent='Please upload a PDF.';r.style.color='#e53e3e';return;}
+  var deg=parseInt(document.querySelector('input[name="rot"]:checked').value);
+  var scope=document.getElementById('rotatePages').value;
+  r.textContent='Rotating...';r.style.color='#5a4fcf';
+  try{
+    var ab=await f.files[0].arrayBuffer();
+    var pdf=await PDFLib.PDFDocument.load(ab);
+    var count=pdf.getPageCount();
+    for(var i=0;i<count;i++){
+      var apply=false;
+      if(scope==='all') apply=true;
+      else if(scope==='odd'  && (i+1)%2!==0) apply=true;
+      else if(scope==='even' && (i+1)%2===0) apply=true;
+      else if(scope==='first'&& i===0)       apply=true;
+      else if(scope==='last' && i===count-1) apply=true;
+      if(apply){
+        var pg=pdf.getPage(i);
+        var cur=pg.getRotation().angle;
+        pg.setRotation(PDFLib.degrees((cur+deg)%360));
+      }
+    }
+    var bytes=await pdf.save();
+    var blob=new Blob([bytes],{type:'application/pdf'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='rotated.pdf';a.textContent='⬇ Download Rotated PDF';
+    a.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;margin-top:4px;text-decoration:none;';
+    r.textContent='';r.appendChild(a);
+  }catch(e){r.textContent='Error: '+e.message;r.style.color='#e53e3e';}
+}
+function clearRotate(){document.getElementById('rotateFile').value='';document.getElementById('rotateResult').innerHTML='';}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

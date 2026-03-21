@@ -1,74 +1,38 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculators | SmartToolsHub</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+<title>Compress PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/compress-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body>
-
-<!-- HEADER -->
-<header>
-<h1>SmartToolsHub</h1>
-<p>Free Online Tools for Images, PDF, SEO and Calculators</p>
-</header>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-
-<div class="nav-left">
-<a href="index.html">Home</a>
-<a href="calculators.html">Calculators</a>
-<a href="image-tools.html">Image Tools</a>
-<a href="pdf-tools.html">PDF Tools</a>
-<a href="seo-tools.html">SEO Tools</a>
-<a href="text-tools.html">Text Tools</a>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🗜️ Compress PDF</h1><p>Reduce the file size of your PDF documents</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Compress PDF</span></div></div>
 </div>
-
-<div class="nav-right">
-<input type="text" placeholder="Search tools...">
-</div>
-
-</nav>
-
-<!-- PAGE CONTENT -->
-<div class="container">
-
-<h2>🧮 Calculators</h2>
-
-<div class="grid">
-
+<div class="container"><div class="page-content">
 <div class="card">
-<h3>📅 Age Calculator</h3>
-<p>Calculate your exact age from date of birth.</p>
+<input type="file" id="compressPdfFile" accept=".pdf">
+<div style="display:flex;gap:8px;margin-top:4px;">
+<button onclick="compressPDF()">Compress PDF</button>
+<button class="secondary" onclick="clearCompressPdf()">Clear</button>
 </div>
-
-<div class="card">
-<h3>⚖️ BMI Calculator</h3>
-<p>Calculate Body Mass Index.</p>
+<div id="compressPdfResult" style="margin-top:12px;font-size:13px;color:#5a4fcf;"></div>
 </div>
-
-<div class="card">
-<h3>📊 Percentage Calculator</h3>
-<p>Calculate percentages easily.</p>
-</div>
-
-<div class="card">
-<h3>💰 Loan EMI Calculator</h3>
-<p>Calculate EMI for loans.</p>
-</div>
-
-</div>
-
-</div>
-
-<script src="js/script.js"></script>
-
-</body>
-</html>
+<div class="card"><h2>About PDF Compressor</h2><p>Re-saves your PDF to reduce file size. Works best on PDFs with embedded metadata. Processing happens locally in your browser.</p></div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+async function compressPDF(){var i=document.getElementById('compressPdfFile');var r=document.getElementById('compressPdfResult');if(!i.files||!i.files[0]){r.textContent='Upload a PDF.';return;}r.textContent='Compressing...';try{var file=i.files[0];var ab=await file.arrayBuffer();var pdf=await PDFLib.PDFDocument.load(ab,{updateMetadata:false});var b=await pdf.save({addDefaultPage:false,objectsPerTick:50});var origKB=(file.size/1024).toFixed(1);var newKB=(b.length/1024).toFixed(1);var blob=new Blob([b],{type:'application/pdf'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='compressed.pdf';a.textContent='⬇ Download ('+origKB+' KB → '+newKB+' KB)';r.textContent='';r.appendChild(a);}catch(e){r.textContent='Error: '+e.message;}}
+function clearCompressPdf(){document.getElementById('compressPdfFile').value='';document.getElementById('compressPdfResult').textContent='';}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

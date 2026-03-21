@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPG to PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/jpg-to-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🖼️ JPG / PNG to PDF</h1><p>Convert images to a PDF document instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>JPG to PDF</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Upload Images (JPG, PNG, WEBP — multiple allowed)</label>
+  <input type="file" id="imgFiles" accept="image/*" multiple>
+  <p id="imgList" style="font-size:12.5px;color:#5a4fcf;margin-top:6px;min-height:18px;"></p>
+  <label style="margin-top:6px;">Page Size</label>
+  <select id="pageSize">
+    <option value="A4">A4 (210 × 297 mm)</option>
+    <option value="Letter">US Letter (216 × 279 mm)</option>
+    <option value="fit">Fit to image size</option>
+  </select>
+  <label>Image fit</label>
+  <select id="imgFit">
+    <option value="fit">Fit image (keep ratio)</option>
+    <option value="fill">Fill page (may crop)</option>
+  </select>
+  <div style="display:flex;gap:8px;margin-top:6px;">
+    <button onclick="convertImgToPdf()">Convert to PDF</button>
+    <button class="secondary" onclick="clearImgPdf()">Clear</button>
+  </div>
+  <div id="imgPdfResult" style="margin-top:12px;font-size:13px;"></div>
+</div>
+<div class="card">
+  <h2>About JPG to PDF</h2>
+  <p>Upload one or multiple images and convert them into a single PDF document. Each image becomes one page. Works entirely in your browser — nothing is uploaded to any server.</p>
+</div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+var imgFiles = [];
+
+document.getElementById('imgFiles').addEventListener('change', function(){
+  imgFiles = Array.from(this.files);
+  document.getElementById('imgList').textContent = imgFiles.length + ' image(s) selected: ' + imgFiles.map(function(f){return f.name;}).join(', ');
+});
+
+async function convertImgToPdf(){
+  var r = document.getElementById('imgPdfResult');
+  if(!imgFiles.length){ r.innerHTML='<span style="color:#e53e3e;">Please upload at least one image.</span>'; return; }
+  r.innerHTML='<span style="color:#5a4fcf;">Converting... please wait.</span>';
+  try{
+    var pdf = await PDFLib.PDFDocument.create();
+    var pageSize = document.getElementById('pageSize').value;
+    var imgFit   = document.getElementById('imgFit').value;
+
+    for(var i=0;i<imgFiles.length;i++){
+      var file = imgFiles[i];
+      var ab = await readFileAsArrayBuffer(file);
+      var bytes = new Uint8Array(ab);
+      var img;
+      if(file.type === 'image/png'){
+        img = await pdf.embedPng(bytes);
+      } else {
+        // Convert to jpg-compatible via canvas
+        var dataUrl = await readFileAsDataURL(file);
+        var canvas  = document.createElement('canvas');
+        var ctx     = canvas.getContext('2d');
+        var imgEl   = await loadImgElement(dataUrl);
+        canvas.width = imgEl.naturalWidth;
+        canvas.height= imgEl.naturalHeight;
+        ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(imgEl,0,0);
+        var jpgBytes = dataURLtoBytes(canvas.toDataURL('image/jpeg',0.92));
+        img = await pdf.embedJpg(jpgBytes);
+      }
+
+      var iW = img.width, iH = img.height;
+      var pW, pH;
+
+      if(pageSize === 'A4'){      pW=595; pH=842; }
+      else if(pageSize==='Letter'){pW=612; pH=792; }
+      else { pW=iW; pH=iH; }
+
+      var page = pdf.addPage([pW, pH]);
+
+      var scale, x, y;
+      if(imgFit==='fit'){
+        scale = Math.min(pW/iW, pH/iH);
+        var dW=iW*scale, dH=iH*scale;
+        x=(pW-dW)/2; y=(pH-dH)/2;
+        page.drawImage(img,{x:x,y:y,width:dW,height:dH});
+      } else {
+        scale = Math.max(pW/iW, pH/iH);
+        var dW=iW*scale, dH=iH*scale;
+        x=(pW-dW)/2; y=(pH-dH)/2;
+        page.drawImage(img,{x:x,y:y,width:dW,height:dH});
+      }
+    }
+
+    var pdfBytes = await pdf.save();
+    var blob = new Blob([pdfBytes],{type:'application/pdf'});
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href=url; a.download='converted.pdf';
+    a.textContent='⬇ Download PDF ('+ imgFiles.length +' page'+(imgFiles.length>1?'s':'')+')';
+    a.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;';
+    r.innerHTML=''; r.appendChild(a);
+  }catch(e){ r.innerHTML='<span style="color:#e53e3e;">Error: '+e.message+'</span>'; }
+}
+
+function readFileAsArrayBuffer(file){ return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(e){res(e.target.result);};fr.onerror=rej;fr.readAsArrayBuffer(file);}); }
+function readFileAsDataURL(file){ return new Promise(function(res,rej){var fr=new FileReader();fr.onload=function(e){res(e.target.result);};fr.onerror=rej;fr.readAsDataURL(file);}); }
+function loadImgElement(src){ return new Promise(function(res){var img=new Image();img.onload=function(){res(img);};img.src=src;}); }
+function dataURLtoBytes(dataUrl){var b64=dataUrl.split(',')[1];var bin=atob(b64);var arr=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return arr;}
+
+function clearImgPdf(){
+  imgFiles=[];
+  document.getElementById('imgFiles').value='';
+  document.getElementById('imgList').textContent='';
+  document.getElementById('imgPdfResult').innerHTML='';
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

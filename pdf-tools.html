@@ -1,98 +1,193 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>PDF Tools | SmartToolsHub</title>
-
-<meta name="description" content="Free online PDF tools including merge PDF, split PDF, and compress PDF.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/pdf-tools.html">
-
+<meta name="description" content="Free online PDF tools — merge, split, compress, rotate, watermark, sign, protect, OCR and more.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools.html">
 <link rel="stylesheet" href="css/style.css">
-
+<style>
+.pdf-category { margin-bottom: 38px; }
+.pdf-category-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #94a3b8;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 1px solid #e8eaf2;
+}
+.pdf-tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+}
+.pdf-tool-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    background: #fff; border: 1px solid #e8eaf2;
+    border-radius: 12px; text-decoration: none; color: inherit;
+    transition: 0.15s;
+}
+.pdf-tool-item:hover {
+    border-color: #5a4fcf; background: #faf9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(90,79,207,0.1);
+}
+.pdf-tool-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+}
+.ic-red    { background: #fff1f0; }
+.ic-orange { background: #fff7ed; }
+.ic-blue   { background: #eff6ff; }
+.ic-teal   { background: #f0fdfa; }
+.ic-purple { background: #faf5ff; }
+.ic-green  { background: #f0fdf4; }
+.pdf-tool-info { flex: 1; min-width: 0; }
+.pdf-tool-name { font-size: 14px; font-weight: 700; color: #1e2740; line-height: 1.3; }
+.pdf-tool-desc { font-size: 12px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
+.badge-free {
+    margin-left: auto; background: #ecfdf5; color: #059669;
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
+</style>
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="index.html">Home</a>
-
-<div class="dropdown">
-<a href="calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="calculators/age-calculator.html">Age Calculator</a>
-<a href="calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>📄 PDF Tools</h1>
+    <p>Every tool you need to work with PDFs — free, fast and secure</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <span>PDF Tools</span></div>
+  </div>
 </div>
+<div class="container"><div class="page-content">
 
-</div>
+  <!-- ORGANIZE PDF -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">Organize PDF</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/merge-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-red">📎</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Merge PDF</div><div class="pdf-tool-desc">Combine multiple PDFs into one</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/split-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-red">✂️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Split PDF</div><div class="pdf-tool-desc">Separate PDF into page ranges</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/remove-pages.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-red">🗑️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Remove Pages</div><div class="pdf-tool-desc">Delete specific pages from PDF</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/extract-pages.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-red">📤</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Extract Pages</div><div class="pdf-tool-desc">Pull out selected pages</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-<div class="dropdown">
-<a href="text-tools.html">Text Tools ▾</a>
+  <!-- OPTIMIZE PDF -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">Optimize PDF</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/compress-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-orange">🗜️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Compress PDF</div><div class="pdf-tool-desc">Reduce PDF file size</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/ocr-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-orange">🔍</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">OCR PDF</div><div class="pdf-tool-desc">Extract text from scanned PDFs</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-<div class="dropdown-content">
-<a href="text-tools/password-generator.html">Password Generator</a>
-<a href="text-tools/qr-generator.html">QR Code Generator</a>
-<a href="text-tools/word-counter.html">Word Counter</a>
-<a href="text-tools/text-repeater.html">Text Repeater</a>
-</div>
+  <!-- CONVERT TO PDF -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">Convert to PDF</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/jpg-to-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-blue">🖼️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">JPG / PNG to PDF</div><div class="pdf-tool-desc">Convert images to PDF</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-</div>
+  <!-- CONVERT FROM PDF -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">Convert from PDF</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/pdf-to-jpg.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-teal">🖼️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">PDF to JPG</div><div class="pdf-tool-desc">Convert PDF pages to images</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-<a href="image-tools.html">Image Tools</a> <a href="pdf-tools.html">PDF Tools</a> <a href="seo-tools.html">SEO Tools</a> <a href="all-tools.html">All Tools</a>
+  <!-- EDIT PDF -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">Edit PDF</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/rotate-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-purple">🔄</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Rotate PDF</div><div class="pdf-tool-desc">Rotate pages in any direction</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/page-numbers.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-purple">🔢</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Add Page Numbers</div><div class="pdf-tool-desc">Insert page numbers into PDF</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/watermark-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-purple">💧</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Add Watermark</div><div class="pdf-tool-desc">Stamp text on every page</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/crop-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-purple">✂️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Crop PDF</div><div class="pdf-tool-desc">Trim margins from pages</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-</div>
+  <!-- PDF SECURITY -->
+  <div class="pdf-category">
+    <div class="pdf-category-title">PDF Security</div>
+    <div class="pdf-tools-list">
+      <a href="/pdf-tools/unlock-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-green">🔓</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Unlock PDF</div><div class="pdf-tool-desc">Remove password protection</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/protect-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-green">🔒</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Protect PDF</div><div class="pdf-tool-desc">Add password to your PDF</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/pdf-tools/sign-pdf.html" class="pdf-tool-item">
+        <div class="pdf-tool-icon ic-green">✍️</div>
+        <div class="pdf-tool-info"><div class="pdf-tool-name">Sign PDF</div><div class="pdf-tool-desc">Draw and add your signature</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
 
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="index.html">Home</a> >
-<span>PDF Tools</span>
-</div>
-
-<h1>PDF Tools</h1>
-
-<div class="card">
-
-<h2>PDF Tools Coming Soon</h2>
-
-<p>
-SmartToolsHub will soon offer useful PDF tools to help you manage PDF documents easily.
-</p>
-
-<ul>
-<li>Merge PDF</li>
-<li>Split PDF</li>
-<li>Compress PDF</li>
-</ul>
-
-<p>
-These tools will allow you to manage PDF files directly in your browser without installing software.
-</p>
-
-</div>
-
-</div>
-
-<footer>
-<p>© 2026 SmartToolsHub</p>
-</footer>
-
+</div></div>
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/sticky.js"></script>
 </body>
 </html>

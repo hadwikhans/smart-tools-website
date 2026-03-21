@@ -1,97 +1,47 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Word Counter | SmartToolsHub</title>
-
-<meta name="description" content="Count words quickly using the free Word Counter tool on SmartToolsHub.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/text-tools/word-counter.html">
-
+<title>📝 Word Counter | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 
+
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="../index.html">Home</a>
-
-<div class="dropdown">
-<a href="../calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="../calculators/age-calculator.html">Age Calculator</a>
-<a href="../calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="../calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="../calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-</div>
-
-<div class="dropdown">
-<a href="../text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="../text-tools/password-generator.html">Password Generator</a>
-<a href="../text-tools/qr-generator.html">QR Code Generator</a>
-<a href="../text-tools/word-counter.html">Word Counter</a>
-<a href="../text-tools/text-repeater.html">Text Repeater</a>
-</div>
-</div>
-
-<a href="../image-tools.html">Image Tools</a>
-<a href="../pdf-tools.html">PDF Tools</a>
-<a href="../seo-tools.html">SEO Tools</a>
-<a href="../all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="../index.html">Home</a> >
-<a href="../text-tools.html">Text Tools</a> >
-<span>Word Counter</span>
-</div>
-    
-<h1>Word Counter</h1>
-
-<div class="card">
-
-<textarea id="wordText" placeholder="Enter text"></textarea>
-
-<button onclick="countWords()">Count</button> <button onclick="clearWord()">Clear</button>
-
-<p id="wordResult"></p>
-
-</div>
-
-<section class="card">
-
-<h2>About Word Counter</h2>
-
-<p>
-The word counter helps you quickly count the number of words in any text.
-</p>
-
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>📝 Word Counter</h1>
+    <p>Count words and characters in your text</p>
+  </div>
 </section>
-
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <a href="/text-tools.html">Text Tools</a> <span style="color:#c0cad8;">›</span> <span>Word Counter</span></div>
+  </div>
 </div>
-
+<div class="container">
+<div class="page-content">
+<div class="card">
+<h2>Word Counter</h2>
+<label>Paste or type your text below</label>
+<textarea id="wordText" placeholder="Enter your text here..." style="height:140px;"></textarea>
+<button onclick="countWords()">Count</button>
+<button class="secondary" onclick="clearWord()">Clear</button>
+<div id="wordResult" style="display:none;margin-top:12px;"></div>
+</div>
+<div class="card">
+<h2>About Word Counter</h2>
+<p>Count words, characters, characters without spaces, and paragraphs in any text. Useful for essays, articles and social media posts.</p>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
 <script src="../js/script.js"></script>
-
+<script src="../js/sticky.js"></script>
 </body>
 </html>

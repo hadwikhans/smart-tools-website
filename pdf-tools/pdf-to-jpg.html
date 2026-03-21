@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF to JPG | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/pdf-to-jpg.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🖼️ PDF to JPG</h1><p>Convert PDF pages to JPG images instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>PDF to JPG</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Upload PDF</label>
+  <input type="file" id="pdfToJpgFile" accept=".pdf">
+  <label style="margin-top:6px;">Image Quality</label>
+  <select id="pdfJpgQuality">
+    <option value="2">High (2x scale)</option>
+    <option value="1.5">Medium (1.5x scale)</option>
+    <option value="1">Standard (1x scale)</option>
+  </select>
+  <label>Pages to convert</label>
+  <select id="pdfJpgPages">
+    <option value="all">All pages</option>
+    <option value="first">First page only</option>
+    <option value="range">Custom range</option>
+  </select>
+  <div id="pdfJpgRangeBox" style="display:none;margin-top:8px;">
+    <div style="display:flex;gap:12px;">
+      <div style="flex:1;"><label>From page</label><input type="number" id="pdfJpgFrom" value="1" min="1"></div>
+      <div style="flex:1;"><label>To page</label><input type="number" id="pdfJpgTo" value="3" min="1"></div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button onclick="convertPdfToJpg()">Convert to JPG</button>
+    <button class="secondary" onclick="clearPdfJpg()">Clear</button>
+  </div>
+  <div id="pdfJpgStatus" style="margin-top:10px;font-size:13px;color:#5a4fcf;"></div>
+  <div id="pdfJpgPreviews" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;"></div>
+</div>
+<div class="card">
+  <h2>About PDF to JPG</h2>
+  <p>Convert every page of your PDF into a high-quality JPG image. Each page is rendered and made available for download individually. Uses Mozilla PDF.js — runs entirely in your browser.</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+document.getElementById('pdfJpgPages').addEventListener('change', function(){
+  document.getElementById('pdfJpgRangeBox').style.display = this.value==='range' ? 'block':'none';
+});
+
+async function convertPdfToJpg(){
+  var file = document.getElementById('pdfToJpgFile').files[0];
+  var status = document.getElementById('pdfJpgStatus');
+  var previews = document.getElementById('pdfJpgPreviews');
+  previews.innerHTML = '';
+  if(!file){ status.innerHTML='<span style="color:#e53e3e;">Please upload a PDF.</span>'; return; }
+
+  var scale   = parseFloat(document.getElementById('pdfJpgQuality').value);
+  var pagesOpt= document.getElementById('pdfJpgPages').value;
+  status.textContent = 'Loading PDF...';
+
+  try{
+    var ab  = await file.arrayBuffer();
+    var pdf = await pdfjsLib.getDocument({data: ab}).promise;
+    var total = pdf.numPages;
+
+    var from=1, to=total;
+    if(pagesOpt==='first'){ to=1; }
+    else if(pagesOpt==='range'){
+      from = parseInt(document.getElementById('pdfJpgFrom').value)||1;
+      to   = parseInt(document.getElementById('pdfJpgTo').value)||total;
+      to   = Math.min(to, total);
+    }
+
+    for(var i=from; i<=to; i++){
+      status.textContent = 'Converting page '+i+' of '+to+'...';
+      var page    = await pdf.getPage(i);
+      var vp      = page.getViewport({scale: scale});
+      var canvas  = document.createElement('canvas');
+      canvas.width = vp.width; canvas.height = vp.height;
+      var ctx = canvas.getContext('2d');
+      await page.render({canvasContext: ctx, viewport: vp}).promise;
+
+      var jpgUrl = canvas.toDataURL('image/jpeg', 0.92);
+      var pageNum = i;
+
+      // Thumbnail + download button
+      var wrap = document.createElement('div');
+      wrap.style.cssText='text-align:center;';
+      var thumb = document.createElement('img');
+      thumb.src = jpgUrl;
+      thumb.style.cssText='max-width:160px;border-radius:8px;border:1px solid #e8eaf2;display:block;margin-bottom:6px;';
+      var dl = document.createElement('a');
+      dl.href=jpgUrl; dl.download='page-'+pageNum+'.jpg';
+      dl.textContent='⬇ Page '+pageNum;
+      dl.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;';
+      wrap.appendChild(thumb); wrap.appendChild(dl);
+      previews.appendChild(wrap);
+    }
+
+    // Download all as zip if multiple pages
+    if((to-from+1) > 1){
+      status.innerHTML = (to-from+1)+' pages converted. Click each image to download.';
+    } else {
+      status.textContent = 'Done! Click the button to download.';
+    }
+  }catch(e){ status.innerHTML='<span style="color:#e53e3e;">Error: '+e.message+'</span>'; }
+}
+
+function clearPdfJpg(){
+  document.getElementById('pdfToJpgFile').value='';
+  document.getElementById('pdfJpgStatus').textContent='';
+  document.getElementById('pdfJpgPreviews').innerHTML='';
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

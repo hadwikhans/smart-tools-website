@@ -1,74 +1,42 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Calculators | SmartToolsHub</title>
-
-<link rel="stylesheet" href="css/style.css">
-
+<title>Split PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/split-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
 </head>
-
 <body>
-
-<!-- HEADER -->
-<header>
-<h1>SmartToolsHub</h1>
-<p>Free Online Tools for Images, PDF, SEO and Calculators</p>
-</header>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-
-<div class="nav-left">
-<a href="index.html">Home</a>
-<a href="calculators.html">Calculators</a>
-<a href="image-tools.html">Image Tools</a>
-<a href="pdf-tools.html">PDF Tools</a>
-<a href="seo-tools.html">SEO Tools</a>
-<a href="text-tools.html">Text Tools</a>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>✂️ Split PDF</h1><p>Extract specific pages from a PDF file</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Split PDF</span></div></div>
 </div>
-
-<div class="nav-right">
-<input type="text" placeholder="Search tools...">
-</div>
-
-</nav>
-
-<!-- PAGE CONTENT -->
-<div class="container">
-
-<h2>🧮 Calculators</h2>
-
-<div class="grid">
-
+<div class="container"><div class="page-content">
 <div class="card">
-<h3>📅 Age Calculator</h3>
-<p>Calculate your exact age from date of birth.</p>
+<input type="file" id="splitFile" accept=".pdf">
+<label>From Page</label>
+<input type="number" id="fromPage" placeholder="e.g. 1" min="1" style="width:120px;display:inline-block;">
+<label style="display:inline-block;margin-left:12px;">To Page</label>
+<input type="number" id="toPage" placeholder="e.g. 3" min="1" style="width:120px;display:inline-block;">
+<div style="display:flex;gap:8px;margin-top:8px;">
+<button onclick="splitPDF()">Split PDF</button>
+<button class="secondary" onclick="clearSplit()">Clear</button>
 </div>
-
-<div class="card">
-<h3>⚖️ BMI Calculator</h3>
-<p>Calculate Body Mass Index.</p>
+<div id="splitResult" style="margin-top:12px;font-size:13px;color:#5a4fcf;"></div>
 </div>
-
-<div class="card">
-<h3>📊 Percentage Calculator</h3>
-<p>Calculate percentages easily.</p>
-</div>
-
-<div class="card">
-<h3>💰 Loan EMI Calculator</h3>
-<p>Calculate EMI for loans.</p>
-</div>
-
-</div>
-
-</div>
-
-<script src="js/script.js"></script>
-
-</body>
-</html>
+<div class="card"><h2>About PDF Split</h2><p>Extract a range of pages from any PDF file. Processing happens entirely in your browser.</p></div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script>
+async function splitPDF(){var i=document.getElementById('splitFile');var f=parseInt(document.getElementById('fromPage').value)-1;var t=parseInt(document.getElementById('toPage').value)-1;var r=document.getElementById('splitResult');if(!i.files||!i.files[0]){r.textContent='Upload a PDF.';return;}if(isNaN(f)||isNaN(t)||f>t||f<0){r.textContent='Enter a valid page range.';return;}r.textContent='Processing...';try{var ab=await i.files[0].arrayBuffer();var src=await PDFLib.PDFDocument.load(ab);var n=await PDFLib.PDFDocument.create();var idx=[];for(var x=f;x<=Math.min(t,src.getPageCount()-1);x++)idx.push(x);var pg=await n.copyPages(src,idx);pg.forEach(function(p){n.addPage(p);});var b=await n.save();var blob=new Blob([b],{type:'application/pdf'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='split.pdf';a.textContent='⬇ Download Split PDF';r.textContent='';r.appendChild(a);}catch(e){r.textContent='Error: '+e.message;}}
+function clearSplit(){document.getElementById('splitFile').value='';document.getElementById('fromPage').value='';document.getElementById('toPage').value='';document.getElementById('splitResult').textContent='';}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

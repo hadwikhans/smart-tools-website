@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protect PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/protect-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔒 Protect PDF</h1><p>Password protect your PDF documents</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Protect PDF</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+<div class="card">
+<label>Upload PDF</label>
+<input type="file" id="protFile" accept=".pdf">
+<label style="margin-top:6px;">User Password <span style="color:#94a3b8;font-size:12px;">(required to open)</span></label>
+<input type="password" id="protUserPass" placeholder="Enter password to open PDF">
+<label>Owner Password <span style="color:#94a3b8;font-size:12px;">(optional — for permissions)</span></label>
+<input type="password" id="protOwnerPass" placeholder="Leave blank to use same password">
+<label style="margin-top:4px;">Permissions</label>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:400;">
+    <input type="checkbox" id="allowPrint" checked style="accent-color:#5a4fcf;width:15px;height:15px;"> Allow printing
+  </label>
+  <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:400;">
+    <input type="checkbox" id="allowCopy" style="accent-color:#5a4fcf;width:15px;height:15px;"> Allow copying text
+  </label>
+</div>
+<div style="display:flex;gap:8px;">
+  <button onclick="protectPDF()">Protect PDF</button>
+  <button class="secondary" onclick="clearProt()">Clear</button>
+</div>
+<div id="protResult" style="margin-top:12px;font-size:13px;"></div>
+</div>
+<div class="card"><h2>About Protect PDF</h2>
+<p>Add password protection to your PDF to prevent unauthorized access. You can also restrict printing and copying. The encryption is applied locally in your browser — your file is never uploaded.</p>
+<p style="margin-top:10px;color:#e53e3e;font-size:12.5px;">⚠️ Note: Password encryption requires PDF-lib which uses 128-bit RC4. For stronger encryption, use dedicated software.</p>
+</div>
+<script>
+async function protectPDF(){
+  var f=document.getElementById('protFile');
+  var r=document.getElementById('protResult');
+  var uPass=document.getElementById('protUserPass').value;
+  if(!f.files||!f.files[0]){r.textContent='Please upload a PDF.';r.style.color='#e53e3e';return;}
+  if(!uPass){r.textContent='Enter a user password.';r.style.color='#e53e3e';return;}
+  var oPass=document.getElementById('protOwnerPass').value||uPass;
+  var print=document.getElementById('allowPrint').checked;
+  var copy=document.getElementById('allowCopy').checked;
+  r.textContent='Encrypting PDF...';r.style.color='#5a4fcf';
+  try{
+    var ab=await f.files[0].arrayBuffer();
+    var pdf=await PDFLib.PDFDocument.load(ab);
+    var bytes=await pdf.save({
+      userPassword: uPass,
+      ownerPassword: oPass,
+      permissions:{
+        printing: print ? PDFLib.PrintingAllowed.LowResolution : PDFLib.PrintingAllowed.NotAllowed,
+        copying: copy,
+        modifying: false,
+        annotating: false,
+        fillingForms: false,
+        contentAccessibility: true,
+        documentAssembly: false,
+      }
+    });
+    var blob=new Blob([bytes],{type:'application/pdf'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='protected.pdf';a.textContent='⬇ Download Protected PDF';
+    a.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;margin-top:4px;text-decoration:none;';
+    r.textContent='';r.appendChild(a);
+  }catch(e){r.textContent='Error: '+e.message;r.style.color='#e53e3e';}
+}
+function clearProt(){
+  document.getElementById('protFile').value='';
+  document.getElementById('protUserPass').value='';
+  document.getElementById('protOwnerPass').value='';
+  document.getElementById('protResult').innerHTML='';
+}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

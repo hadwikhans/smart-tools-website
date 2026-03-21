@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign PDF | SmartToolsHub</title>
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/pdf-tools/sign-pdf.html">
+<link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>✍️ Sign PDF</h1><p>Draw and add your signature to a PDF</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/pdf-tools.html">PDF Tools</a> &gt; <span>Sign PDF</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+<div class="card">
+<label>Upload PDF</label>
+<input type="file" id="signFile" accept=".pdf">
+<label style="margin-top:8px;">Draw your signature below</label>
+<div style="position:relative;margin-bottom:10px;">
+  <canvas id="sigCanvas" width="560" height="160"
+    style="border:2px dashed #c0c8d8;border-radius:10px;background:#fff;cursor:crosshair;touch-action:none;display:block;width:100%;"></canvas>
+  <button onclick="clearSig()" style="position:absolute;top:8px;right:8px;background:#f0f2f8;color:#64748b;border:1px solid #e2e8f0;padding:5px 12px;font-size:12px;border-radius:7px;margin:0;">Clear Signature</button>
+</div>
+<label>Signature Position</label>
+<select id="sigPos">
+  <option value="bottom-right">Bottom Right</option>
+  <option value="bottom-left">Bottom Left</option>
+  <option value="bottom-center">Bottom Center</option>
+</select>
+<label>Apply to</label>
+<select id="sigPages">
+  <option value="last">Last page only</option>
+  <option value="all">All pages</option>
+  <option value="first">First page only</option>
+</select>
+<div style="display:flex;gap:8px;margin-top:8px;">
+  <button onclick="signPDF()">Add Signature to PDF</button>
+  <button class="secondary" onclick="clearSignTool()">Clear All</button>
+</div>
+<div id="signResult" style="margin-top:12px;font-size:13px;"></div>
+</div>
+<div class="card"><h2>About Sign PDF</h2>
+<p>Draw your signature using mouse or touch, then embed it into your PDF. The signature is added as an image on the selected pages. Processing is done entirely in your browser — nothing is uploaded.</p>
+</div>
+<script>
+var canvas=document.getElementById('sigCanvas');
+var ctx=canvas.getContext('2d');
+var drawing=false;
+ctx.strokeStyle='#1e2740';
+ctx.lineWidth=2.5;
+ctx.lineCap='round';
+ctx.lineJoin='round';
+
+function getPos(e){
+  var rect=canvas.getBoundingClientRect();
+  var scaleX=canvas.width/rect.width;
+  var scaleY=canvas.height/rect.height;
+  if(e.touches){return{x:(e.touches[0].clientX-rect.left)*scaleX,y:(e.touches[0].clientY-rect.top)*scaleY};}
+  return{x:(e.clientX-rect.left)*scaleX,y:(e.clientY-rect.top)*scaleY};
+}
+canvas.addEventListener('mousedown',function(e){drawing=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+canvas.addEventListener('mousemove',function(e){if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();});
+canvas.addEventListener('mouseup',function(){drawing=false;ctx.beginPath();});
+canvas.addEventListener('touchstart',function(e){e.preventDefault();drawing=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove',function(e){e.preventDefault();if(!drawing)return;var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
+canvas.addEventListener('touchend',function(){drawing=false;ctx.beginPath();});
+
+function clearSig(){ctx.clearRect(0,0,canvas.width,canvas.height);}
+
+function isCanvasBlank(){
+  var px=ctx.getImageData(0,0,canvas.width,canvas.height).data;
+  for(var i=3;i<px.length;i+=4){if(px[i]>0)return false;}
+  return true;
+}
+
+async function signPDF(){
+  var f=document.getElementById('signFile');
+  var r=document.getElementById('signResult');
+  if(!f.files||!f.files[0]){r.textContent='Please upload a PDF.';r.style.color='#e53e3e';return;}
+  if(isCanvasBlank()){r.textContent='Please draw your signature first.';r.style.color='#e53e3e';return;}
+  var pos=document.getElementById('sigPos').value;
+  var scope=document.getElementById('sigPages').value;
+  r.textContent='Embedding signature...';r.style.color='#5a4fcf';
+  try{
+    var sigDataUrl=canvas.toDataURL('image/png');
+    var sigRes=await fetch(sigDataUrl);
+    var sigBytes=await sigRes.arrayBuffer();
+    var ab=await f.files[0].arrayBuffer();
+    var pdf=await PDFLib.PDFDocument.load(ab);
+    var sigImg=await pdf.embedPng(new Uint8Array(sigBytes));
+    var sigW=200,sigH=70;
+    var margin=24;
+    var count=pdf.getPageCount();
+    for(var i=0;i<count;i++){
+      var apply=false;
+      if(scope==='all')apply=true;
+      else if(scope==='first'&&i===0)apply=true;
+      else if(scope==='last'&&i===count-1)apply=true;
+      if(apply){
+        var pg=pdf.getPage(i);
+        var w=pg.getWidth(),h=pg.getHeight();
+        var x,y;
+        if(pos==='bottom-right'){x=w-sigW-margin;y=margin;}
+        else if(pos==='bottom-left'){x=margin;y=margin;}
+        else{x=(w-sigW)/2;y=margin;}
+        pg.drawImage(sigImg,{x:x,y:y,width:sigW,height:sigH});
+      }
+    }
+    var bytes=await pdf.save();
+    var blob=new Blob([bytes],{type:'application/pdf'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;a.download='signed.pdf';a.textContent='⬇ Download Signed PDF';
+    a.style.cssText='display:inline-block;background:#5a4fcf;color:#fff;padding:9px 20px;border-radius:9px;font-size:13px;font-weight:600;margin-top:4px;text-decoration:none;';
+    r.textContent='';r.appendChild(a);
+  }catch(e){r.textContent='Error: '+e.message;r.style.color='#e53e3e';}
+}
+function clearSignTool(){
+  clearSig();
+  document.getElementById('signFile').value='';
+  document.getElementById('signResult').innerHTML='';
+}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

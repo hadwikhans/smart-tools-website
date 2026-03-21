@@ -1,176 +1,67 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>All Tools | SmartToolsHub</title>
-
-<meta name="description" content="Browse all free online tools available on SmartToolsHub including calculators and text tools.">
-
-<link rel="canonical" href="https://smarttoolshub.netlify.app/all-tools.html">
-
+<title>🗂️ All Tools | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 
+
 </head>
-
 <body>
-
-<header>
-<h1>SmartToolsHub</h1>
-</header>
-
-<nav class="navbar">
-
-<div class="nav-left">
-
-<a href="index.html">Home</a>
-
-<div class="dropdown">
-<a href="calculators.html">Calculators ▾</a>
-
-<div class="dropdown-content">
-<a href="calculators/age-calculator.html">Age Calculator</a>
-<a href="calculators/bmi-calculator.html">BMI Calculator</a>
-<a href="calculators/percentage-calculator.html">Percentage Calculator</a>
-<a href="calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
-</div>
-
-</div>
-
-<div class="dropdown">
-<a href="text-tools.html">Text Tools ▾</a>
-
-<div class="dropdown-content">
-<a href="text-tools/password-generator.html">Password Generator</a>
-<a href="text-tools/qr-generator.html">QR Code Generator</a>
-<a href="text-tools/word-counter.html">Word Counter</a>
-<a href="text-tools/text-repeater.html">Text Repeater</a>
-</div>
-
-</div>
-
-<a href="image-tools.html">Image Tools</a> <a href="pdf-tools.html">PDF Tools</a> <a href="seo-tools.html">SEO Tools</a> <a href="all-tools.html">All Tools</a>
-
-</div>
-
-</nav>
-
-<div class="container">
-
-<div class="breadcrumb">
-<a href="index.html">Home</a> >
-<span>All Tools</span>
-</div>
-
-<h1>All Tools</h1>
-
-<p>
-Browse all available tools on SmartToolsHub. Our tools help you perform calculations,
-generate passwords, create QR codes, and work with text quickly and easily.
-</p>
-
-<!-- Calculators -->
-
-<h2>Calculators</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Age Calculator</h3>
-<p>Calculate your age from date of birth instantly.</p>
-<button onclick="location.href='calculators/age-calculator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>BMI Calculator</h3>
-<p>Calculate your Body Mass Index using height and weight.</p>
-<button onclick="location.href='calculators/bmi-calculator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Percentage Calculator</h3>
-<p>Quickly calculate percentages for any number.</p>
-<button onclick="location.href='calculators/percentage-calculator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Loan EMI Calculator</h3>
-<p>Calculate your monthly loan EMI payments easily.</p>
-<button onclick="location.href='calculators/loan-emi-calculator.html'">
-Open Tool
-</button>
-</div>
-
-</div>
-
-<!-- Text Tools -->
-
-<h2>Text Tools</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Password Generator</h3>
-<p>Create secure random passwords instantly.</p>
-<button onclick="location.href='text-tools/password-generator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>QR Code Generator</h3>
-<p>Generate QR codes for URLs or text easily.</p>
-<button onclick="location.href='text-tools/qr-generator.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Word Counter</h3>
-<p>Count the number of words in your text quickly.</p>
-<button onclick="location.href='text-tools/word-counter.html'">
-Open Tool
-</button>
-</div>
-
-<div class="card">
-<h3>Text Repeater</h3>
-<p>Repeat text multiple times instantly.</p>
-<button onclick="location.href='text-tools/text-repeater.html'">
-Open Tool
-</button>
-</div>
-
-</div>
-
-<!-- Coming Soon Section -->
-
-<section class="card">
-
-<h2>More Tools Coming Soon</h2>
-
-<p>
-We are currently developing additional tools including image tools,
-PDF tools, and SEO tools. These will be available soon on SmartToolsHub.
-</p>
-
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>🗂️ All Tools</h1>
+    <p>Browse the complete collection of free online tools</p>
+  </div>
 </section>
-
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <span>All Tools</span></div>
+  </div>
 </div>
-
-<footer>
-<p>© 2026 SmartToolsHub</p>
-</footer>
-
+<div class="container">
+<div class="page-content">
+<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;">Calculators</div>
+<div class="tools-grid">
+<a href="/calculators/age-calculator.html" class="tool-card"><div class="tool-card-icon">📅</div><h3>Age Calculator</h3><p>Calculate your exact age instantly.</p></a>
+<a href="/calculators/bmi-calculator.html" class="tool-card"><div class="tool-card-icon">⚖️</div><h3>BMI Calculator</h3><p>Check your Body Mass Index.</p></a>
+<a href="/calculators/percentage-calculator.html" class="tool-card"><div class="tool-card-icon">📊</div><h3>Percentage Calculator</h3><p>Calculate percentages quickly.</p></a>
+<a href="/calculators/loan-emi-calculator.html" class="tool-card"><div class="tool-card-icon">💰</div><h3>Loan EMI Calculator</h3><p>Calculate monthly EMI payments.</p></a>
+</div></div>
+<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:1.2px;margin:20px 0 12px;">Text Tools</div>
+<div class="tools-grid">
+<a href="/text-tools/password-generator.html" class="tool-card"><div class="tool-card-icon">🔐</div><h3>Password Generator</h3><p>Generate secure passwords.</p></a>
+<a href="/text-tools/qr-generator.html" class="tool-card"><div class="tool-card-icon">📱</div><h3>QR Code Generator</h3><p>Create QR codes instantly.</p></a>
+<a href="/text-tools/word-counter.html" class="tool-card"><div class="tool-card-icon">📝</div><h3>Word Counter</h3><p>Count words and characters.</p></a>
+<a href="/text-tools/text-repeater.html" class="tool-card"><div class="tool-card-icon">🔁</div><h3>Text Repeater</h3><p>Repeat text multiple times.</p></a>
+</div></div>
+<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:1.2px;margin:20px 0 12px;">Image Tools</div>
+<div class="tools-grid">
+<a href="/image-tools.html" class="tool-card"><div class="tool-card-icon">🗜️</div><h3>Image Compressor</h3><p>Reduce image file size.</p></a>
+<a href="/image-tools.html" class="tool-card"><div class="tool-card-icon">📐</div><h3>Image Resizer</h3><p>Resize to custom dimensions.</p></a>
+<a href="/image-tools.html" class="tool-card"><div class="tool-card-icon">🔄</div><h3>JPG to PNG</h3><p>Convert JPG to PNG free.</p></a>
+<a href="/image-tools.html" class="tool-card"><div class="tool-card-icon">🔄</div><h3>PNG to JPG</h3><p>Convert PNG to JPG instantly.</p></a>
+</div></div>
+<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:1.2px;margin:20px 0 12px;">PDF Tools</div>
+<div class="tools-grid">
+<a href="/pdf-tools/merge-pdf.html" class="tool-card"><div class="tool-card-icon">📎</div><h3>Merge PDF</h3><p>Combine PDF files.</p></a>
+<a href="/pdf-tools/split-pdf.html" class="tool-card"><div class="tool-card-icon">✂️</div><h3>Split PDF</h3><p>Extract PDF pages.</p></a>
+<a href="/pdf-tools/compress-pdf.html" class="tool-card"><div class="tool-card-icon">🗜️</div><h3>Compress PDF</h3><p>Reduce PDF file size.</p></a>
+</div></div>
+<div><div style="font-size:13px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:1.2px;margin:20px 0 12px;">SEO Tools</div>
+<div class="tools-grid">
+<a href="/seo-tools/meta-tag-generator.html" class="tool-card"><div class="tool-card-icon">🏷️</div><h3>Meta Tag Generator</h3><p>Generate SEO meta tags.</p></a>
+<a href="/seo-tools/keyword-density.html" class="tool-card"><div class="tool-card-icon">🔍</div><h3>Keyword Density</h3><p>Analyze keyword frequency.</p></a>
+</div></div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/script.js"></script>
+<script src="js/sticky.js"></script>
 </body>
 </html>
