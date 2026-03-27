@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown Editor & Preview | SmartToolsHub</title>
+<meta name="description" content="Write Markdown and see the live HTML preview instantly">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/markdown-editor.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>📝 Markdown Editor</h1><p>Write Markdown and see the live HTML preview instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>Markdown Editor</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div>
+      <label>Markdown Input</label>
+      <textarea class="tool-textarea" id="mdInput" placeholder="# Hello World&#10;&#10;Write your **markdown** here...&#10;&#10;- Item 1&#10;- Item 2" oninput="renderMd()" style="min-height:400px;"></textarea>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="copy-btn" onclick="copyText('mdInput')">📋 Copy Markdown</button>
+        <button class="secondary" onclick="mdClear()">Clear</button>
+      </div>
+    </div>
+    <div>
+      <label>HTML Preview</label>
+      <div id="mdPreview" style="min-height:400px;background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:16px;font-size:14px;line-height:1.7;overflow-y:auto;color:#1e2740;"></div>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="copy-btn" onclick="copyHtml()">📋 Copy HTML</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <h2>Markdown Cheat Sheet</h2>
+  <p>
+    <strong># H1, ## H2, ### H3</strong> — Headings<br>
+    <strong>**bold**</strong> — Bold text<br>
+    <strong>*italic*</strong> — Italic text<br>
+    <strong>`code`</strong> — Inline code<br>
+    <strong>- item</strong> — Unordered list<br>
+    <strong>1. item</strong> — Ordered list<br>
+    <strong>[text](url)</strong> — Link<br>
+    <strong>![alt](url)</strong> — Image<br>
+    <strong>&gt; text</strong> — Blockquote<br>
+    <strong>---</strong> — Horizontal rule
+  </p>
+</div>
+<style>
+#mdPreview h1{font-size:24px;font-weight:800;margin:0 0 12px;color:#1e2740;}
+#mdPreview h2{font-size:20px;font-weight:700;margin:16px 0 8px;color:#1e2740;}
+#mdPreview h3{font-size:16px;font-weight:700;margin:14px 0 6px;color:#1e2740;}
+#mdPreview p{margin:0 0 10px;}
+#mdPreview ul,#mdPreview ol{padding-left:20px;margin:0 0 10px;}
+#mdPreview li{margin-bottom:4px;}
+#mdPreview code{background:#f0eeff;color:#5a4fcf;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:13px;}
+#mdPreview pre{background:#f0eeff;padding:12px;border-radius:8px;overflow-x:auto;}
+#mdPreview blockquote{border-left:3px solid #5a4fcf;margin:0 0 10px;padding:8px 12px;background:#f9f8ff;color:#5a4fcf;}
+#mdPreview a{color:#5a4fcf;}
+#mdPreview hr{border:none;border-top:1px solid #e8eaf2;margin:16px 0;}
+#mdPreview strong{font-weight:700;}
+#mdPreview em{font-style:italic;}
+#mdPreview img{max-width:100%;border-radius:8px;}
+</style>
+<script>
+function renderMd(){
+  var input=document.getElementById("mdInput").value;
+  var html=input
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/^#{6}\s(.+)$/gm,"<h6>$1</h6>")
+    .replace(/^#{5}\s(.+)$/gm,"<h5>$1</h5>")
+    .replace(/^#{4}\s(.+)$/gm,"<h4>$1</h4>")
+    .replace(/^#{3}\s(.+)$/gm,"<h3>$1</h3>")
+    .replace(/^#{2}\s(.+)$/gm,"<h2>$1</h2>")
+    .replace(/^#{1}\s(.+)$/gm,"<h1>$1</h1>")
+    .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g,"<em>$1</em>")
+    .replace(/`(.+?)`/g,"<code>$1</code>")
+    .replace(/^&gt;\s(.+)$/gm,"<blockquote>$1</blockquote>")
+    .replace(/^---$/gm,"<hr>")
+    .replace(/^\-\s(.+)$/gm,"<li>$1</li>")
+    .replace(/^(\d+)\.\s(.+)$/gm,"<li>$2</li>")
+    .replace(/(<li>.*<\/li>)/s,function(m){return "<ul>"+m+"</ul>";})
+    // Parse image syntax before link syntax so ![alt](url) doesn't become a link.
+    .replace(/!\[(.+?)\]\((.+?)\)/g,'<img src="$2" alt="$1">')
+    .replace(/\[(.+?)\]\((.+?)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/
+
+/g,"</p><p>")
+    .replace(/
+/g,"<br>");
+  document.getElementById("mdPreview").innerHTML="<p>"+html+"</p>";
+}
+function copyHtml(){
+  var t=document.getElementById("mdPreview").innerHTML;
+  navigator.clipboard.writeText(t).then(function(){alert("HTML copied!");});
+}
+function mdClear(){
+  document.getElementById("mdInput").value="";
+  document.getElementById("mdPreview").innerHTML="";
+}
+function copyText(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied!");});
+}
+// Render on load if there is content
+renderMd();
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>
+

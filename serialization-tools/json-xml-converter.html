@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Format Converter | SmartToolsHub</title>
+<meta name="description" content="Convert and validate EPCIS payloads between JSON, JSON-LD and XML.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools/json-xml-converter.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.converter-shell {
+    background: #fff;
+    border: 1px solid #e6ebf3;
+    border-radius: 14px;
+    padding: 16px;
+}
+.converter-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+    align-items: end;
+    margin-bottom: 14px;
+}
+.control-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+.control-group select {
+    width: 100%;
+    border: 1px solid #dbe2ee;
+    border-radius: 10px;
+    background: #f8faff;
+    color: #1e2740;
+    padding: 10px 11px;
+    font-size: 13px;
+    outline: none;
+}
+.control-group select:focus { border-color: #5a4fcf; background: #fff; }
+.action-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+.ghost-btn {
+    background: #f1f4fb;
+    color: #314261;
+    border: 1px solid #d9e2f1;
+    padding: 8px 12px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    cursor: pointer;
+}
+.ghost-btn:hover { background: #e9eef8; }
+.io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.editor-wrap label {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+.editor {
+    width: 100%;
+    min-height: 290px;
+    resize: vertical;
+    box-sizing: border-box;
+    border: 1px solid #dbe2ee;
+    border-radius: 10px;
+    background: #fbfcff;
+    color: #1e2740;
+    padding: 12px;
+    font-family: "Courier New", monospace;
+    font-size: 12.5px;
+    line-height: 1.55;
+    outline: none;
+}
+.editor:focus { border-color: #5a4fcf; background: #fff; }
+.editor[readonly] { background: #f4f3ff; border-color: #e0ddff; color: #3d3580; }
+.status {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: 12.5px;
+    border: 1px solid transparent;
+    display: none;
+    white-space: pre-line;
+}
+.status.ok {
+    display: block;
+    color: #065f46;
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+.status.err {
+    display: block;
+    color: #991b1b;
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+@media (max-width: 900px) {
+    .converter-controls { grid-template-columns: 1fr; }
+    .io-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>Format Converter</h1><p>Convert JSON, JSON-LD and XML formats instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/serialization-tools.html">Serialization Tools</a> &gt; <span>Format Converter</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="converter-shell">
+  <div class="converter-controls">
+    <div class="control-group">
+      <label for="fromFormat">From format</label>
+      <select id="fromFormat" onchange="syncTargetFormats()">
+        <option value="json">JSON</option>
+        <option value="jsonld">JSON-LD</option>
+        <option value="xml">XML</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="toFormat">To format</label>
+      <select id="toFormat"></select>
+    </div>
+    <button class="ghost-btn" onclick="swapFormats()">Swap formats</button>
+  </div>
+
+  <div class="action-row">
+    <button onclick="convertNow()">Convert</button>
+    <button class="secondary" onclick="validateEpcisInput()">Validate EPCIS</button>
+    <button class="secondary" onclick="loadSample()">Load sample</button>
+    <button class="secondary" onclick="clearAllFields()">Clear</button>
+    <button class="ghost-btn" onclick="copyOutput()">Copy output</button>
+    <button class="ghost-btn" onclick="downloadOutput()">Download output</button>
+  </div>
+
+  <div class="io-grid">
+    <div class="editor-wrap">
+      <label for="inputData">Input</label>
+      <textarea id="inputData" class="editor" placeholder="Paste input data..."></textarea>
+    </div>
+    <div class="editor-wrap">
+      <label for="outputData">Output</label>
+      <textarea id="outputData" class="editor" readonly placeholder="Converted output appears here"></textarea>
+    </div>
+  </div>
+
+  <div id="statusBox" class="status"></div>
+</div>
+
+<div class="card">
+  <h2>Supported conversions</h2>
+  <p>JSON to XML, XML to JSON, JSON-LD to XML, XML to JSON-LD, and JSON to JSON-LD conversions run fully in-browser.</p>
+  <p>EPCIS validator checks for common required fields like document type, schema version, event list, event time and action.</p>
+</div>
+
+<script>
+var SAMPLE_JSON = JSON.stringify({
+  "id": "https://id.example.org/document1",
+  "type": "EPCISDocument",
+  "schemaVersion": "2.0",
+  "creationDate": "2019-11-01T14:00:00.000+01:00",
+  "epcisBody": {
+    "eventList": [
+      {
+        "type": "ObjectEvent",
+        "eventTime": "2019-11-01T14:00:00.000+01:00",
+        "action": "OBSERVE",
+        "bizStep": "shipping"
+      }
+    ]
+  }
+}, null, 2);
+
+var SAMPLE_JSONLD = JSON.stringify({
+  "@context": [
+    "https://gs1.github.io/EPCIS/epcis-context.jsonld",
+    { "example": "http://ns.example.com/epcis/" }
+  ],
+  "type": "EPCISDocument",
+  "schemaVersion": "2.0",
+  "epcisBody": {
+    "eventList": [
+      {
+        "type": "AssociationEvent",
+        "eventTime": "2019-11-01T14:00:00.000+01:00",
+        "action": "ADD",
+        "parentID": "urn:epc:id:grai:4012345.55555.987"
+      }
+    ]
+  }
+}, null, 2);
+
+var SAMPLE_XML = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<EPCISDocument schemaVersion="2.0" creationDate="2019-11-01T14:00:00.000+01:00">',
+  '  <epcisBody>',
+  '    <eventList>',
+  '      <ObjectEvent>',
+  '        <eventTime>2019-11-01T14:00:00.000+01:00</eventTime>',
+  '        <action>OBSERVE</action>',
+  '        <bizStep>shipping</bizStep>',
+  '      </ObjectEvent>',
+  '    </eventList>',
+  '  </epcisBody>',
+  '</EPCISDocument>'
+].join('\n');
+
+function getEl(id) { return document.getElementById(id); }
+
+function setStatus(message, kind) {
+  var box = getEl("statusBox");
+  box.className = "status " + (kind === "error" ? "err" : "ok");
+  box.textContent = message;
+}
+
+function clearStatus() {
+  var box = getEl("statusBox");
+  box.className = "status";
+  box.textContent = "";
+}
+
+function syncTargetFormats() {
+  var from = getEl("fromFormat").value;
+  var toSelect = getEl("toFormat");
+  var formats = ["json", "jsonld", "xml"].filter(function(fmt) { return fmt !== from; });
+  var old = toSelect.value;
+  toSelect.innerHTML = formats.map(function(fmt) {
+    return '<option value="' + fmt + '">' + prettyFormat(fmt) + '</option>';
+  }).join("");
+  if (formats.indexOf(old) >= 0) toSelect.value = old;
+}
+
+function prettyFormat(fmt) {
+  if (fmt === "json") return "JSON";
+  if (fmt === "jsonld") return "JSON-LD";
+  return "XML";
+}
+
+function swapFormats() {
+  var fromEl = getEl("fromFormat");
+  var toEl = getEl("toFormat");
+  var from = fromEl.value;
+  var to = toEl.value;
+  fromEl.value = to;
+  syncTargetFormats();
+  getEl("toFormat").value = from;
+  var input = getEl("inputData").value;
+  var output = getEl("outputData").value;
+  getEl("inputData").value = output;
+  getEl("outputData").value = input;
+  clearStatus();
+}
+
+function clearAllFields() {
+  getEl("inputData").value = "";
+  getEl("outputData").value = "";
+  clearStatus();
+}
+
+function loadSample() {
+  var from = getEl("fromFormat").value;
+  if (from === "json") getEl("inputData").value = SAMPLE_JSON;
+  if (from === "jsonld") getEl("inputData").value = SAMPLE_JSONLD;
+  if (from === "xml") getEl("inputData").value = SAMPLE_XML;
+  clearStatus();
+}
+
+function copyOutput() {
+  var text = getEl("outputData").value;
+  if (!text) {
+    setStatus("No output to copy.", "error");
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    setStatus("Output copied to clipboard.", "ok");
+  }).catch(function() {
+    setStatus("Clipboard copy failed.", "error");
+  });
+}
+
+function downloadOutput() {
+  var out = getEl("outputData").value;
+  if (!out) {
+    setStatus("No output to download.", "error");
+    return;
+  }
+  var to = getEl("toFormat").value;
+  var ext = to === "xml" ? "xml" : "json";
+  var blob = new Blob([out], { type: to === "xml" ? "application/xml" : "application/json" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "converted-data." + ext;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setStatus("Output downloaded.", "ok");
+}
+
+function convertNow() {
+  var input = getEl("inputData").value.trim();
+  if (!input) {
+    setStatus("Please enter input data.", "error");
+    return;
+  }
+
+  var from = getEl("fromFormat").value;
+  var to = getEl("toFormat").value;
+
+  try {
+    var result;
+    if ((from === "json" || from === "jsonld") && to === "xml") {
+      result = convertJsonTextToXml(input);
+    } else if (from === "xml" && (to === "json" || to === "jsonld")) {
+      result = convertXmlTextToJson(input);
+    } else if ((from === "json" || from === "jsonld") && (to === "json" || to === "jsonld")) {
+      result = convertJsonToJsonLike(input, to === "jsonld");
+    } else {
+      throw new Error("Unsupported conversion path.");
+    }
+
+    getEl("outputData").value = result;
+    setStatus("Conversion completed successfully.", "ok");
+  } catch (err) {
+    setStatus("Conversion failed: " + err.message, "error");
+  }
+}
+
+function validateEpcisInput() {
+  var input = getEl("inputData").value.trim();
+  if (!input) {
+    setStatus("Paste EPCIS input first.", "error");
+    return;
+  }
+
+  var from = getEl("fromFormat").value;
+  try {
+    var report;
+    if (from === "xml") {
+      report = validateEpcisXml(input);
+    } else {
+      report = validateEpcisJson(input, from === "jsonld");
+    }
+
+    var lines = [];
+    if (report.errors.length === 0) {
+      lines.push("EPCIS validation passed.");
+    } else {
+      lines.push("EPCIS validation failed with " + report.errors.length + " error(s).");
+    }
+    if (report.warnings.length > 0) {
+      lines.push("Warnings: " + report.warnings.length);
+    }
+    if (report.errors.length > 0) {
+      lines = lines.concat(report.errors.map(function(e) { return "- ERROR: " + e; }));
+    }
+    if (report.warnings.length > 0) {
+      lines = lines.concat(report.warnings.map(function(w) { return "- WARN: " + w; }));
+    }
+
+    setStatus(lines.join("\n"), report.errors.length ? "error" : "ok");
+  } catch (err) {
+    setStatus("Validation failed: " + err.message, "error");
+  }
+}
+
+function validateEpcisJson(text, isJsonLd) {
+  var raw = JSON.parse(text);
+  var payload = unwrapDocumentNode(raw);
+  var errors = [];
+  var warnings = [];
+
+  var type = payload && payload.type;
+  if (type && String(type) !== "EPCISDocument") warnings.push("type is not EPCISDocument.");
+  if (!type) warnings.push("Missing top-level type.");
+
+  if (!payload || typeof payload !== "object") {
+    errors.push("Input is not an object payload.");
+    return { errors: errors, warnings: warnings };
+  }
+
+  if (!payload.schemaVersion) errors.push("Missing schemaVersion.");
+  if (!payload.epcisBody) errors.push("Missing epcisBody.");
+  if (!payload.creationDate) warnings.push("Missing creationDate.");
+
+  if (isJsonLd) {
+    if (!Object.prototype.hasOwnProperty.call(payload, "@context")) {
+      errors.push("Missing @context for JSON-LD.");
+    }
+  }
+
+  var events = extractEventsFromJsonPayload(payload);
+  if (events.length === 0) {
+    errors.push("No EPCIS events found in epcisBody.eventList.");
+  }
+
+  events.forEach(function(evt, idx) {
+    if (!evt.eventTime) errors.push("Event #" + (idx + 1) + " missing eventTime.");
+    if (!evt.action) warnings.push("Event #" + (idx + 1) + " missing action.");
+    if (!evt.type) warnings.push("Event #" + (idx + 1) + " missing event type.");
+  });
+
+  return { errors: errors, warnings: warnings };
+}
+
+function unwrapDocumentNode(raw) {
+  if (!raw || typeof raw !== "object") return raw;
+  if (raw.type || raw.epcisBody) return raw;
+  if (raw.EPCISDocument) return raw.EPCISDocument;
+  if (raw.root && raw.root.EPCISDocument) return raw.root.EPCISDocument;
+  var keys = Object.keys(raw);
+  if (keys.length === 1 && typeof raw[keys[0]] === "object") return raw[keys[0]];
+  return raw;
+}
+
+function extractEventsFromJsonPayload(payload) {
+  var list = payload && payload.epcisBody && payload.epcisBody.eventList;
+  if (!list) return [];
+  if (Array.isArray(list)) return list;
+
+  var out = [];
+  if (typeof list === "object") {
+    Object.keys(list).forEach(function(key) {
+      var val = list[key];
+      if (/Event$/.test(key)) {
+        if (Array.isArray(val)) {
+          val.forEach(function(item) {
+            if (item && typeof item === "object") item.type = item.type || key;
+            out.push(item || {});
+          });
+        } else if (val && typeof val === "object") {
+          val.type = val.type || key;
+          out.push(val);
+        }
+      }
+    });
+  }
+
+  if (out.length === 0 && typeof list === "object") {
+    out.push(list);
+  }
+  return out;
+}
+
+function validateEpcisXml(text) {
+  var doc = new DOMParser().parseFromString(text, "application/xml");
+  var parserError = doc.getElementsByTagName("parsererror")[0];
+  if (parserError) throw new Error("Invalid XML input.");
+
+  var errors = [];
+  var warnings = [];
+  var root = doc.documentElement;
+
+  if (!/EPCISDocument$/i.test(root.nodeName)) {
+    errors.push("Root node should be EPCISDocument.");
+  }
+
+  if (!root.getAttribute("schemaVersion") && doc.getElementsByTagName("schemaVersion").length === 0) {
+    errors.push("Missing schemaVersion.");
+  }
+  if (!root.getAttribute("creationDate") && doc.getElementsByTagName("creationDate").length === 0) {
+    warnings.push("Missing creationDate.");
+  }
+
+  var eventTypes = ["ObjectEvent", "AggregationEvent", "TransactionEvent", "TransformationEvent", "AssociationEvent"];
+  var eventNodes = [];
+  eventTypes.forEach(function(name) {
+    var nodes = doc.getElementsByTagName(name);
+    for (var i = 0; i < nodes.length; i++) eventNodes.push(nodes[i]);
+  });
+
+  if (eventNodes.length === 0) {
+    errors.push("No EPCIS event nodes found.");
+  }
+
+  eventNodes.forEach(function(node, idx) {
+    if (node.getElementsByTagName("eventTime").length === 0) {
+      errors.push("Event #" + (idx + 1) + " missing eventTime.");
+    }
+    if (node.getElementsByTagName("action").length === 0 && node.nodeName !== "TransformationEvent") {
+      warnings.push("Event #" + (idx + 1) + " missing action.");
+    }
+  });
+
+  return { errors: errors, warnings: warnings };
+}
+
+function convertJsonToJsonLike(text, enforceJsonLd) {
+  var obj = JSON.parse(text);
+  if (enforceJsonLd && typeof obj === "object" && obj !== null && !Object.prototype.hasOwnProperty.call(obj, "@context")) {
+    obj["@context"] = ["https://gs1.github.io/EPCIS/epcis-context.jsonld"];
+  }
+  return JSON.stringify(obj, null, 2);
+}
+
+function escapeXml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function toValidXmlTag(name) {
+  var safe = String(name).replace(/[^A-Za-z0-9_.-]/g, "_");
+  if (!/^[A-Za-z_]/.test(safe)) safe = "n_" + safe;
+  return safe;
+}
+
+function jsonValueToXml(value, tagName) {
+  var node = toValidXmlTag(tagName);
+  if (value === null || value === undefined) {
+    return "<" + node + "></" + node + ">";
+  }
+  if (Array.isArray(value)) {
+    return value.map(function(item) { return jsonValueToXml(item, node); }).join("\n");
+  }
+  if (typeof value === "object") {
+    var children = Object.keys(value).map(function(key) {
+      return jsonValueToXml(value[key], key);
+    }).join("\n");
+    return "<" + node + ">\n" + indentXml(children) + "\n</" + node + ">";
+  }
+  return "<" + node + ">" + escapeXml(value) + "</" + node + ">";
+}
+
+function indentXml(str) {
+  return str.split("\n").map(function(line) {
+    return line ? "  " + line : line;
+  }).join("\n");
+}
+
+function convertJsonTextToXml(text) {
+  var parsed = JSON.parse(text);
+  var body = jsonValueToXml(parsed, "root");
+  return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + body;
+}
+
+function parsePrimitive(text) {
+  if (text === "") return "";
+  if (text === "true") return true;
+  if (text === "false") return false;
+  if (!isNaN(text) && /^-?\d+(\.\d+)?$/.test(text)) return Number(text);
+  return text;
+}
+
+function xmlNodeToJson(node) {
+  var children = Array.prototype.slice.call(node.children || []);
+  if (children.length === 0) {
+    return parsePrimitive((node.textContent || "").trim());
+  }
+
+  var out = {};
+  children.forEach(function(child) {
+    var key = child.nodeName;
+    var val = xmlNodeToJson(child);
+    if (Object.prototype.hasOwnProperty.call(out, key)) {
+      if (!Array.isArray(out[key])) out[key] = [out[key]];
+      out[key].push(val);
+    } else {
+      out[key] = val;
+    }
+  });
+  return out;
+}
+
+function convertXmlTextToJson(text) {
+  var doc = new DOMParser().parseFromString(text, "application/xml");
+  var parserError = doc.getElementsByTagName("parsererror")[0];
+  if (parserError) throw new Error("Invalid XML input.");
+  var root = doc.documentElement;
+  var data = {};
+  data[root.nodeName] = xmlNodeToJson(root);
+  return JSON.stringify(data, null, 2);
+}
+
+syncTargetFormats();
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

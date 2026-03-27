@@ -1,4 +1,4 @@
-/* ================================================
+﻿/* ================================================
    SMARTTOOLSHUB — GLOBAL STYLESHEET
    Font: Inter (same as ilovepdf reference)
    Theme: White / Light
@@ -10,7 +10,7 @@
 
 body {
     font-family: 'Inter', Arial, sans-serif;
-    background: #f7f8fc;
+    background: #ffffff;
     color: #1e2433;
     line-height: 1.6;
     font-size: 15px;
@@ -29,9 +29,8 @@ a { text-decoration: none; color: inherit; }
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: #fff;
-    box-shadow: 0 1px 0 #e8eaf0;
     background: #1e2740;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .navbar {
@@ -54,6 +53,8 @@ a { text-decoration: none; color: inherit; }
     text-decoration: none;
     white-space: nowrap;
 }
+.nav-logo .brand-main { color: #ffffff; }
+.nav-logo .brand-accent { color: #a89ff5; }
 .logo-icon {
     width: 33px; height: 33px;
     background: #5a4fcf;
@@ -96,7 +97,10 @@ a { text-decoration: none; color: inherit; }
     outline: none;
     transition: 0.2s;
 }
-.nav-right input:focus { border-color: #5a4fcf; width: 230px; }
+.nav-right input:focus {
+    border-color: #5a4fcf;
+    width: 230px;
+}
 .nav-right input::placeholder { color: #a0aec0; }
 
 /* Dropdown */
@@ -155,7 +159,7 @@ a { text-decoration: none; color: inherit; }
     position: sticky;
     top: 108px;
     z-index: 998;
-    background: #f7f8fc;
+    background: #ffffff;
     border-bottom: 1px solid #e8eaf0;
     padding: 9px 0;
 }
@@ -305,7 +309,7 @@ a[id*="download"]:hover, a[id*="Download"]:hover { background: #4840b8; }
     border-radius: 12px;
     padding: 32px 20px;
     text-align: center;
-    background: #f7f8fc;
+    background: #ffffff;
     cursor: pointer;
     transition: 0.2s;
 }
@@ -385,3 +389,110 @@ header { display: none !important; }
 .logo-text span {
     color: #a89ff5;
 }
+
+/* Side menu navigation */
+.hamburger-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 19px;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+.hamburger-btn:hover {
+    background: rgba(255,255,255,0.18);
+}
+.side-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.45);
+    z-index: 1498;
+    display: none;
+}
+.side-overlay.open { display: block; }
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -360px;
+    width: 340px;
+    height: 100vh;
+    overflow-y: auto;
+    background: #fff;
+    border-right: 1px solid #e8eaf0;
+    z-index: 1499;
+    transition: left 0.2s ease;
+    padding: 14px 12px 20px;
+}
+.side-menu.open { left: 0; }
+.side-menu-head {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e2433;
+    padding: 6px 8px 14px;
+    border-bottom: 1px solid #eceff6;
+    margin-bottom: 10px;
+}
+.side-link,
+.side-group-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e2433;
+    text-decoration: none;
+    border: 1px solid transparent;
+    background: transparent;
+    margin-bottom: 6px;
+}
+.side-nav-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+.side-nav-icon {
+    width: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #5a4fcf;
+    flex-shrink: 0;
+}
+.side-link:hover,
+.side-group-toggle:hover {
+    background: #f4f6fb;
+    border-color: #e5eaf4;
+}
+.side-nav-caret {
+    color: #64748b;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.side-submenu {
+    display: none;
+    margin: 0 0 8px 8px;
+    border-left: 2px solid #edf1f7;
+    padding-left: 10px;
+}
+.side-group.open .side-submenu { display: block; }
+.side-submenu a {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #334155;
+}
+.side-submenu a:hover {
+    background: #f4f6fb;
+    color: #1e2433;
+}
+
+

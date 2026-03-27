@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPCIS Converter | SmartToolsHub</title>
+<meta name="description" content="Convert EPCIS documents between XML and JSON-LD with format preferences.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools/epcis-converter.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.ep-wrap { max-width: 1320px; margin: 0 auto; }
+.ep-panel {
+  background: #fff;
+  border: 1.5px solid #e8eaf0;
+  border-radius: 12px;
+  color: #1e2433;
+}
+.ep-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.ep-col { padding: 16px; border-right: 1px solid #e8eaf0; }
+.ep-col:last-child { border-right: 0; }
+.ep-title { font-size: 33px; font-weight: 700; margin-bottom: 10px; color: #1e2433; }
+.ep-subtitle { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: #1e2433; }
+
+.ep-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+  gap: 12px;
+}
+.ep-drop {
+  border: 2px dashed #c7d0e0;
+  border-radius: 8px;
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 18px;
+  cursor: pointer;
+  color: #8ea0b9;
+  background: #f7f8fc;
+}
+.ep-drop strong { color: #5a4fcf; display: block; margin-top: 8px; text-decoration: underline; font-weight: 500; }
+.ep-side-controls { display: flex; flex-direction: column; gap: 10px; }
+.ep-select, .ep-url-btn, .ep-textarea {
+  width: 100%;
+  border: 1.5px solid #e2e8f0;
+  background: #f7f8fc;
+  color: #1e2433;
+  border-radius: 9px;
+  font-size: 13.5px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+.ep-select:focus, .ep-url-btn:focus, .ep-textarea:focus { outline: none; border-color: #5a4fcf; background: #fff; }
+.ep-url-btn {
+  background: #f0effe;
+  color: #5a4fcf;
+  cursor: pointer;
+  text-align: center;
+  border: 1.5px solid #ddd9f9;
+}
+.ep-pref-row { display: grid; grid-template-columns: 200px 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+.ep-pref-row label { font-size: 14px; color: #4a5568; font-weight: 600; }
+.ep-actions {
+  border-top: 1px solid #e8eaf0;
+  padding: 10px 14px 16px;
+  text-align: center;
+}
+.ep-actions button { margin: 0 6px; min-width: 110px; }
+.ep-actions .secondary {
+  background: #f0effe;
+  border: 1.5px solid #ddd9f9;
+  color: #5a4fcf;
+}
+.ep-bottom {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.ep-editor-card {
+  background: #fff;
+  border: 1.5px solid #e8eaf0;
+  border-radius: 12px;
+  padding: 10px;
+}
+.ep-editor-meta {
+  color: #1e2433;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.ep-editor-meta span { color: #718096; }
+.ep-textarea {
+  min-height: 260px;
+  resize: vertical;
+  font-family: "Courier New", monospace;
+  background: #f7f8fc;
+  border-color: #e2e8f0;
+}
+.ep-note { margin-top: 12px; font-size: 13px; color: #718096; }
+@media (max-width: 980px) {
+  .ep-top { grid-template-columns: 1fr; }
+  .ep-col { border-right: 0; border-bottom: 1px solid #e8eaf0; }
+  .ep-col:last-child { border-bottom: 0; }
+  .ep-bottom { grid-template-columns: 1fr; }
+  .ep-input-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>EPCIS Converter</h1><p>Convert EPCIS documents with target format preferences</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/serialization-tools.html">Serialization Tools</a> &gt; <span>EPCIS Converter</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="ep-wrap">
+  <div class="ep-panel">
+    <div class="ep-top">
+      <div class="ep-col">
+        <div class="ep-subtitle">Input Document</div>
+        <div class="ep-input-grid">
+          <div class="ep-drop" id="dropArea">
+            <div>
+              Drag and drop<br>OR
+              <strong>Upload your EPCIS document</strong>
+            </div>
+          </div>
+          <div class="ep-side-controls">
+            <select id="exampleSelect" class="ep-select">
+              <option value="">Load Example</option>
+              <option value="xml12">XML 1.2.0</option>
+              <option value="xml20">XML 2.0.0</option>
+              <option value="jsonld20">JSON-LD 2.0.0</option>
+            </select>
+            <button class="ep-url-btn" onclick="importFromUrl()">Import URL</button>
+          </div>
+        </div>
+        <input type="file" id="fileInput" accept=".xml,.json,.jsonld,.txt" style="display:none;">
+      </div>
+      <div class="ep-col">
+        <div class="ep-subtitle">Target Document Preferences</div>
+        <div class="ep-pref-row">
+          <label for="targetFormat">Target Format</label>
+          <select id="targetFormat" class="ep-select">
+            <option value="">Select Format</option>
+            <option value="xml12">XML 1.2.0</option>
+            <option value="xml20">XML 2.0.0</option>
+            <option value="jsonld20">JSON-LD 2.0.0</option>
+          </select>
+        </div>
+        <div class="ep-pref-row">
+          <label for="epcFormat">GS1 EPC Format</label>
+          <select id="epcFormat" class="ep-select">
+            <option value="never">Never Translates</option>
+            <option value="none">No Preference</option>
+            <option value="gs1dl">Always GS1 Digital Link</option>
+            <option value="urn">Always EPC URN</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="ep-actions">
+      <button id="convertBtn" onclick="convertEpcis()">Convert</button>
+      <button class="secondary" onclick="resetEpcis()">Reset</button>
+    </div>
+  </div>
+
+  <div class="ep-bottom">
+    <div class="ep-editor-card">
+      <div class="ep-editor-meta">Version: <span id="inVersion">--</span> &nbsp;&nbsp; Format: <span id="inFormat">--</span></div>
+      <textarea id="inputDoc" class="ep-textarea" placeholder="Input document..."></textarea>
+    </div>
+    <div class="ep-editor-card">
+      <div class="ep-editor-meta">Version: <span id="outVersion">--</span> &nbsp;&nbsp; Format: <span id="outFormat">--</span></div>
+      <textarea id="outputDoc" class="ep-textarea" placeholder="Converted output..." readonly></textarea>
+    </div>
+  </div>
+  <div class="ep-note" id="epMsg"></div>
+</div>
+
+<script>
+var EXAMPLES = {
+  xml12: '<?xml version="1.0" encoding="UTF-8"?>\\n<EPCISDocument schemaVersion="1.2" creationDate="2020-01-01T10:00:00Z">\\n  <epcisBody>\\n    <eventList>\\n      <ObjectEvent>\\n        <eventTime>2020-01-01T10:00:00Z</eventTime>\\n        <action>OBSERVE</action>\\n      </ObjectEvent>\\n    </eventList>\\n  </epcisBody>\\n</EPCISDocument>',
+  xml20: '<?xml version="1.0" encoding="UTF-8"?>\\n<EPCISDocument schemaVersion="2.0" creationDate="2024-01-01T10:00:00Z">\\n  <epcisBody>\\n    <eventList>\\n      <ObjectEvent>\\n        <eventTime>2024-01-01T10:00:00Z</eventTime>\\n        <action>OBSERVE</action>\\n      </ObjectEvent>\\n    </eventList>\\n  </epcisBody>\\n</EPCISDocument>',
+  jsonld20: '{\\n  "@context": ["https://ref.gs1.org/standards/epcis/epcis-context.jsonld"],\\n  "type": "EPCISDocument",\\n  "schemaVersion": "2.0",\\n  "creationDate": "2024-01-01T10:00:00Z",\\n  "epcisBody": {\\n    "eventList": [\\n      {\\n        "type": "ObjectEvent",\\n        "eventTime": "2024-01-01T10:00:00Z",\\n        "action": "OBSERVE"\\n      }\\n    ]\\n  }\\n}'
+};
+
+var drop = document.getElementById("dropArea");
+var fileInput = document.getElementById("fileInput");
+var exampleSelect = document.getElementById("exampleSelect");
+
+drop.addEventListener("click", function() { fileInput.click(); });
+fileInput.addEventListener("change", function(e) {
+  var file = e.target.files && e.target.files[0];
+  if (!file) return;
+  var r = new FileReader();
+  r.onload = function() {
+    document.getElementById("inputDoc").value = String(r.result || "");
+    detectInputMeta();
+    setMsg("File loaded.");
+  };
+  r.readAsText(file);
+});
+
+drop.addEventListener("dragover", function(e) { e.preventDefault(); });
+drop.addEventListener("drop", function(e) {
+  e.preventDefault();
+  var file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (!file) return;
+  var r = new FileReader();
+  r.onload = function() {
+    document.getElementById("inputDoc").value = String(r.result || "");
+    detectInputMeta();
+    setMsg("File loaded by drag and drop.");
+  };
+  r.readAsText(file);
+});
+
+exampleSelect.addEventListener("change", function() {
+  if (!this.value) return;
+  document.getElementById("inputDoc").value = EXAMPLES[this.value];
+  detectInputMeta();
+  setMsg("Example loaded.");
+});
+
+document.getElementById("inputDoc").addEventListener("input", detectInputMeta);
+
+function setMsg(text) {
+  document.getElementById("epMsg").textContent = text || "";
+}
+
+function importFromUrl() {
+  var url = prompt("Enter EPCIS document URL:");
+  if (!url) return;
+  fetch(url).then(function(r) {
+    if (!r.ok) throw new Error("Failed to fetch URL.");
+    return r.text();
+  }).then(function(txt) {
+    document.getElementById("inputDoc").value = txt;
+    detectInputMeta();
+    setMsg("Imported from URL.");
+  }).catch(function() {
+    setMsg("Could not import URL. Check CORS or URL accessibility.");
+  });
+}
+
+function detectInputMeta() {
+  var input = document.getElementById("inputDoc").value.trim();
+  if (!input) {
+    document.getElementById("inVersion").textContent = "--";
+    document.getElementById("inFormat").textContent = "--";
+    return;
+  }
+  if (input.charAt(0) === "<") {
+    document.getElementById("inFormat").textContent = "XML";
+    document.getElementById("inVersion").textContent = input.indexOf('schemaVersion="1.2"') >= 0 ? "1.2.0" : (input.indexOf('schemaVersion="2.0"') >= 0 ? "2.0.0" : "--");
+  } else {
+    document.getElementById("inFormat").textContent = "JSON-LD";
+    document.getElementById("inVersion").textContent = input.indexOf('"schemaVersion": "2.0"') >= 0 ? "2.0.0" : "--";
+  }
+}
+
+function convertEpcis() {
+  var input = document.getElementById("inputDoc").value.trim();
+  var target = document.getElementById("targetFormat").value;
+  var epcFmt = document.getElementById("epcFormat").value;
+  if (!input) { setMsg("Please provide input document."); return; }
+  if (!target) { setMsg("Please select a target format."); return; }
+
+  try {
+    var out = "";
+    if (target === "jsonld20") {
+      if (input.charAt(0) === "<") {
+        out = xmlToJsonLike(input);
+      } else {
+        var obj = JSON.parse(input);
+        if (!obj["@context"]) obj["@context"] = ["https://ref.gs1.org/standards/epcis/epcis-context.jsonld"];
+        obj.schemaVersion = "2.0";
+        out = JSON.stringify(obj, null, 2);
+      }
+      document.getElementById("outFormat").textContent = "JSON-LD";
+      document.getElementById("outVersion").textContent = "2.0.0";
+    } else {
+      if (input.charAt(0) === "<") {
+        out = normalizeXmlVersion(input, target === "xml12" ? "1.2" : "2.0");
+      } else {
+        out = jsonToXmlText(input, target === "xml12" ? "1.2" : "2.0");
+      }
+      document.getElementById("outFormat").textContent = "XML";
+      document.getElementById("outVersion").textContent = target === "xml12" ? "1.2.0" : "2.0.0";
+    }
+
+    if (epcFmt === "gs1dl") out += "\\n<!-- EPC Preference: Always GS1 Digital Link -->";
+    if (epcFmt === "urn") out += "\\n<!-- EPC Preference: Always EPC URN -->";
+    if (epcFmt === "none") out += "\\n<!-- EPC Preference: No Preference -->";
+
+    document.getElementById("outputDoc").value = out;
+    setMsg("Conversion complete.");
+  } catch (e) {
+    setMsg("Conversion failed: " + e.message);
+  }
+}
+
+function resetEpcis() {
+  document.getElementById("inputDoc").value = "";
+  document.getElementById("outputDoc").value = "";
+  document.getElementById("targetFormat").value = "";
+  document.getElementById("epcFormat").value = "never";
+  document.getElementById("exampleSelect").value = "";
+  document.getElementById("inVersion").textContent = "--";
+  document.getElementById("inFormat").textContent = "--";
+  document.getElementById("outVersion").textContent = "--";
+  document.getElementById("outFormat").textContent = "--";
+  setMsg("");
+}
+
+function normalizeXmlVersion(xml, v) {
+  if (xml.indexOf('schemaVersion="') >= 0) {
+    return xml.replace(/schemaVersion="[^"]*"/, 'schemaVersion="' + v + '"');
+  }
+  return xml.replace("<EPCISDocument", '<EPCISDocument schemaVersion="' + v + '"');
+}
+
+function xmlToJsonLike(xmlText) {
+  var doc = new DOMParser().parseFromString(xmlText, "application/xml");
+  if (doc.getElementsByTagName("parsererror")[0]) throw new Error("Invalid XML.");
+  var out = {
+    "@context": ["https://ref.gs1.org/standards/epcis/epcis-context.jsonld"],
+    type: "EPCISDocument",
+    schemaVersion: "2.0"
+  };
+  var root = doc.documentElement;
+  var cDate = root.getAttribute("creationDate");
+  if (cDate) out.creationDate = cDate;
+  return JSON.stringify(out, null, 2);
+}
+
+function jsonToXmlText(text, version) {
+  var obj = JSON.parse(text);
+  var date = obj.creationDate || new Date().toISOString();
+  return '<?xml version="1.0" encoding="UTF-8"?>\\n<EPCISDocument schemaVersion="' + version + '" creationDate="' + date + '">\\n  <epcisBody/>\\n</EPCISDocument>';
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

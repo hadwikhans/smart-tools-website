@@ -1,4 +1,4 @@
-var cropper = null;
+﻿var cropper = null;
 
 window.addEventListener("DOMContentLoaded", function () {
 
@@ -196,3 +196,4 @@ function resetTool() {
     var oc = document.getElementById("outputCard");   if (oc) oc.style.display = "none";
     var os = document.getElementById("originalSize"); if (os) os.textContent = "";
 }
+

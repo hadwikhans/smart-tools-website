@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Address Generator | SmartToolsHub</title>
+<meta name="description" content="Generate sample addresses by country with street, district, village, house number, township, city, state, postal code and country.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/text-tools/address-generator.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.input-shell {
+    background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+}
+.field-block {
+    margin-bottom: 18px;
+}
+.field-block label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1e2433;
+    margin-bottom: 8px;
+}
+.tool-select {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1.5px solid #d7dfeb;
+    border-radius: 10px;
+    background: #fff;
+    color: #1e2433;
+    font-size: 14px;
+    font-family: inherit;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.03);
+}
+.output-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.copy-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background: #5a4fcf;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+}
+.copy-icon-btn:hover {
+    background: #4c42bf;
+}
+.copy-icon-btn svg {
+    width: 18px;
+    height: 18px;
+}
+.address-card {
+    border: 1px solid #dbe4ee;
+    border-radius: 14px;
+    background: #f7f8ff;
+    padding: 16px;
+    box-shadow: none;
+}
+.address-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.address-card-head h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1e2433;
+}
+.output-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px 18px;
+}
+.output-field {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+}
+.output-field label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #334155;
+    text-transform: none;
+    letter-spacing: 0;
+}
+.output-value {
+    min-height: 24px;
+    padding: 0;
+    background: transparent;
+    color: #1e2433;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+.output-empty {
+    padding: 28px 22px;
+    border: 1px dashed #cad6ea;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fbfdff 0%, #f6f9ff 100%);
+    color: #64748b;
+    font-size: 13px;
+    text-align: center;
+}
+.helper-text {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 10px;
+    line-height: 1.55;
+}
+.btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+@media (max-width: 820px) {
+    .output-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>Address Generator</h1><p>Generate sample addresses by country in a clean labeled format</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/text-tools.html">Text Tools</a> &gt; <span>Address Generator</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card input-shell">
+  <h2>Address Generator</h2>
+  <div class="field-block">
+    <label for="country">Select Country*</label>
+    <select id="country" class="tool-select">
+      <option value="india">India</option>
+      <option value="us">United States</option>
+      <option value="uk">United Kingdom</option>
+      <option value="canada">Canada</option>
+      <option value="australia">Australia</option>
+    </select>
+  </div>
+
+  <div class="field-block">
+    <label for="addressCount">How many addresses do you want?*</label>
+    <select id="addressCount" class="tool-select">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+    </select>
+  </div>
+
+  <div class="btn-row">
+    <button onclick="generateAddresses()">Generate</button>
+    <button class="secondary" onclick="clearOutput()">Clear</button>
+  </div>
+  <div class="helper-text">Each result includes Street 1, Street 2, District, Village, House Number, Township, City, State, Postal Code and Country.</div>
+</div>
+
+<div class="card">
+  <h2>Output</h2>
+  <div id="addressOutput" class="output-wrap"></div>
+</div>
+
+<div class="card">
+  <h2>About This Tool</h2>
+  <p>This tool generates sample address blocks in the labeled style shown in your example. It is useful for demos, testing forms, QA, mock data and UI previews.</p>
+</div>
+
+<script>
+var addressData = {
+  india: {
+    country: "India",
+    states: ["Karnataka", "Maharashtra", "Tamil Nadu", "Telangana", "Delhi"],
+    cities: ["Bengaluru", "Mumbai", "Chennai", "Hyderabad", "New Delhi"],
+    districts: ["Bangalore Urban", "Mumbai Suburban", "Chennai District", "Medchal", "Central Delhi"],
+    villages: ["Rampur", "Kodihalli", "Sholinganallur", "Kondapur", "Najafgarh"],
+    townships: ["Whitefield Township", "Powai Township", "OMR Township", "Gachibowli Township", "Dwarka Township"],
+    streets1: ["MG Road", "Brigade Road", "Church Street", "Outer Ring Road", "Lavelle Road"],
+    streets2: ["Near Central Market", "Near Central Mall", "Tech Park Phase 2", "Block C", "Business Bay"],
+    houseNumbers: ["12B", "44", "27A", "503", "1"],
+    postalCodes: ["560066", "400076", "600119", "500081", "110001"]
+  },
+  us: {
+    country: "United States",
+    states: ["California", "Texas", "New York", "Florida", "Illinois"],
+    cities: ["San Francisco", "Austin", "New York", "Miami", "Chicago"],
+    districts: ["Downtown", "Travis County", "Manhattan", "Miami-Dade", "Cook County"],
+    villages: ["Sunset", "Cedar Valley", "Hudson Yard", "Palm Grove", "Oak Park"],
+    townships: ["Bayview Township", "Riverside Township", "Midtown Township", "Lakeside Township", "North Park Township"],
+    streets1: ["Market Street", "Congress Avenue", "Madison Avenue", "Ocean Drive", "Wacker Drive"],
+    streets2: ["Suite 210", "Building A", "Floor 8", "Unit 5", "Tower West"],
+    houseNumbers: ["125", "78", "440", "19", "900"],
+    postalCodes: ["94103", "78701", "10001", "33101", "60601"]
+  },
+  uk: {
+    country: "United Kingdom",
+    states: ["England", "England", "England", "Scotland", "Wales"],
+    cities: ["London", "Manchester", "Birmingham", "Edinburgh", "Cardiff"],
+    districts: ["Greater London", "Greater Manchester", "West Midlands", "City of Edinburgh", "South Glamorgan"],
+    villages: ["Greenwich", "Didsbury", "Solihull", "Leith", "Llandaff"],
+    townships: ["Canary Wharf", "Media City", "Jewellery Quarter", "New Town", "Cardiff Bay"],
+    streets1: ["Baker Street", "Deansgate", "Broad Street", "Princes Street", "Queen Street"],
+    streets2: ["Flat 3", "Block B", "Suite 6", "Level 4", "Apartment 12"],
+    houseNumbers: ["221B", "16", "78", "5A", "44"],
+    postalCodes: ["NW1 6XE", "M3 4LQ", "B1 2HF", "EH2 2ER", "CF10 1EP"]
+  },
+  canada: {
+    country: "Canada",
+    states: ["Ontario", "British Columbia", "Alberta", "Quebec", "Nova Scotia"],
+    cities: ["Toronto", "Vancouver", "Calgary", "Montreal", "Halifax"],
+    districts: ["Old Toronto", "Metro Vancouver", "Calgary Region", "Montreal Urban", "Halifax Regional"],
+    villages: ["North York", "Kitsilano", "Bowness", "Verdun", "Bedford"],
+    townships: ["Harbourfront Township", "False Creek Township", "Beltline Township", "Old Port Township", "Waterfront Township"],
+    streets1: ["King Street", "Granville Street", "Stephen Avenue", "Saint Catherine Street", "Barrington Street"],
+    streets2: ["Unit 8", "Suite 305", "Tower North", "Floor 2", "Block D"],
+    houseNumbers: ["90", "17", "402", "55", "1200"],
+    postalCodes: ["M5H 2N2", "V6C 1T2", "T2P 1J9", "H3B 1B1", "B3J 1Y6"]
+  },
+  australia: {
+    country: "Australia",
+    states: ["New South Wales", "Victoria", "Queensland", "Western Australia", "South Australia"],
+    cities: ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"],
+    districts: ["Sydney CBD", "Melbourne CBD", "Brisbane Central", "Perth Metro", "Adelaide Central"],
+    villages: ["Parramatta", "St Kilda", "Fortitude Valley", "Fremantle", "Glenelg"],
+    townships: ["Darling Harbour Township", "Docklands Township", "South Bank Township", "Elizabeth Quay Township", "Riverbank Township"],
+    streets1: ["George Street", "Collins Street", "Queen Street", "St Georges Terrace", "North Terrace"],
+    streets2: ["Level 3", "Suite 14", "Building C", "Unit 7", "Tower East"],
+    houseNumbers: ["8", "101", "66", "420", "15B"],
+    postalCodes: ["2000", "3000", "4000", "6000", "5000"]
+  }
+};
+
+function pick(list, index) {
+  return list[index % list.length];
+}
+
+function buildAddressObject(data, index, sequence) {
+  return {
+    title: "Address " + sequence,
+    street1: pick(data.streets1, index),
+    street2: pick(data.streets2, index),
+    district: pick(data.districts, index),
+    village: pick(data.villages, index),
+    houseNumber: pick(data.houseNumbers, index),
+    township: pick(data.townships, index),
+    city: pick(data.cities, index),
+    state: pick(data.states, index),
+    postalCode: pick(data.postalCodes, index),
+    country: data.country
+  };
+}
+
+function generateAddresses() {
+  var country = document.getElementById("country").value;
+  var count = parseInt(document.getElementById("addressCount").value, 10);
+  var data = addressData[country];
+  var container = document.getElementById("addressOutput");
+  var start = Math.floor(Math.random() * data.cities.length);
+  var i;
+  var cards = [];
+
+  for (i = 0; i < count; i++) {
+    cards.push(renderAddressCard(buildAddressObject(data, start + i, i + 1), i));
+  }
+
+  container.innerHTML = cards.join("");
+}
+
+function renderAddressCard(address, index) {
+  return '' +
+    '<div class="address-card">' +
+      '<div class="address-card-head">' +
+        '<div><h3>' + escapeHtml(address.title) + '</h3></div>' +
+        '<button class="copy-icon-btn" onclick="copyAddress(' + index + ')" aria-label="Copy address" title="Copy address">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+            '<rect x="9" y="9" width="11" height="11" rx="2"></rect>' +
+            '<path d="M5 15V6a2 2 0 0 1 2-2h9"></path>' +
+          '</svg>' +
+        '</button>' +
+      '</div>' +
+      '<div class="output-grid">' +
+        fieldMarkup("Street 1", address.street1, "") +
+        fieldMarkup("Street 2", address.street2, "") +
+        fieldMarkup("District", address.district, "") +
+        fieldMarkup("Village", address.village, "") +
+        fieldMarkup("House Number", address.houseNumber, "") +
+        fieldMarkup("Township", address.township, "") +
+        fieldMarkup("City", address.city, "") +
+        fieldMarkup("State/Region (ISO Code)", address.state, "") +
+        fieldMarkup("Postal Code", address.postalCode, "") +
+        fieldMarkup("Country", address.country, "") +
+      '</div>' +
+    '</div>';
+}
+
+function fieldMarkup(label, value, extraClass) {
+  return '' +
+    '<div class="output-field ' + extraClass + '">' +
+      '<label>' + escapeHtml(label) + '</label>' +
+      '<div class="output-value">' + escapeHtml(value) + '</div>' +
+    '</div>';
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function copyAddress(index) {
+  var card = document.querySelectorAll(".address-card")[index];
+  if (!card) {
+    alert("Generate addresses first.");
+    return;
+  }
+
+  var lines = [];
+  card.querySelectorAll(".output-field").forEach(function(field) {
+    var label = field.querySelector("label").textContent;
+    var value = field.querySelector(".output-value").textContent;
+    lines.push(label + ": " + value);
+  });
+
+  navigator.clipboard.writeText(lines.join("\n")).then(function() {
+    alert("Output copied.");
+  });
+}
+
+function clearOutput() {
+  document.getElementById("addressOutput").innerHTML = '<div class="output-empty">Generated address cards will appear here.</div>';
+  document.getElementById("country").value = "india";
+  document.getElementById("addressCount").value = "1";
+}
+
+generateAddresses();
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

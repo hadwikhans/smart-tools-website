@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Minifier | SmartToolsHub</title>
+<meta name="description" content="Minify JavaScript code to reduce file size and improve performance">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/js-minifier.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>⚡ JavaScript Minifier</h1><p>Minify JavaScript code to reduce file size and improve performance</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>JS Minifier</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Input JavaScript</label>
+  <textarea class="tool-textarea" id="jsInput" placeholder="Paste your JavaScript code here..." oninput="updateJsCount()"></textarea>
+  <div class="char-count" id="jsCount">0 characters</div>
+  <div class="btn-row">
+    <button onclick="minifyJs()">🗜️ Minify JS</button>
+    <button class="secondary" onclick="jsClear()">Clear</button>
+  </div>
+  <div id="jsMsg"></div>
+  <label style="margin-top:12px;">Output</label>
+  <textarea class="tool-textarea output" id="jsOutput" placeholder="Minified JavaScript will appear here..." readonly></textarea>
+  <div class="btn-row">
+    <button class="copy-btn" onclick="copyText('jsOutput')">📋 Copy Output</button>
+  </div>
+</div>
+<div class="card">
+  <h2>About JavaScript Minifier</h2>
+  <p>JavaScript minification removes comments, whitespace and unnecessary characters without changing functionality. This reduces file size and improves page load speed.</p>
+  <p style="margin-top:8px;font-size:12.5px;color:#94a3b8;">Note: This is a basic minifier. For production use, tools like Terser or UglifyJS provide more advanced minification.</p>
+</div>
+<script>
+function updateJsCount(){
+  document.getElementById("jsCount").textContent=document.getElementById("jsInput").value.length+" characters";
+}
+function minifyJs(){
+  var input=document.getElementById("jsInput").value.trim();
+  var msg=document.getElementById("jsMsg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter JavaScript.";return;}
+  var minified=input
+    .replace(/\/\/[^
+]*/g,"")
+    .replace(/\/\*[\s\S]*?\*\//g,"")
+    .replace(/
+\s*
+/g,"
+")
+    .replace(/\s+/g," ")
+    .replace(/\s*([=+\-*\/&|<>!,;:{}()\[\]])\s*/g,"$1")
+    .replace(/;\s*/g,";")
+    .trim();
+  var savings=Math.round((1-minified.length/input.length)*100);
+  document.getElementById("jsOutput").value=minified;
+  msg.className="success-msg";msg.textContent="✅ Minified! Saved "+savings+"% ("+input.length+" → "+minified.length+" chars)";
+}
+function jsClear(){
+  document.getElementById("jsInput").value="";
+  document.getElementById("jsOutput").value="";
+  document.getElementById("jsMsg").textContent="";
+  updateJsCount();
+}
+function copyText(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied!");});
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -229,6 +229,60 @@
 
   </div>
 
+
+  <!-- POPULAR DEVELOPER TOOLS -->
+  <div class="sec-title">Popular Developer Tools</div>
+  <div class="hp-grid">
+
+    <!-- JSON Formatter -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">📋</div> JSON Formatter</div>
+      <textarea id="hp-json" placeholder="Paste JSON here..." style="width:100%;height:72px;background:#f8f9fc;border:1px solid #dde1ec;border-radius:8px;padding:8px 10px;font-size:12px;font-family:monospace;margin-bottom:8px;resize:none;box-sizing:border-box;color:#1e2740;outline:none;"></textarea>
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpFormatJson()">Format</button>
+        <button class="hp-btn sec" onclick="hpMinifyJson()">Minify</button>
+        <button class="hp-btn sec" onclick="document.getElementById('hp-json').value='';document.getElementById('hp-json-r').textContent='';">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-json-r" style="font-family:monospace;font-size:11.5px;word-break:break-all;max-height:60px;overflow:auto;"></div>
+    </div>
+
+    <!-- Base64 -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">🔐</div> Base64 Encoder/Decoder</div>
+      <input type="text" id="hp-b64" placeholder="Enter text or Base64 string">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpB64Encode()">Encode</button>
+        <button class="hp-btn sec" onclick="hpB64Decode()">Decode</button>
+        <button class="hp-btn sec" onclick="document.getElementById('hp-b64').value='';document.getElementById('hp-b64-r').textContent='';">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-b64-r" style="word-break:break-all;font-size:12px;font-family:monospace;"></div>
+    </div>
+
+    <!-- URL Encoder -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">🌐</div> URL Encoder/Decoder</div>
+      <input type="text" id="hp-url" placeholder="Enter URL or encoded string">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpUrlEncode()">Encode</button>
+        <button class="hp-btn sec" onclick="hpUrlDecode()">Decode</button>
+        <button class="hp-btn sec" onclick="document.getElementById('hp-url').value='';document.getElementById('hp-url-r').textContent='';">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-url-r" style="word-break:break-all;font-size:12px;font-family:monospace;"></div>
+    </div>
+
+    <!-- Hash Generator -->
+    <div class="hp-card">
+      <div class="hp-card-title"><div class="ico">🔑</div> Hash Generator</div>
+      <input type="text" id="hp-hash" placeholder="Enter text to hash">
+      <div class="hp-btn-row">
+        <button class="hp-btn" onclick="hpGenHash()">Generate</button>
+        <button class="hp-btn sec" onclick="document.getElementById('hp-hash').value='';document.getElementById('hp-hash-r').innerHTML='';">Clear</button>
+      </div>
+      <div class="hp-result" id="hp-hash-r" style="font-size:11px;font-family:monospace;word-break:break-all;line-height:1.8;"></div>
+    </div>
+
+  </div>
+
 </div><!-- end home-main -->
 
 <div id="footer"></div>
@@ -312,6 +366,77 @@ function searchTools(){
     var q=document.getElementById('toolSearch');
     if(q) console.log(q.value);
 }
+
+// ── Developer Tool Functions ──
+
+function hpFormatJson(){
+  var input=document.getElementById('hp-json').value.trim();
+  var r=document.getElementById('hp-json-r');
+  if(!input){r.textContent='Enter JSON.';r.classList.add('show');return;}
+  try{
+    var parsed=JSON.parse(input);
+    document.getElementById('hp-json').value=JSON.stringify(parsed,null,2);
+    r.textContent='✅ Formatted!';r.classList.add('show');
+  }catch(e){r.textContent='❌ Invalid JSON: '+e.message;r.classList.add('show');}
+}
+
+function hpMinifyJson(){
+  var input=document.getElementById('hp-json').value.trim();
+  var r=document.getElementById('hp-json-r');
+  if(!input){r.textContent='Enter JSON.';r.classList.add('show');return;}
+  try{
+    document.getElementById('hp-json').value=JSON.stringify(JSON.parse(input));
+    r.textContent='✅ Minified!';r.classList.add('show');
+  }catch(e){r.textContent='❌ Invalid JSON.';r.classList.add('show');}
+}
+
+function hpB64Encode(){
+  var input=document.getElementById('hp-b64').value;
+  var r=document.getElementById('hp-b64-r');
+  if(!input){r.textContent='Enter text.';r.classList.add('show');return;}
+  try{r.textContent=btoa(unescape(encodeURIComponent(input)));r.classList.add('show');}
+  catch(e){r.textContent='Error encoding.';r.classList.add('show');}
+}
+
+function hpB64Decode(){
+  var input=document.getElementById('hp-b64').value.trim();
+  var r=document.getElementById('hp-b64-r');
+  if(!input){r.textContent='Enter Base64.';r.classList.add('show');return;}
+  try{r.textContent=decodeURIComponent(escape(atob(input)));r.classList.add('show');}
+  catch(e){r.textContent='❌ Invalid Base64.';r.classList.add('show');}
+}
+
+function hpUrlEncode(){
+  var input=document.getElementById('hp-url').value;
+  var r=document.getElementById('hp-url-r');
+  if(!input){r.textContent='Enter text.';r.classList.add('show');return;}
+  r.textContent=encodeURIComponent(input);r.classList.add('show');
+}
+
+function hpUrlDecode(){
+  var input=document.getElementById('hp-url').value.trim();
+  var r=document.getElementById('hp-url-r');
+  if(!input){r.textContent='Enter encoded URL.';r.classList.add('show');return;}
+  try{r.textContent=decodeURIComponent(input);r.classList.add('show');}
+  catch(e){r.textContent='❌ Invalid encoded string.';r.classList.add('show');}
+}
+
+function hpGenHash(){
+  var input=document.getElementById('hp-hash').value;
+  var r=document.getElementById('hp-hash-r');
+  if(!input){r.innerHTML='Enter text.';r.classList.add('show');return;}
+  // Simple hash using SubtleCrypto
+  var encoder=new TextEncoder();
+  var data=encoder.encode(input);
+  crypto.subtle.digest('SHA-256',data).then(function(buf){
+    var arr=Array.from(new Uint8Array(buf));
+    var sha256=arr.map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+    r.innerHTML='<strong>SHA-256:</strong><br>'+sha256;
+    r.classList.add('show');
+  });
+}
+
 </script>
 </body>
 </html>
+

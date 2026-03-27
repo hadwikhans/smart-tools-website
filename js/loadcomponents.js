@@ -1,6 +1,7 @@
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
     loadComponent("navbar", "/components/navbar.html", initNavbar);
     loadComponent("footer", "/components/footer.html", null);
+    initEnterShortcut();
 });
 
 function loadComponent(elementId, filePath, callback) {
@@ -24,6 +25,46 @@ function loadComponent(elementId, filePath, callback) {
 function initNavbar() {
     initDropdowns();
     initSearch();
+    initSideMenu();
+
+}
+
+function initSideMenu() {
+    var toggle = document.getElementById("sideMenuToggle");
+    var menu = document.getElementById("sideMenu");
+    var overlay = document.getElementById("sideMenuOverlay");
+    if (!toggle || !menu || !overlay) return;
+
+    function openMenu() {
+        menu.classList.add("open");
+        overlay.classList.add("open");
+    }
+    function closeMenu() {
+        menu.classList.remove("open");
+        overlay.classList.remove("open");
+    }
+
+    toggle.addEventListener("click", function() {
+        if (menu.classList.contains("open")) closeMenu();
+        else openMenu();
+    });
+
+    overlay.addEventListener("click", closeMenu);
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") closeMenu();
+    });
+
+    menu.querySelectorAll(".side-group-toggle").forEach(function(btn) {
+        btn.addEventListener("click", function() {
+            var group = btn.closest(".side-group");
+            if (!group) return;
+            group.classList.toggle("open");
+        });
+    });
+
+    menu.querySelectorAll("a").forEach(function(link) {
+        link.addEventListener("click", closeMenu);
+    });
 }
 
 // ─── DROPDOWNS ───────────────────
@@ -95,12 +136,14 @@ var allTools = [
     { name: "Age Calculator",         url: "/calculators/age-calculator.html",        icon: "📅", cat: "Calculator" },
     { name: "BMI Calculator",         url: "/calculators/bmi-calculator.html",        icon: "⚖️", cat: "Calculator" },
     { name: "Percentage Calculator",  url: "/calculators/percentage-calculator.html", icon: "📊", cat: "Calculator" },
-    { name: "Loan EMI Calculator",    url: "/calculators/loan-emi-calculator.html",   icon: "💰", cat: "Calculator" },
+    { name: "Loan EMI Calculator",    url: "/calculators/loan-emi-calculator.html",   icon: "Loan", cat: "Calculator" },
+        { name: "GS1 Check Digit Calculator", url: "/calculators/gs1-check-digit-calculator.html", icon: "GS1", cat: "Calculator" },
     // Text Tools
     { name: "Password Generator",     url: "/text-tools/password-generator.html",    icon: "🔐", cat: "Text Tool" },
     { name: "QR Code Generator",      url: "/text-tools/qr-generator.html",          icon: "📱", cat: "Text Tool" },
     { name: "Word Counter",           url: "/text-tools/word-counter.html",          icon: "📝", cat: "Text Tool" },
     { name: "Text Repeater",          url: "/text-tools/text-repeater.html",         icon: "🔁", cat: "Text Tool" },
+    { name: "Address Generator",      url: "/text-tools/address-generator.html",     icon: "Address", cat: "Text Tool" },
     // Image Tools
     { name: "Image Compressor",       url: "/image-tools.html",        icon: "🗜️", cat: "Image Tool" },
     { name: "Image Resizer",          url: "/image-tools.html",          icon: "📐", cat: "Image Tool" },
@@ -122,6 +165,25 @@ var allTools = [
     { name: "Unlock PDF",             url: "/pdf-tools/unlock-pdf.html",             icon: "🔓", cat: "PDF Tool" },
     { name: "Protect PDF",            url: "/pdf-tools/protect-pdf.html",            icon: "🔒", cat: "PDF Tool" },
     { name: "Sign PDF",               url: "/pdf-tools/sign-pdf.html",               icon: "✍️", cat: "PDF Tool" },
+    // Developer Tools
+    { name: "JSON Formatter",          url: "/developer-tools/json-formatter.html",  icon: "📋", cat: "Developer Tool" },
+    { name: "Base64 Encoder Decoder",  url: "/developer-tools/base64.html",          icon: "🔐", cat: "Developer Tool" },
+    { name: "URL Encoder Decoder",     url: "/developer-tools/url-encoder.html",     icon: "🌐", cat: "Developer Tool" },
+    { name: "HTML Entity Encoder",     url: "/developer-tools/html-entity.html",     icon: "🏷️", cat: "Developer Tool" },
+    { name: "HTML Formatter",          url: "/developer-tools/html-formatter.html",  icon: "🌐", cat: "Developer Tool" },
+    { name: "CSS Minifier",            url: "/developer-tools/css-minifier.html",    icon: "🎨", cat: "Developer Tool" },
+    { name: "JavaScript Minifier",     url: "/developer-tools/js-minifier.html",     icon: "⚡", cat: "Developer Tool" },
+    { name: "JSON to CSV",             url: "/developer-tools/json-to-csv.html",     icon: "🔄", cat: "Developer Tool" },
+    { name: "Hash Generator",          url: "/developer-tools/hash-generator.html",  icon: "🔑", cat: "Developer Tool" },
+    { name: "Regex Tester",            url: "/developer-tools/regex-tester.html",    icon: "🔍", cat: "Developer Tool" },
+    { name: "Markdown Editor",         url: "/developer-tools/markdown-editor.html", icon: "📝", cat: "Developer Tool" },
+    // Serialization Tools
+    
+    { name: "Format Converter",        url: "/serialization-tools/json-xml-converter.html", icon: "Convert", cat: "Serialization Tool" },
+    { name: "EPCIS Converter",        url: "/serialization-tools/epcis-converter.html",    icon: "EPCIS",   cat: "Serialization Tool" },
+    { name: "JSON Formatter",          url: "/developer-tools/json-formatter.html",          icon: "JSON",    cat: "Serialization Tool" },
+    { name: "JSON to CSV",             url: "/developer-tools/json-to-csv.html",             icon: "CSV",     cat: "Serialization Tool" },
+    { name: "Base64 Encoder Decoder",  url: "/developer-tools/base64.html",                  icon: "B64",     cat: "Serialization Tool" },
     // SEO Tools
     { name: "Meta Tag Generator",     url: "/seo-tools/meta-tag-generator.html",     icon: "🏷️", cat: "SEO Tool" },
     { name: "Keyword Density",        url: "/seo-tools/keyword-density.html",        icon: "🔍", cat: "SEO Tool" },
@@ -180,3 +242,48 @@ function initSearch() {
 
 // Kept for backward compatibility
 function searchTools() {}
+
+// Press Enter to run the primary tool action.
+// For textarea fields, use Ctrl+Enter / Cmd+Enter to avoid interrupting normal typing.
+function initEnterShortcut() {
+    document.addEventListener("keydown", function(e) {
+        if (e.key !== "Enter") return;
+
+        var t = e.target;
+        if (!t) return;
+
+        var tag = (t.tagName || "").toUpperCase();
+        if (tag !== "INPUT" && tag !== "TEXTAREA" && tag !== "SELECT") return;
+        if (t.id === "toolSearch") return;
+        if (tag === "TEXTAREA" && !(e.ctrlKey || e.metaKey)) return;
+        if (e.shiftKey || e.altKey) return;
+
+        var scope = t.closest(".hp-card, .card, .converter-shell, .gs1-page, .ep-wrap, .image-preview, .page-content");
+        if (!scope) return;
+
+        var preferred = scope.querySelector(
+            "button:not(.secondary):not(.sec):not(.copy-btn):not(.ghost-btn):not(.gs1-clear):not([disabled])"
+        );
+        var fallback = scope.querySelector("button:not(.gs1-clear):not([disabled])");
+        var actionBtn = preferred || fallback;
+        if (!actionBtn) return;
+
+        if (actionBtn.offsetParent === null) return;
+
+        e.preventDefault();
+        actionBtn.click();
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

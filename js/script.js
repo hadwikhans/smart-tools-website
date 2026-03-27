@@ -1,4 +1,4 @@
-// ── Show result helper ──
+﻿// ── Show result helper ──
 function showResult(id, text) {
     var el = document.getElementById(id);
     if (!el) return;
@@ -147,3 +147,4 @@ document.addEventListener("DOMContentLoaded", function(){
         range.addEventListener("input",function(){val.textContent=Math.round(this.value*100)+"%";});
     }
 });
+

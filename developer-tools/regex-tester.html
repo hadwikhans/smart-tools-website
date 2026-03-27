@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regex Tester | SmartToolsHub</title>
+<meta name="description" content="Test and debug regular expressions in real time">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/regex-tester.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔍 Regex Tester</h1><p>Test and debug regular expressions in real time</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>Regex Tester</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Regular Expression</label>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+    <span style="font-size:18px;color:#5a4fcf;font-weight:700;">/</span>
+    <input type="text" id="regexPattern" placeholder="Enter regex pattern e.g. \d+" style="flex:1;margin:0;" oninput="testRegex()">
+    <span style="font-size:18px;color:#5a4fcf;font-weight:700;">/</span>
+    <input type="text" id="regexFlags" value="g" placeholder="flags" style="width:70px;margin:0;" oninput="testRegex()">
+  </div>
+  <label>Test String</label>
+  <textarea class="tool-textarea" id="regexInput" placeholder="Enter your test string here..." oninput="testRegex()" style="min-height:100px;"></textarea>
+  <div id="regexMsg" style="margin-top:8px;font-size:13px;"></div>
+  <div id="regexResults" style="margin-top:14px;display:none;">
+    <label>Matches (<span id="matchCount">0</span>)</label>
+    <div id="matchList" style="background:#f4f3ff;border:1px solid #e0ddff;border-radius:9px;padding:12px;font-family:monospace;font-size:13px;max-height:200px;overflow-y:auto;"></div>
+    <label style="margin-top:12px;">Highlighted Text</label>
+    <div id="highlightedText" style="background:#fff;border:1px solid #e2e8f0;border-radius:9px;padding:12px;font-size:13px;line-height:1.8;max-height:150px;overflow-y:auto;word-break:break-all;"></div>
+  </div>
+</div>
+<div class="card">
+  <h2>About Regex Tester</h2>
+  <p>Test regular expressions instantly against any input string. See all matches highlighted in real time.</p>
+  <h3>Common Flags</h3>
+  <p>
+    <strong>g</strong> — Global (find all matches)<br>
+    <strong>i</strong> — Case insensitive<br>
+    <strong>m</strong> — Multiline<br>
+    <strong>gi</strong> — Global + case insensitive
+  </p>
+  <h3>Quick Examples</h3>
+  <p>
+    <strong>Email:</strong> [a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}<br>
+    <strong>Phone:</strong> \d{10}<br>
+    <strong>URL:</strong> https?://[^\s]+<br>
+    <strong>Numbers only:</strong> \d+
+  </p>
+</div>
+<script>
+function testRegex(){
+  var pattern=document.getElementById("regexPattern").value;
+  var flags=document.getElementById("regexFlags").value;
+  var input=document.getElementById("regexInput").value;
+  var msg=document.getElementById("regexMsg");
+  var results=document.getElementById("regexResults");
+  var matchList=document.getElementById("matchList");
+  var highlighted=document.getElementById("highlightedText");
+  var matchCount=document.getElementById("matchCount");
+
+  if(!pattern||!input){results.style.display="none";msg.textContent="";return;}
+
+  try{
+    var regex=new RegExp(pattern,flags.replace(/[^gimsuy]/g,""));
+    var matches=input.match(regex)||[];
+    matchCount.textContent=matches.length;
+
+    if(matches.length===0){
+      msg.className="error-msg";msg.textContent="No matches found.";
+      matchList.textContent="No matches";
+      highlighted.textContent=input;
+    } else {
+      msg.className="success-msg";msg.textContent="✅ "+matches.length+" match"+(matches.length>1?"es":"")+" found!";
+      matchList.innerHTML=matches.map(function(m,i){
+        return '<span style="display:inline-block;background:#5a4fcf;color:#fff;padding:2px 8px;border-radius:5px;margin:2px;font-size:12px;">'+
+          escHtml(m)+'</span>';
+      }).join(" ");
+
+      var escaped=input.replace(/[<>&"]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c];});
+      var r2=new RegExp(pattern,flags.replace(/[^gimsuy]/g,""));
+      highlighted.innerHTML=escaped.replace(r2,function(m){
+        return '<mark style="background:#fef08a;color:#1e2740;border-radius:3px;padding:1px 2px;">'+escHtml(m)+'</mark>';
+      });
+    }
+    results.style.display="block";
+  }catch(e){
+    msg.className="error-msg";msg.textContent="❌ Invalid regex: "+e.message;
+    results.style.display="none";
+  }
+}
+function escHtml(t){return t.replace(/[<>&"]/g,function(c){return{"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c];});}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

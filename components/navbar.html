@@ -1,82 +1,104 @@
-<nav class="navbar">
-  <div style="display:flex;align-items:center;flex:1;min-width:0;">
-    <a href="/index.html" class="nav-logo" style="font-family:'Inter',sans-serif;font-weight:800;font-size:20px;text-decoration:none;letter-spacing:-0.5px;white-space:nowrap;">
-      <span style="color:#ffffff;">Smart</span><span style="color:#a89ff5;">ToolsHub</span>
+﻿<nav class="navbar">
+  <div style="display:flex;align-items:center;flex:1;min-width:0;gap:12px;">
+    <button id="sideMenuToggle" class="hamburger-btn" aria-label="Open menu" title="Open menu">&#9776;</button>
+    <a href="/index.html" class="nav-logo">
+      <span class="brand-main">Smart</span><span class="brand-accent">ToolsHub</span>
     </a>
-    <div class="nav-left" id="navLinks">
-
-      <!-- Calculators -->
-      <div class="dropdown">
-        <a href="/calculators.html">Calculators ▾</a>
-        <div class="dropdown-content" id="calc-menu">
-          <a href="/calculators/age-calculator.html">📅 Age Calculator</a>
-          <a href="/calculators/bmi-calculator.html">⚖️ BMI Calculator</a>
-          <a href="/calculators/percentage-calculator.html">📊 Percentage Calculator</a>
-          <a href="/calculators/loan-emi-calculator.html">💰 Loan EMI Calculator</a>
-        </div>
-      </div>
-
-      <!-- Text Tools -->
-      <div class="dropdown">
-        <a href="/text-tools.html">Text Tools ▾</a>
-        <div class="dropdown-content" id="text-menu">
-          <a href="/text-tools/password-generator.html">🔐 Password Generator</a>
-          <a href="/text-tools/qr-generator.html">📱 QR Generator</a>
-          <a href="/text-tools/word-counter.html">📝 Word Counter</a>
-          <a href="/text-tools/text-repeater.html">🔁 Text Repeater</a>
-        </div>
-      </div>
-
-      <!-- Image Tools - single page, no dropdown needed -->
-      <a href="/image-tools.html">Image Tools</a>
-
-      <!-- PDF Tools -->
-      <div class="dropdown">
-        <a href="/pdf-tools.html">PDF Tools ▾</a>
-        <div class="dropdown-content" id="pdf-menu" style="min-width:220px;">
-          <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase;">Organize</div>
-          <a href="/pdf-tools/merge-pdf.html">📎 Merge PDF</a>
-          <a href="/pdf-tools/split-pdf.html">✂️ Split PDF</a>
-          <a href="/pdf-tools/remove-pages.html">🗑️ Remove Pages</a>
-          <a href="/pdf-tools/extract-pages.html">📤 Extract Pages</a>
-          <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase;margin-top:4px;">Optimize</div>
-          <a href="/pdf-tools/compress-pdf.html">🗜️ Compress PDF</a>
-          <a href="/pdf-tools/ocr-pdf.html">🔍 OCR PDF</a>
-          <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase;margin-top:4px;">Convert</div>
-          <a href="/pdf-tools/jpg-to-pdf.html">🖼️ JPG to PDF</a>
-          <a href="/pdf-tools/pdf-to-jpg.html">🖼️ PDF to JPG</a>
-          <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase;margin-top:4px;">Edit</div>
-          <a href="/pdf-tools/rotate-pdf.html">🔄 Rotate PDF</a>
-          <a href="/pdf-tools/page-numbers.html">🔢 Add Page Numbers</a>
-          <a href="/pdf-tools/watermark-pdf.html">💧 Add Watermark</a>
-          <a href="/pdf-tools/crop-pdf.html">✂️ Crop PDF</a>
-          <div style="padding:6px 14px 4px;font-size:10px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;text-transform:uppercase;margin-top:4px;">Security</div>
-          <a href="/pdf-tools/unlock-pdf.html">🔓 Unlock PDF</a>
-          <a href="/pdf-tools/protect-pdf.html">🔒 Protect PDF</a>
-          <a href="/pdf-tools/sign-pdf.html">✍️ Sign PDF</a>
-        </div>
-      </div>
-
-      <!-- SEO Tools -->
-      <div class="dropdown">
-        <a href="/seo-tools.html">SEO Tools ▾</a>
-        <div class="dropdown-content" id="seo-menu">
-          <a href="/seo-tools/meta-tag-generator.html">🏷️ Meta Tag Generator</a>
-          <a href="/seo-tools/keyword-density.html">🔍 Keyword Density</a>
-        </div>
-      </div>
-
-      <a href="/all-tools.html">All Tools</a>
-    </div>
   </div>
 
   <div class="nav-right" style="position:relative;">
     <input type="text" id="toolSearch" placeholder="Search tools..." autocomplete="off">
-    <div id="searchDropdown" style="
-      display:none;position:absolute;top:calc(100% + 8px);right:0;
-      background:#fff;border:1px solid #e2e8f0;border-radius:10px;
-      min-width:240px;max-height:320px;overflow-y:auto;
-      box-shadow:0 12px 32px rgba(0,0,0,0.12);z-index:9999;
-    "></div>
+    <div id="searchDropdown" class="dropdown-content" style="display:none;left:auto;right:0;min-width:240px;max-height:320px;"></div>
   </div>
 </nav>
+
+<div id="sideMenuOverlay" class="side-overlay"></div>
+<aside id="sideMenu" class="side-menu">
+  <div class="side-menu-head">Navigation</div>
+
+  <a href="/index.html" class="side-link"><span class="side-nav-label"><span class="side-nav-icon">&#8962;</span>Home</span></a>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#128290;</span>Calculators</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/calculators/age-calculator.html">Age Calculator</a>
+      <a href="/calculators/bmi-calculator.html">BMI Calculator</a>
+      <a href="/calculators/percentage-calculator.html">Percentage Calculator</a>
+      <a href="/calculators/loan-emi-calculator.html">Loan EMI Calculator</a>
+      <a href="/calculators/gs1-check-digit-calculator.html">GS1 Check Digit Calculator</a>
+    </div>
+  </div>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#9998;</span>Text Tools</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/text-tools/password-generator.html">Password Generator</a>
+      <a href="/text-tools/qr-generator.html">QR Generator</a>
+      <a href="/text-tools/word-counter.html">Word Counter</a>
+      <a href="/text-tools/text-repeater.html">Text Repeater</a>
+      <a href="/text-tools/address-generator.html">Address Generator</a>
+    </div>
+  </div>
+
+  <a href="/image-tools.html" class="side-link"><span class="side-nav-label"><span class="side-nav-icon">&#128247;</span>Image Tools</span></a>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#128196;</span>PDF Tools</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/pdf-tools/merge-pdf.html">Merge PDF</a>
+      <a href="/pdf-tools/split-pdf.html">Split PDF</a>
+      <a href="/pdf-tools/remove-pages.html">Remove Pages</a>
+      <a href="/pdf-tools/extract-pages.html">Extract Pages</a>
+      <a href="/pdf-tools/compress-pdf.html">Compress PDF</a>
+      <a href="/pdf-tools/ocr-pdf.html">OCR PDF</a>
+      <a href="/pdf-tools/jpg-to-pdf.html">JPG to PDF</a>
+      <a href="/pdf-tools/pdf-to-jpg.html">PDF to JPG</a>
+      <a href="/pdf-tools/rotate-pdf.html">Rotate PDF</a>
+      <a href="/pdf-tools/page-numbers.html">Add Page Numbers</a>
+      <a href="/pdf-tools/watermark-pdf.html">Add Watermark</a>
+      <a href="/pdf-tools/crop-pdf.html">Crop PDF</a>
+      <a href="/pdf-tools/unlock-pdf.html">Unlock PDF</a>
+      <a href="/pdf-tools/protect-pdf.html">Protect PDF</a>
+      <a href="/pdf-tools/sign-pdf.html">Sign PDF</a>
+    </div>
+  </div>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#128269;</span>SEO Tools</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/seo-tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="/seo-tools/keyword-density.html">Keyword Density</a>
+    </div>
+  </div>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#9881;</span>Dev Tools</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/developer-tools/json-formatter.html">JSON Formatter</a>
+      <a href="/developer-tools/base64.html">Base64 Encoder/Decoder</a>
+      <a href="/developer-tools/url-encoder.html">URL Encoder/Decoder</a>
+      <a href="/developer-tools/html-entity.html">HTML Entity Encoder</a>
+      <a href="/developer-tools/html-formatter.html">HTML Formatter</a>
+      <a href="/developer-tools/css-minifier.html">CSS Minifier</a>
+      <a href="/developer-tools/js-minifier.html">JS Minifier</a>
+      <a href="/developer-tools/json-to-csv.html">JSON to CSV</a>
+      <a href="/developer-tools/hash-generator.html">Hash Generator</a>
+      <a href="/developer-tools/regex-tester.html">Regex Tester</a>
+      <a href="/developer-tools/markdown-editor.html">Markdown Editor</a>
+    </div>
+  </div>
+
+  <div class="side-group">
+    <button class="side-group-toggle"><span class="side-nav-label"><span class="side-nav-icon">&#8646;</span>Serialization Tools</span><span class="side-nav-caret">&#9662;</span></button>
+    <div class="side-submenu">
+      <a href="/serialization-tools/json-xml-converter.html">Format Converter</a>
+      <a href="/serialization-tools/epcis-converter.html">EPCIS Converter</a>
+      <a href="/developer-tools/json-formatter.html">JSON Formatter</a>
+      <a href="/developer-tools/json-to-csv.html">JSON to CSV</a>
+      <a href="/developer-tools/base64.html">Base64 Encoder Decoder</a>
+    </div>
+  </div>
+
+  <a href="/all-tools.html" class="side-link"><span class="side-nav-label"><span class="side-nav-icon">&#9638;</span>All Tools</span></a>
+</aside>
+

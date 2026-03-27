@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hash Generator — MD5 & SHA256 | SmartToolsHub</title>
+<meta name="description" content="Generate MD5 and SHA-256 hashes from any text instantly">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/hash-generator.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔑 Hash Generator</h1><p>Generate MD5 and SHA-256 hashes from any text instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>Hash Generator</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Input Text</label>
+  <textarea class="tool-textarea" id="hashInput" placeholder="Enter text to hash..." oninput="updateHashCount()"></textarea>
+  <div class="char-count" id="hashCount">0 characters</div>
+  <div class="btn-row">
+    <button onclick="generateHashes()">🔑 Generate Hashes</button>
+    <button class="secondary" onclick="hashClear()">Clear</button>
+  </div>
+  <div id="hashMsg"></div>
+  <div id="hashResults" style="margin-top:14px;display:none;">
+    <div style="margin-bottom:14px;">
+      <label>MD5 Hash</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="md5Output" readonly style="font-family:monospace;font-size:13px;background:#f4f3ff;border-color:#e0ddff;color:#3d3580;margin:0;flex:1;">
+        <button class="copy-btn" onclick="copyInput('md5Output')" style="margin:0;white-space:nowrap;">📋 Copy</button>
+      </div>
+    </div>
+    <div>
+      <label>SHA-256 Hash</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="sha256Output" readonly style="font-family:monospace;font-size:13px;background:#f4f3ff;border-color:#e0ddff;color:#3d3580;margin:0;flex:1;">
+        <button class="copy-btn" onclick="copyInput('sha256Output')" style="margin:0;white-space:nowrap;">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <h2>About Hash Generator</h2>
+  <p>A hash function converts any input text into a fixed-length string. Hash functions are one-way — you cannot reverse a hash back to the original text.</p>
+  <h3>Common Uses</h3>
+  <p>
+    • Verifying file integrity<br>
+    • Storing passwords securely<br>
+    • Digital signatures<br>
+    • Checksums for data validation
+  </p>
+  <p style="margin-top:8px;font-size:12.5px;color:#e53e3e;">⚠️ MD5 is not recommended for security-critical applications. Use SHA-256 instead.</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+function updateHashCount(){
+  document.getElementById("hashCount").textContent=document.getElementById("hashInput").value.length+" characters";
+}
+function generateHashes(){
+  var input=document.getElementById("hashInput").value;
+  var msg=document.getElementById("hashMsg");
+  var results=document.getElementById("hashResults");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter some text.";results.style.display="none";return;}
+  try{
+    document.getElementById("md5Output").value=CryptoJS.MD5(input).toString();
+    document.getElementById("sha256Output").value=CryptoJS.SHA256(input).toString();
+    results.style.display="block";
+    msg.className="success-msg";msg.textContent="✅ Hashes generated successfully!";
+  }catch(e){msg.className="error-msg";msg.textContent="Error: "+e.message;}
+}
+function hashClear(){
+  document.getElementById("hashInput").value="";
+  document.getElementById("md5Output").value="";
+  document.getElementById("sha256Output").value="";
+  document.getElementById("hashMsg").textContent="";
+  document.getElementById("hashResults").style.display="none";
+  updateHashCount();
+}
+function copyInput(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied!");});
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>
