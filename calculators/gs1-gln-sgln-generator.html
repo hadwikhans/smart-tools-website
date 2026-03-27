@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GS1 GLN & SGLN Generator | SmartToolsHub</title>
+<meta name="description" content="Generate GS1 GLN and SGLN values from a GS1 Company Prefix, location reference, and extension.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/calculators/gs1-gln-sgln-generator.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.gs1-generator {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.gs1-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.gs1-field label {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 8px;
+  display: block;
+  font-weight: 600;
+}
+.gs1-field input,
+.gs1-output-value {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #1e2433;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.gs1-field input:focus {
+  border-color: #5a4fcf;
+  background: #fff;
+  outline: none;
+}
+.gs1-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.gs1-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: #64748b;
+  line-height: 1.7;
+}
+.gs1-subnote {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #718096;
+  line-height: 1.6;
+}
+.gs1-msg {
+  margin-top: 12px;
+  color: #e53e3e;
+  font-size: 13px;
+  font-weight: 600;
+}
+.gs1-output-card {
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  background: #fff;
+}
+.gs1-output-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e2433;
+  margin-bottom: 14px;
+}
+.gs1-output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.gs1-output-grid .full {
+  grid-column: 1 / -1;
+}
+.gs1-copy-row {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gs1-meta {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+.gs1-meta strong {
+  color: #1e2433;
+}
+@media (max-width: 860px) {
+  .gs1-grid,
+  .gs1-output-grid {
+    grid-template-columns: 1fr;
+  }
+  .gs1-output-grid .full {
+    grid-column: auto;
+  }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>GS1 GLN & SGLN Generator</h1>
+    <p>Generate structurally valid GS1 location identifiers from GCP, location reference, and extension</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">></span> <a href="/calculators.html">Calculators</a> <span style="color:#c0cad8;">></span> <span>GS1 GLN & SGLN Generator</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+  <div class="gs1-generator">
+    <div class="card">
+      <h2>GS1 Location Key Generator</h2>
+      <div class="gs1-subnote">Source file: <code>js/data/gcpprefixformatlist.json</code>. This page now uses your GS1 reference JSON from the project automatically while generating GCP, GLN, and SGLN values.</div>
+      <div class="gs1-grid">
+        <div class="gs1-field">
+          <label for="gcpInput">GCP (optional)</label>
+          <input type="text" id="gcpInput" placeholder="0614141" oninput="cleanDigitsInput('gcpInput')">
+        </div>
+        <div class="gs1-field">
+          <label for="locationRefInput">Location Reference (optional)</label>
+          <input type="text" id="locationRefInput" placeholder="00000" oninput="cleanDigitsInput('locationRefInput')">
+        </div>
+        <div class="gs1-field">
+          <label for="extensionInput">SGLN Extension (optional)</label>
+          <input type="text" id="extensionInput" placeholder="12345">
+        </div>
+      </div>
+
+      <div class="gs1-actions">
+        <button onclick="generateGcpOnly()">Generate GCP</button>
+        <button onclick="generateGlnOnly()">Generate GLN</button>
+        <button onclick="generateSglnOnly()">Generate SGLN</button>
+        <button class="secondary" onclick="clearGs1Generator()">Clear</button>
+      </div>
+      <div class="gs1-note">All generated values use the GS1 prefix rules from the saved project source file. A generated GCP is based on a valid prefix entry from that dataset, then the GLN and SGLN are derived from it.</div>
+      <div id="gs1Msg" class="gs1-msg"></div>
+      <div id="gs1Meta" class="gs1-meta">
+        <strong>Reference status:</strong> <span id="gs1ReferenceStatus">Loading GS1 source data from the project...</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="gs1-output-title">Output</div>
+      <div class="gs1-output-grid">
+        <div class="gs1-field">
+          <label>GCP</label>
+          <div id="outGcp" class="gs1-output-value">-</div>
+        </div>
+        <div class="gs1-field">
+          <label>Matched Prefix Rule</label>
+          <div id="outRule" class="gs1-output-value">-</div>
+        </div>
+        <div class="gs1-field">
+          <label>GLN</label>
+          <div id="outGln" class="gs1-output-value">-</div>
+        </div>
+        <div class="gs1-field">
+          <label>Location Reference</label>
+          <div id="outLocationRef" class="gs1-output-value">-</div>
+        </div>
+        <div class="gs1-field full">
+          <label>SGLN Element String</label>
+          <div id="outSglnElement" class="gs1-output-value">-</div>
+        </div>
+        <div class="gs1-field full">
+          <label>SGLN URI</label>
+          <div id="outSglnUri" class="gs1-output-value">-</div>
+        </div>
+      </div>
+      <div class="gs1-copy-row">
+        <button class="secondary" onclick="copyOutput('outGcp')">Copy GCP</button>
+        <button class="secondary" onclick="copyOutput('outGln')">Copy GLN</button>
+        <button class="secondary" onclick="copyOutput('outSglnElement')">Copy SGLN Element String</button>
+        <button class="secondary" onclick="copyOutput('outSglnUri')">Copy SGLN URI</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>About GLN, GCP and SGLN</h2>
+      <p><strong>GCP</strong> is the GS1 Company Prefix assigned by GS1. <strong>GLN</strong> is a 13-digit Global Location Number built from the GCP, location reference and GS1 check digit. <strong>SGLN</strong> is the serialized location identifier derived from the GLN plus an extension component.</p>
+      <p>For GLN generation, your <strong>GCP + Location Reference</strong> must equal <strong>12 digits</strong> before the final GS1 Mod 10 check digit is added.</p>
+      <p><strong>Important:</strong> a generated GLN can be algorithmically correct and still not appear in Verified by GS1. GS1 verification depends on the prefix and location being actually issued and registered in GS1 data sources.</p>
+    </div>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+<script>
+var gs1PrefixEntries = [];
+var gs1ReferenceLoaded = false;
+var gs1ReferenceLoading = true;
+
+function cleanDigits(value) {
+  return (value || "").replace(/\D/g, "");
+}
+
+function cleanDigitsInput(id) {
+  var input = document.getElementById(id);
+  input.value = cleanDigits(input.value);
+}
+
+function gs1CheckDigit(baseDigits) {
+  var sum = 0;
+  var digits = baseDigits.split("").reverse();
+  for (var i = 0; i < digits.length; i++) {
+    var n = Number(digits[i]);
+    var weight = (i % 2 === 0) ? 3 : 1;
+    sum += n * weight;
+  }
+  return (10 - (sum % 10)) % 10;
+}
+
+function randomDigits(length) {
+  var value = "";
+  for (var i = 0; i < length; i++) {
+    value += String(Math.floor(Math.random() * 10));
+  }
+  return value;
+}
+
+function randomExtension() {
+  return "LOC-" + randomDigits(6);
+}
+
+function normalizePrefixEntries(entries) {
+  return entries
+    .filter(function(entry) {
+      return entry && typeof entry.prefix === "string" && /^\d+$/.test(entry.prefix) && Number(entry.gcpLength) >= entry.prefix.length;
+    })
+    .map(function(entry) {
+      return {
+        prefix: entry.prefix,
+        gcpLength: Number(entry.gcpLength)
+      };
+    })
+    .sort(function(a, b) {
+      if (b.prefix.length !== a.prefix.length) {
+        return b.prefix.length - a.prefix.length;
+      }
+      return a.prefix.localeCompare(b.prefix);
+    });
+}
+
+function updateReferenceStatus(text) {
+  document.getElementById("gs1ReferenceStatus").textContent = text;
+}
+
+function loadGs1ReferenceData() {
+  var msg = document.getElementById("gs1Msg");
+
+  msg.textContent = "";
+
+  fetch("../js/data/gcpprefixformatlist.json")
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error("Could not load js/data/gcpprefixformatlist.json.");
+      }
+      return response.json();
+    })
+    .then(function(parsed) {
+      var entries = parsed && parsed.GCPPrefixFormatList && parsed.GCPPrefixFormatList.entry;
+
+      if (!Array.isArray(entries) || !entries.length) {
+        throw new Error("The project GS1 source file does not contain GCPPrefixFormatList.entry data.");
+      }
+
+      gs1PrefixEntries = normalizePrefixEntries(entries);
+      gs1ReferenceLoaded = true;
+      gs1ReferenceLoading = false;
+      updateReferenceStatus("Loaded " + gs1PrefixEntries.length + " GS1 prefix rules from js/data/gcpprefixformatlist.json.");
+    })
+    .catch(function(error) {
+      gs1PrefixEntries = [];
+      gs1ReferenceLoaded = false;
+      gs1ReferenceLoading = false;
+      updateReferenceStatus("Unable to load the GS1 source file from the project.");
+      msg.textContent = error.message || "Unable to load the GS1 reference JSON file.";
+    });
+}
+
+function findMatchingPrefixRule(gcp) {
+  var value = cleanDigits(gcp);
+  var i;
+
+  for (i = 0; i < gs1PrefixEntries.length; i++) {
+    if (value.indexOf(gs1PrefixEntries[i].prefix) === 0) {
+      return gs1PrefixEntries[i];
+    }
+  }
+  return null;
+}
+
+function resolveRuleForInputGcp(gcp) {
+  var rule = findMatchingPrefixRule(gcp);
+
+  if (rule) {
+    return rule;
+  }
+
+  return null;
+}
+
+function generateGcpFromRules() {
+  if (!gs1ReferenceLoaded || !gs1PrefixEntries.length) {
+    return null;
+  }
+
+  var rule = gs1PrefixEntries[Math.floor(Math.random() * gs1PrefixEntries.length)];
+  return {
+    rule: rule,
+    gcp: rule.prefix + randomDigits(rule.gcpLength - rule.prefix.length)
+  };
+}
+
+function setOutputValue(id, value) {
+  document.getElementById(id).textContent = value || "-";
+}
+
+function prepareGcp(ruleMode) {
+  var gcp = cleanDigits(document.getElementById("gcpInput").value);
+  var msg = document.getElementById("gs1Msg");
+  var generated;
+  var rule;
+
+  msg.textContent = "";
+
+  if (gs1ReferenceLoading) {
+    msg.textContent = "GS1 source data is still loading. Please try again in a moment.";
+    return null;
+  }
+
+  if (!gs1ReferenceLoaded) {
+    msg.textContent = "The GS1 source file could not be loaded from the project.";
+    return null;
+  }
+
+  if (!gcp) {
+    generated = generateGcpFromRules();
+    if (!generated) {
+      msg.textContent = "No GS1 prefix rules are available for generation.";
+      return null;
+    }
+    gcp = generated.gcp;
+    rule = generated.rule;
+    document.getElementById("gcpInput").value = gcp;
+  } else {
+    rule = resolveRuleForInputGcp(gcp);
+  }
+
+  if (!rule) {
+    msg.textContent = "The entered GCP does not match any prefix rule in js/data/gcpprefixformatlist.json.";
+    return null;
+  }
+
+  if (gcp.length !== rule.gcpLength) {
+    msg.textContent = "The entered GCP length does not match the GS1 rule for prefix " + rule.prefix + ". Expected " + rule.gcpLength + " digits.";
+    return null;
+  }
+
+  document.getElementById("gcpInput").value = gcp;
+  setOutputValue("outGcp", gcp);
+  setOutputValue("outRule", rule.prefix + " -> GCP length " + rule.gcpLength);
+
+  if (ruleMode === "gcp") {
+    setOutputValue("outLocationRef", "-");
+    setOutputValue("outGln", "-");
+    setOutputValue("outSglnElement", "-");
+    setOutputValue("outSglnUri", "-");
+  }
+
+  return {
+    gcp: gcp,
+    rule: rule
+  };
+}
+
+function prepareGlnData() {
+  var prepared = prepareGcp();
+  var locationRef = cleanDigits(document.getElementById("locationRefInput").value);
+  var locationRefLength;
+  var msg = document.getElementById("gs1Msg");
+
+  if (!prepared) {
+    return null;
+  }
+
+  locationRefLength = 12 - prepared.rule.gcpLength;
+  if (locationRefLength < 0) {
+    msg.textContent = "The matched GS1 prefix rule is not valid for GLN generation.";
+    return null;
+  }
+
+  if (!locationRef) {
+    locationRef = randomDigits(locationRefLength);
+    document.getElementById("locationRefInput").value = locationRef;
+  }
+
+  if (locationRef.length !== locationRefLength) {
+    msg.textContent = "Location Reference must be exactly " + locationRefLength + " digits for a GCP length of " + prepared.rule.gcpLength + ".";
+    return null;
+  }
+
+  return {
+    gcp: prepared.gcp,
+    rule: prepared.rule,
+    locationRef: locationRef,
+    gln: prepared.gcp + locationRef + String(gs1CheckDigit(prepared.gcp + locationRef))
+  };
+}
+
+function generateGcpOnly() {
+  prepareGcp("gcp");
+}
+
+function generateGlnOnly() {
+  var prepared = prepareGlnData();
+
+  if (!prepared) {
+    return;
+  }
+
+  setOutputValue("outLocationRef", prepared.locationRef);
+  setOutputValue("outGln", prepared.gln);
+  setOutputValue("outSglnElement", "-");
+  setOutputValue("outSglnUri", "-");
+}
+
+function generateSglnOnly() {
+  var prepared = prepareGlnData();
+  var extension = document.getElementById("extensionInput").value.trim();
+  var sglnElement;
+  var sglnUri;
+
+  if (!prepared) {
+    return;
+  }
+
+  if (!extension) {
+    extension = randomExtension();
+    document.getElementById("extensionInput").value = extension;
+  }
+
+  sglnElement = "(414)" + prepared.gln + "(254)" + extension;
+  sglnUri = "urn:epc:id:sgln:" + prepared.gcp + "." + prepared.locationRef + "." + encodeURIComponent(extension);
+
+  setOutputValue("outLocationRef", prepared.locationRef);
+  setOutputValue("outGln", prepared.gln);
+  setOutputValue("outSglnElement", sglnElement);
+  setOutputValue("outSglnUri", sglnUri);
+}
+
+function copyOutput(id) {
+  var value = document.getElementById(id).textContent;
+  if (!value || value === "-") {
+    alert("Generate a value first.");
+    return;
+  }
+  navigator.clipboard.writeText(value).then(function() {
+    alert("Copied.");
+  });
+}
+
+function clearGs1Generator() {
+  document.getElementById("gcpInput").value = "";
+  document.getElementById("locationRefInput").value = "";
+  document.getElementById("extensionInput").value = "";
+  document.getElementById("gs1Msg").textContent = "";
+  document.getElementById("outGcp").textContent = "-";
+  document.getElementById("outRule").textContent = "-";
+  document.getElementById("outGln").textContent = "-";
+  document.getElementById("outLocationRef").textContent = "-";
+  document.getElementById("outSglnElement").textContent = "-";
+  document.getElementById("outSglnUri").textContent = "-";
+}
+
+loadGs1ReferenceData();
+</script>
+</body>
+</html>

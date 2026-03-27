@@ -138,6 +138,7 @@ var allTools = [
     { name: "Percentage Calculator",  url: "/calculators/percentage-calculator.html", icon: "📊", cat: "Calculator" },
     { name: "Loan EMI Calculator",    url: "/calculators/loan-emi-calculator.html",   icon: "Loan", cat: "Calculator" },
         { name: "GS1 Check Digit Calculator", url: "/calculators/gs1-check-digit-calculator.html", icon: "GS1", cat: "Calculator" },
+    { name: "GS1 GLN & SGLN Generator", url: "/calculators/gs1-gln-sgln-generator.html", icon: "GLN", cat: "Calculator" },
     // Text Tools
     { name: "Password Generator",     url: "/text-tools/password-generator.html",    icon: "🔐", cat: "Text Tool" },
     { name: "QR Code Generator",      url: "/text-tools/qr-generator.html",          icon: "📱", cat: "Text Tool" },

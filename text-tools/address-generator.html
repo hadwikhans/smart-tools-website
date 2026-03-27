@@ -146,11 +146,85 @@
   <div class="field-block">
     <label for="country">Select Country*</label>
     <select id="country" class="tool-select">
+      <option value="albania">Albania</option>
+      <option value="argentina">Argentina</option>
+      <option value="armenia">Armenia</option>
       <option value="india">India</option>
-      <option value="us">United States</option>
-      <option value="uk">United Kingdom</option>
-      <option value="canada">Canada</option>
       <option value="australia">Australia</option>
+      <option value="austria">Austria</option>
+      <option value="azerbaijan">Azerbaijan</option>
+      <option value="belarus">Belarus</option>
+      <option value="belgium">Belgium</option>
+      <option value="brazil">Brazil</option>
+      <option value="bulgaria">Bulgaria</option>
+      <option value="canada">Canada</option>
+      <option value="chile">Chile</option>
+      <option value="china">China</option>
+      <option value="colombia">Colombia</option>
+      <option value="croatia">Croatia</option>
+      <option value="czech-republic">Czech Republic</option>
+      <option value="denmark">Denmark</option>
+      <option value="egypt">Egypt</option>
+      <option value="estonia">Estonia</option>
+      <option value="finland">Finland</option>
+      <option value="france">France</option>
+      <option value="germany">Germany</option>
+      <option value="greece">Greece</option>
+      <option value="hong-kong">Hong Kong</option>
+      <option value="hungary">Hungary</option>
+      <option value="iceland">Iceland</option>
+      <option value="indonesia">Indonesia</option>
+      <option value="iran">Iran</option>
+      <option value="ireland">Ireland</option>
+      <option value="israel">Israel</option>
+      <option value="italy">Italy</option>
+      <option value="japan">Japan</option>
+      <option value="kazakhstan">Kazakhstan</option>
+      <option value="kenya">Kenya</option>
+      <option value="korea-republic-of">Korea (Republic of)</option>
+      <option value="kyrgyzstan">Kyrgyzstan</option>
+      <option value="latvia">Latvia</option>
+      <option value="lithuania">Lithuania</option>
+      <option value="luxembourg">Luxembourg</option>
+      <option value="malaysia">Malaysia</option>
+      <option value="malta">Malta</option>
+      <option value="mexico">Mexico</option>
+      <option value="moldova">Moldova</option>
+      <option value="netherlands">Netherlands</option>
+      <option value="new-zealand">New Zealand</option>
+      <option value="nigeria">Nigeria</option>
+      <option value="norway">Norway</option>
+      <option value="pakistan">Pakistan</option>
+      <option value="peru">Peru</option>
+      <option value="philippines">Philippines</option>
+      <option value="poland">Poland</option>
+      <option value="portugal">Portugal</option>
+      <option value="republic-of-cyprus">Republic of Cyprus</option>
+      <option value="romania">Romania</option>
+      <option value="russia">Russia</option>
+      <option value="saudi-arabia">Saudi Arabia</option>
+      <option value="singapore">Singapore</option>
+      <option value="slovakia">Slovakia</option>
+      <option value="slovenia">Slovenia</option>
+      <option value="south-africa">South Africa</option>
+      <option value="spain">Spain</option>
+      <option value="sri-lanka">Sri Lanka</option>
+      <option value="sweden">Sweden</option>
+      <option value="switzerland">Switzerland</option>
+      <option value="taiwan">Taiwan</option>
+      <option value="tajikistan">Tajikistan</option>
+      <option value="tanzania">Tanzania</option>
+      <option value="thailand">Thailand</option>
+      <option value="tunisia">Tunisia</option>
+      <option value="turkey">Turkey</option>
+      <option value="turkmenistan">Turkmenistan</option>
+      <option value="uk">United Kingdom</option>
+      <option value="uae">United Arab Emirates</option>
+      <option value="us">United States of America</option>
+      <option value="uruguay">Uruguay</option>
+      <option value="uzbekistan">Uzbekistan</option>
+      <option value="venezuela">Venezuela</option>
+      <option value="vietnam">Vietnam</option>
     </select>
   </div>
 
@@ -183,7 +257,7 @@
 </div>
 
 <script>
-var addressData = {
+var detailedAddressData = {
   india: {
     country: "India",
     states: ["Karnataka", "Maharashtra", "Tamil Nadu", "Telangana", "Delhi"],
@@ -243,8 +317,37 @@ var addressData = {
     streets2: ["Level 3", "Suite 14", "Building C", "Unit 7", "Tower East"],
     houseNumbers: ["8", "101", "66", "420", "15B"],
     postalCodes: ["2000", "3000", "4000", "6000", "5000"]
+  },
+  uae: {
+    country: "United Arab Emirates",
+    states: ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah"],
+    cities: ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Al Ain"],
+    districts: ["Business Bay", "Al Zahiyah", "Al Majaz", "Al Nuaimiya", "Al Jimi"],
+    villages: ["Jumeirah", "Khalidiya", "Muweilah", "Masfout", "Hili"],
+    townships: ["Marina Township", "Corniche Township", "Al Khan Township", "City Centre Township", "Garden City Township"],
+    streets1: ["Sheikh Zayed Road", "Corniche Road", "King Faisal Street", "Al Ittihad Street", "Airport Road"],
+    streets2: ["Tower A", "Building 4", "Office 12", "Block C", "Suite 210"],
+    houseNumbers: ["21", "44", "102", "7B", "310"],
+    postalCodes: ["00000", "00000", "00000", "00000", "00000"]
   }
 };
+
+function createGenericCountryData(countryName) {
+  var compact = countryName.replace(/\s+/g, " ").trim();
+  var prefix = compact.split(" ")[0];
+  return {
+    country: compact,
+    states: [compact + " State", "North " + compact, "South " + compact, "Central " + compact, "West " + compact],
+    cities: [prefix + " City", "New " + prefix, prefix + " Central", prefix + " Heights", prefix + " Point"],
+    districts: ["Central District", "North District", "South District", "West District", "East District"],
+    villages: ["Lakeview", "Greenfield", "Hilltop", "Riverside", "Sunnyvale"],
+    townships: ["Metro Township", "Garden Township", "Harbour Township", "Valley Township", "Central Township"],
+    streets1: ["Main Street", "Market Road", "Park Avenue", "Station Road", "River Road"],
+    streets2: ["Block A", "Suite 12", "Building 4", "Near City Centre", "Tower 2"],
+    houseNumbers: ["12", "24B", "18", "305", "7A"],
+    postalCodes: ["100001", "200002", "300003", "400004", "500005"]
+  };
+}
 
 function pick(list, index) {
   return list[index % list.length];
@@ -268,8 +371,9 @@ function buildAddressObject(data, index, sequence) {
 
 function generateAddresses() {
   var country = document.getElementById("country").value;
+  var countryName = document.getElementById("country").options[document.getElementById("country").selectedIndex].text;
   var count = parseInt(document.getElementById("addressCount").value, 10);
-  var data = addressData[country];
+  var data = detailedAddressData[country] || createGenericCountryData(countryName);
   var container = document.getElementById("addressOutput");
   var start = Math.floor(Math.random() * data.cities.length);
   var i;
