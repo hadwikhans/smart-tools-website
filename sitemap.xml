@@ -20,15 +20,21 @@
 <url><loc>https://smarttoolshub-pro.netlify.app/calculators/loan-emi-calculator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
 <url><loc>https://smarttoolshub-pro.netlify.app/calculators/gs1-check-digit-calculator.html</loc><lastmod>2026-03-25</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/calculators/gs1-gln-sgln-generator.html</loc><lastmod>2026-03-27</lastmod><priority>0.8</priority></url>
 
 <!-- Text Tools -->
+<url><loc>https://smarttoolshub-pro.netlify.app/text-tools/address-generator.html</loc><lastmod>2026-03-27</lastmod><priority>0.8</priority></url>
 <url><loc>https://smarttoolshub-pro.netlify.app/text-tools/password-generator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 <url><loc>https://smarttoolshub-pro.netlify.app/text-tools/qr-generator.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 <url><loc>https://smarttoolshub-pro.netlify.app/text-tools/word-counter.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 <url><loc>https://smarttoolshub-pro.netlify.app/text-tools/text-repeater.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
-<!-- Image Tools (all-in-one) -->
+<!-- Image Tools -->
 <url><loc>https://smarttoolshub-pro.netlify.app/image-tools.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools/image-compressor.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools/image-resizer.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools/jpg-to-png.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/image-tools/png-to-jpg.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
 
 <!-- PDF Tools -->
 <url><loc>https://smarttoolshub-pro.netlify.app/pdf-tools/merge-pdf.html</loc><lastmod>2026-03-21</lastmod><priority>0.8</priority></url>
@@ -54,6 +60,7 @@
 <!-- Serialization Tools -->
 
 <url><loc>https://smarttoolshub-pro.netlify.app/serialization-tools/epcis-converter.html</loc><lastmod>2026-03-25</lastmod><priority>0.8</priority></url>
+<url><loc>https://smarttoolshub-pro.netlify.app/serialization-tools/json-xml-converter.html</loc><lastmod>2026-03-25</lastmod><priority>0.8</priority></url>
 
 
 <!-- Developer Tools -->
