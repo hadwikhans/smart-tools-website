@@ -1,43 +1,112 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✍️ Text Tools | SmartToolsHub</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Text Tools | SmartToolsHub</title>
+<meta name="description" content="Free online text tools including password generation, QR creation, word counting, text repeating and address generation.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/text-tools.html">
 <link rel="stylesheet" href="css/style.css">
-
-
+<style>
+.text-category { margin-bottom: 38px; }
+.text-category-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #94a3b8;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 1px solid #e8eaf2;
+}
+.text-tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 10px;
+}
+.text-tool-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    background: #fff; border: 1px solid #e8eaf2;
+    border-radius: 12px; text-decoration: none; color: inherit;
+    transition: 0.15s;
+}
+.text-tool-item:hover {
+    border-color: #5a4fcf; background: #faf9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(90,79,207,0.1);
+}
+.text-tool-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+}
+.ic-blue { background: #eff6ff; }
+.ic-green { background: #f0fdf4; }
+.ic-purple { background: #faf5ff; }
+.ic-orange { background: #fff7ed; }
+.text-tool-info { flex: 1; min-width: 0; }
+.text-tool-name { font-size: 14px; font-weight: 700; color: #1e2740; line-height: 1.3; }
+.text-tool-desc { font-size: 12px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
+.badge-free {
+    margin-left: auto; background: #ecfdf5; color: #059669;
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
+</style>
 </head>
 <body>
 <div id="navbar"></div>
 <section class="page-hero">
   <div class="container">
-    <h1>✍️ Text Tools</h1>
-    <p>Free online text utilities and generators</p>
+    <h1>Text Tools</h1>
+    <p>Useful generators and text utilities for fast everyday work</p>
   </div>
 </section>
 <div class="sticky-breadcrumb">
   <div class="container">
-    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <span>Text Tools</span></div>
+    <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <span>Text Tools</span></div>
   </div>
 </div>
-<div class="container">
-<div class="page-content">
-<div class="tools-grid">
-<a href="/text-tools/password-generator.html" class="tool-card"><div class="tool-card-icon">🔐</div><h3>Password Generator</h3><p>Generate strong, secure random passwords.</p></a>
-<a href="/text-tools/qr-generator.html" class="tool-card"><div class="tool-card-icon">📱</div><h3>QR Code Generator</h3><p>Create QR codes for URLs or text instantly.</p></a>
-<a href="/text-tools/word-counter.html" class="tool-card"><div class="tool-card-icon">📝</div><h3>Word Counter</h3><p>Count words and characters in your text.</p></a>
-<a href="/text-tools/text-repeater.html" class="tool-card"><div class="tool-card-icon">🔁</div><h3>Text Repeater</h3><p>Repeat any text multiple times instantly.</p></a>
-<a href="/text-tools/address-generator.html" class="tool-card"><div class="tool-card-icon">Address</div><h3>Address Generator</h3><p>Build country-based formatted addresses quickly.</p></a>
-</div>
-</div>
-</div>
+<div class="container"><div class="page-content">
+
+  <div class="text-category">
+    <div class="text-category-title">Generate &amp; Create</div>
+    <div class="text-tools-list">
+      <a href="/text-tools/password-generator.html" class="text-tool-item">
+        <div class="text-tool-icon ic-purple">🔐</div>
+        <div class="text-tool-info"><div class="text-tool-name">Password Generator</div><div class="text-tool-desc">Create strong random passwords</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/text-tools/qr-generator.html" class="text-tool-item">
+        <div class="text-tool-icon ic-blue">📱</div>
+        <div class="text-tool-info"><div class="text-tool-name">QR Code Generator</div><div class="text-tool-desc">Generate QR codes for text or URLs</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/text-tools/address-generator.html" class="text-tool-item">
+        <div class="text-tool-icon ic-orange">📮</div>
+        <div class="text-tool-info"><div class="text-tool-name">Address Generator</div><div class="text-tool-desc">Build formatted addresses quickly</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="text-category">
+    <div class="text-category-title">Count &amp; Repeat</div>
+    <div class="text-tools-list">
+      <a href="/text-tools/word-counter.html" class="text-tool-item">
+        <div class="text-tool-icon ic-green">📝</div>
+        <div class="text-tool-info"><div class="text-tool-name">Word Counter</div><div class="text-tool-desc">Count words and characters instantly</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/text-tools/text-repeater.html" class="text-tool-item">
+        <div class="text-tool-icon ic-blue">🔁</div>
+        <div class="text-tool-info"><div class="text-tool-name">Text Repeater</div><div class="text-tool-desc">Repeat text multiple times fast</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+</div></div>
 <div id="footer"></div>
 <script src="js/loadcomponents.js"></script>
 <script src="js/script.js"></script>
 <script src="js/sticky.js"></script>
 </body>
 </html>
-

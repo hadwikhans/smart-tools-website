@@ -290,6 +290,37 @@ button.secondary:hover { background: #e2deff; }
     background: #f0effe;
 }
 
+/* ── AD PLACEHOLDERS ── */
+.ad-slot {
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+    border: 1.5px dashed #c7d2fe;
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-align: center;
+}
+.ad-slot-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #4f46e5;
+    background: #e0e7ff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+}
+.ad-slot h3 {
+    margin: 0 0 6px;
+    color: #1e2433;
+    font-size: 16px;
+}
+.ad-slot p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
 /* ── DOWNLOAD LINK ── */
 a[id*="download"], a[id*="Download"], a[id*="Link"] {
     display: inline-block;
@@ -344,11 +375,15 @@ a[id*="download"]:hover, a[id*="Download"]:hover { background: #4840b8; }
     margin-top: 0;
     padding: 52px 40px 0;
 }
+.footer-ad-wrap {
+    max-width: 1200px;
+    margin: 0 auto 28px;
+}
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr repeat(4, 1fr);
     gap: 48px;
     padding-bottom: 44px;
 }

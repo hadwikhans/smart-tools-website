@@ -146,10 +146,10 @@ var allTools = [
     { name: "Text Repeater",          url: "/text-tools/text-repeater.html",         icon: "🔁", cat: "Text Tool" },
     { name: "Address Generator",      url: "/text-tools/address-generator.html",     icon: "Address", cat: "Text Tool" },
     // Image Tools
-    { name: "Image Compressor",       url: "/image-tools.html",        icon: "🗜️", cat: "Image Tool" },
-    { name: "Image Resizer",          url: "/image-tools.html",          icon: "📐", cat: "Image Tool" },
-    { name: "JPG to PNG",             url: "/image-tools.html",         icon: "🔄", cat: "Image Tool" },
-    { name: "PNG to JPG",             url: "/image-tools.html",         icon: "🔄", cat: "Image Tool" },
+    { name: "Image Compressor",       url: "/image-tools/image-compressor.html", icon: "🗜️", cat: "Image Tool" },
+    { name: "Image Resizer",          url: "/image-tools/image-resizer.html",    icon: "📐", cat: "Image Tool" },
+    { name: "JPG to PNG",             url: "/image-tools/jpg-to-png.html",       icon: "🔄", cat: "Image Tool" },
+    { name: "PNG to JPG",             url: "/image-tools/png-to-jpg.html",       icon: "🔄", cat: "Image Tool" },
     // PDF Tools
     { name: "Merge PDF",              url: "/pdf-tools/merge-pdf.html",              icon: "📎", cat: "PDF Tool" },
     { name: "Split PDF",              url: "/pdf-tools/split-pdf.html",              icon: "✂️", cat: "PDF Tool" },
@@ -188,6 +188,21 @@ var allTools = [
     // SEO Tools
     { name: "Meta Tag Generator",     url: "/seo-tools/meta-tag-generator.html",     icon: "🏷️", cat: "SEO Tool" },
     { name: "Keyword Density",        url: "/seo-tools/keyword-density.html",        icon: "🔍", cat: "SEO Tool" },
+    // Site Pages
+    { name: "About SmartToolsHub",    url: "/about.html",                 icon: "ℹ️", cat: "Site Page" },
+    { name: "Blog",                   url: "/blog.html",                  icon: "📝", cat: "Site Page" },
+    { name: "Latest Tech News",       url: "/latest-news.html",           icon: "📰", cat: "News" },
+    { name: "How To Generate GLN and SGLN Values", url: "/blog/how-to-generate-gln-and-sgln-values.html", icon: "GS1", cat: "Blog" },
+    { name: "Choosing the Right Data Conversion Tool", url: "/blog/choosing-the-right-data-conversion-tool.html", icon: "JSON", cat: "Blog" },
+    { name: "PDF Tasks You Can Handle in the Browser", url: "/blog/pdf-tasks-you-can-handle-in-the-browser.html", icon: "PDF", cat: "Blog" },
+    { name: "What Is the Difference Between GLN and SGLN", url: "/blog/what-is-the-difference-between-gln-and-sgln.html", icon: "GS1", cat: "Blog" },
+    { name: "How To Validate a GS1 Check Digit", url: "/blog/how-to-validate-a-gs1-check-digit.html", icon: "GS1", cat: "Blog" },
+    { name: "JSON vs XML for APIs",   url: "/blog/json-vs-xml-for-apis.html", icon: "JSON", cat: "Blog" },
+    { name: "How To Merge PDF Files Online", url: "/blog/how-to-merge-pdf-files-online.html", icon: "PDF", cat: "Blog" },
+    { name: "How To Use a Password Generator Safely", url: "/blog/how-to-use-a-password-generator-safely.html", icon: "🔐", cat: "Blog" },
+    { name: "Contact",                url: "/contact.html",               icon: "✉️", cat: "Site Page" },
+    { name: "Privacy Policy",         url: "/privacy-policy.html",        icon: "🔒", cat: "Site Page" },
+    { name: "Terms of Use",           url: "/terms.html",                 icon: "📄", cat: "Site Page" },
 ];
 
 function initSearch() {

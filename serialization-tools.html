@@ -4,16 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Serialization Tools | SmartToolsHub</title>
-<meta name="description" content="Free online serialization tools for JSON, XML, Base64 and CSV conversions.">
+<meta name="description" content="Free online serialization and developer tools for conversion, formatting, encoding, minification and data utilities.">
 <link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools.html">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.ser-category { margin-bottom: 38px; }
+.ser-category-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #94a3b8;
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 1px solid #e8eaf2;
+}
+.ser-tools-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 10px;
+}
+.ser-tool-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px;
+    background: #fff; border: 1px solid #e8eaf2;
+    border-radius: 12px; text-decoration: none; color: inherit;
+    transition: 0.15s;
+}
+.ser-tool-item:hover {
+    border-color: #5a4fcf; background: #faf9ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(90,79,207,0.1);
+}
+.ser-tool-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+}
+.ic-blue { background: #eff6ff; }
+.ic-green { background: #f0fdf4; }
+.ic-orange { background: #fff7ed; }
+.ic-purple { background: #faf5ff; }
+.ic-teal { background: #f0fdfa; }
+.ser-tool-info { flex: 1; min-width: 0; }
+.ser-tool-name { font-size: 14px; font-weight: 700; color: #1e2740; line-height: 1.3; }
+.ser-tool-desc { font-size: 12px; color: #94a3b8; margin-top: 3px; line-height: 1.4; }
+.badge-free {
+    margin-left: auto; background: #ecfdf5; color: #059669;
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
+</style>
 </head>
 <body>
 <div id="navbar"></div>
 <section class="page-hero">
   <div class="container">
     <h1>Serialization Tools</h1>
-    <p>Convert and transform data formats quickly in your browser</p>
+    <p>Conversion, formatting, encoding, and developer-friendly data tools in one place</p>
   </div>
 </section>
 <div class="sticky-breadcrumb">
@@ -21,23 +65,101 @@
     <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <span>Serialization Tools</span></div>
   </div>
 </div>
-<div class="container">
-<div class="page-content">
-<div class="tools-grid">
+<div class="container"><div class="page-content">
 
-<a href="/serialization-tools/epcis-converter.html" class="tool-card"><div class="tool-card-icon">EPCIS</div><h3>EPCIS Converter</h3><p>Convert EPCIS between XML and JSON-LD with preferences.</p></a>
-<a href="/serialization-tools/json-xml-converter.html" class="tool-card"><div class="tool-card-icon">XML</div><h3>JSON XML Converter</h3><p>Convert JSON to XML and XML to JSON instantly.</p></a>
-<a href="/developer-tools/json-formatter.html" class="tool-card"><div class="tool-card-icon">JSON</div><h3>JSON Formatter</h3><p>Format and validate JSON payloads.</p></a>
-<a href="/developer-tools/json-to-csv.html" class="tool-card"><div class="tool-card-icon">CSV</div><h3>JSON to CSV</h3><p>Serialize JSON arrays into CSV output.</p></a>
-<a href="/developer-tools/base64.html" class="tool-card"><div class="tool-card-icon">B64</div><h3>Base64 Encoder/Decoder</h3><p>Encode and decode Base64 strings.</p></a>
-</div>
-</div>
-</div>
+  <div class="ser-category">
+    <div class="ser-category-title">Serialization &amp; Conversion</div>
+    <div class="ser-tools-list">
+      <a href="/serialization-tools/epcis-converter.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-green">🔄</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">EPCIS Converter</div><div class="ser-tool-desc">Convert EPCIS between XML and JSON-LD</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/serialization-tools/json-xml-converter.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-blue">🔁</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">JSON XML Converter</div><div class="ser-tool-desc">Transform JSON and XML both ways</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/json-to-csv.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-orange">📄</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">JSON to CSV</div><div class="ser-tool-desc">Convert JSON arrays into CSV output</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="ser-category">
+    <div class="ser-category-title">Format &amp; Validate</div>
+    <div class="ser-tools-list">
+      <a href="/developer-tools/json-formatter.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-purple">{ }</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">JSON Formatter</div><div class="ser-tool-desc">Format and validate JSON payloads</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/html-formatter.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-blue">&lt;/&gt;</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">HTML Formatter</div><div class="ser-tool-desc">Beautify and clean HTML markup</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/regex-tester.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-teal">.*</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">Regex Tester</div><div class="ser-tool-desc">Test and debug regular expressions</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/markdown-editor.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-green">✍️</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">Markdown Editor</div><div class="ser-tool-desc">Write and preview markdown content</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="ser-category">
+    <div class="ser-category-title">Encode &amp; Utility</div>
+    <div class="ser-tools-list">
+      <a href="/developer-tools/base64.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-purple">🔐</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">Base64 Encoder/Decoder</div><div class="ser-tool-desc">Encode and decode Base64 strings</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/url-encoder.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-blue">🌐</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">URL Encoder/Decoder</div><div class="ser-tool-desc">Escape and decode URLs safely</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/html-entity.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-orange">#;</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">HTML Entity Encoder</div><div class="ser-tool-desc">Encode special characters for HTML</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/hash-generator.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-green">#</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">Hash Generator</div><div class="ser-tool-desc">Generate secure hashes from text</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="ser-category">
+    <div class="ser-category-title">Minify &amp; Optimize Code</div>
+    <div class="ser-tools-list">
+      <a href="/developer-tools/css-minifier.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-teal">🎨</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">CSS Minifier</div><div class="ser-tool-desc">Shrink CSS for production use</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+      <a href="/developer-tools/js-minifier.html" class="ser-tool-item">
+        <div class="ser-tool-icon ic-orange">⚡</div>
+        <div class="ser-tool-info"><div class="ser-tool-name">JavaScript Minifier</div><div class="ser-tool-desc">Compress JavaScript quickly</div></div>
+        <span class="badge-free">FREE</span>
+      </a>
+    </div>
+  </div>
+
+</div></div>
 <div id="footer"></div>
 <script src="js/loadcomponents.js"></script>
 <script src="js/script.js"></script>
 <script src="js/sticky.js"></script>
 </body>
 </html>
-
-

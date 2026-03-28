@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartToolsHub Blog</title>
+<meta name="description" content="Read SmartToolsHub updates, tool guides, and practical how-to articles for calculators, developer tools, and productivity workflows.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/blog.html">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.blog-shell { display: grid; gap: 20px; }
+.blog-featured {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+}
+.blog-hero-card {
+  display: block;
+  background: linear-gradient(135deg, #1e2433 0%, #2f3d67 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.blog-kicker,
+.blog-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.blog-kicker {
+  background: rgba(255,255,255,0.12);
+  color: #dbe4ff;
+  margin-bottom: 14px;
+}
+.blog-hero-card h2 {
+  color: #fff;
+  font-size: 30px;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.blog-hero-card p {
+  color: #c8d3ef;
+  margin-bottom: 16px;
+}
+.blog-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 12px;
+  color: #64748b;
+}
+.blog-hero-card .blog-meta { color: #dbe4ff; }
+.blog-side-list { display: grid; gap: 14px; }
+.blog-mini-card,
+.blog-post-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #e8eaf0;
+  border-radius: 16px;
+  padding: 20px;
+  transition: 0.18s;
+}
+.blog-mini-card:hover,
+.blog-post-card:hover {
+  border-color: #5a4fcf;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(90,79,207,0.1);
+}
+.blog-mini-card h3,
+.blog-post-card h3 {
+  color: #1e2433;
+  margin-bottom: 8px;
+}
+.blog-mini-card p,
+.blog-post-card p {
+  color: #64748b;
+  margin-bottom: 10px;
+}
+.blog-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.blog-tag {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+.blog-post-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.blog-read {
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a4fcf;
+}
+@media (max-width: 960px) {
+  .blog-featured,
+  .blog-post-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>SmartToolsHub Blog</h1>
+    <p>Guides, release notes, and practical workflows for the tools on the site</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <span>Blog</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+  <div class="blog-shell">
+    <div class="blog-featured">
+      <a href="/blog/how-to-generate-gln-and-sgln-values.html" class="blog-hero-card">
+        <span class="blog-kicker">Featured Guide</span>
+        <h2>How To Generate GLN and SGLN Values</h2>
+        <p>Understand how GS1 Company Prefix rules, location references, and check digits work together when building structurally valid location identifiers.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>GS1</span>
+          <span>5 min read</span>
+        </div>
+      </a>
+      <div class="blog-side-list">
+        <a href="/blog/choosing-the-right-data-conversion-tool.html" class="blog-mini-card">
+          <span class="blog-tag">Developer Workflows</span>
+          <h3>Choosing the Right Data Conversion Tool</h3>
+          <p>Pick the right conversion approach for JSON, XML, CSV, Base64, and EPCIS tasks.</p>
+          <div class="blog-meta">
+            <span>March 27, 2026</span>
+            <span>4 min read</span>
+          </div>
+        </a>
+        <a href="/blog/pdf-tasks-you-can-handle-in-the-browser.html" class="blog-mini-card">
+          <span class="blog-tag">PDF Productivity</span>
+          <h3>PDF Tasks You Can Handle in the Browser</h3>
+          <p>Handle common document jobs quickly without switching to heavy desktop software.</p>
+          <div class="blog-meta">
+            <span>March 27, 2026</span>
+            <span>4 min read</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Browse By Topic</h2>
+      <div class="blog-categories">
+        <span class="blog-tag">GS1</span>
+        <span class="blog-tag">Developer Tools</span>
+        <span class="blog-tag">Serialization</span>
+        <span class="blog-tag">PDF Workflows</span>
+        <span class="blog-tag">Product Updates</span>
+        <span class="blog-tag">Passwords</span>
+      </div>
+    </div>
+
+    <div class="ad-slot">
+      <div class="ad-slot-label">Ad Placeholder</div>
+      <h3>In-Content Blog Ad Zone</h3>
+      <p>This slot is a good candidate for a responsive AdSense unit between article groups once the site is approved.</p>
+    </div>
+
+    <div class="blog-post-grid">
+      <a href="/blog/how-to-generate-gln-and-sgln-values.html" class="blog-post-card">
+        <span class="blog-tag">GS1</span>
+        <h3>How To Generate GLN and SGLN Values</h3>
+        <p>See how GCP rules, location references, and extension values map into GLN and SGLN generation.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>5 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/choosing-the-right-data-conversion-tool.html" class="blog-post-card">
+        <span class="blog-tag">Serialization</span>
+        <h3>Choosing the Right Data Conversion Tool</h3>
+        <p>Use the right format conversion path for APIs, reporting, integrations, and supply chain data.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/pdf-tasks-you-can-handle-in-the-browser.html" class="blog-post-card">
+        <span class="blog-tag">PDF</span>
+        <h3>PDF Tasks You Can Handle in the Browser</h3>
+        <p>Merge, split, watermark, rotate, and review PDF files without leaving the browser.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/what-is-the-difference-between-gln-and-sgln.html" class="blog-post-card">
+        <span class="blog-tag">GS1</span>
+        <h3>What Is the Difference Between GLN and SGLN?</h3>
+        <p>Understand when a standard location number is enough and when a serialized location identifier is more useful.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/how-to-validate-a-gs1-check-digit.html" class="blog-post-card">
+        <span class="blog-tag">GS1</span>
+        <h3>How To Validate a GS1 Check Digit</h3>
+        <p>A simple explanation of the GS1 Mod 10 method used across common GS1 identifiers.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/json-vs-xml-for-apis.html" class="blog-post-card">
+        <span class="blog-tag">Developer Tools</span>
+        <h3>JSON vs XML for APIs</h3>
+        <p>Compare readability, validation, payload size, and ecosystem fit when choosing between JSON and XML.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>5 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/how-to-merge-pdf-files-online.html" class="blog-post-card">
+        <span class="blog-tag">PDF</span>
+        <h3>How To Merge PDF Files Online</h3>
+        <p>Plan a clean merge workflow, avoid file-order mistakes, and check output quality before sharing.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+      <a href="/blog/how-to-use-a-password-generator-safely.html" class="blog-post-card">
+        <span class="blog-tag">Passwords</span>
+        <h3>How To Use a Password Generator Safely</h3>
+        <p>Create stronger passwords while avoiding the common mistakes that reduce their real security value.</p>
+        <div class="blog-meta">
+          <span>March 27, 2026</span>
+          <span>4 min read</span>
+        </div>
+        <div class="blog-read">Read article</div>
+      </a>
+    </div>
+
+    <div class="card">
+      <h2>Next Step</h2>
+      <p>This blog now has dedicated article pages and a stronger editorial structure. You can keep expanding it with release notes, tool tutorials, comparison posts, and SEO-focused how-to content.</p>
+    </div>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/sticky.js"></script>
+</body>
+</html>

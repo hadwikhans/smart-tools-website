@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Generate GLN and SGLN Values | SmartToolsHub Blog</title>
+<meta name="description" content="Learn how GLN and SGLN values are structured, how GS1 Company Prefix rules apply, and how SmartToolsHub generates them.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/blog/how-to-generate-gln-and-sgln-values.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.article-shell { max-width: 860px; margin: 0 auto; }
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  color: #64748b;
+}
+.article-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 700;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.related-card {
+  display: block;
+  border: 1px solid #e8eaf0;
+  border-radius: 14px;
+  padding: 18px;
+  background: #fff;
+}
+.related-card:hover { border-color: #5a4fcf; }
+@media (max-width: 720px) {
+  .related-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>How To Generate GLN and SGLN Values</h1>
+    <p>A practical guide to GS1 location identifiers</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/blog.html">Blog</a> &gt; <span>How To Generate GLN and SGLN Values</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+  <div class="article-shell">
+  <div class="card">
+    <div class="article-meta">
+      <span class="article-pill">GS1</span>
+      <span>Published: March 27, 2026</span>
+      <span>5 min read</span>
+    </div>
+    <h2>What Is a GLN?</h2>
+    <p>A Global Location Number is a 13-digit GS1 identifier used to represent legal entities, functional entities, or physical locations. It is built from a GS1 Company Prefix, a location reference, and a GS1 check digit.</p>
+    <h2>What Is an SGLN?</h2>
+    <p>An SGLN extends the location identity by adding a serial or extension component. That makes it useful when you need to identify a more specific location instance or business context.</p>
+    <h2>How Generation Works</h2>
+    <p>At SmartToolsHub, GCP generation uses the prefix and length rules from the GS1 reference file. The location reference fills the remaining base digits needed to form a 12-digit GLN body, and the final check digit is calculated using the GS1 Mod 10 method.</p>
+    <h2>Important Reminder</h2>
+    <p>A structurally valid GLN or SGLN is not the same as an officially licensed identifier. Real-world verification still depends on the underlying GS1 Company Prefix and registration details.</p>
+  </div>
+  <div class="card">
+    <h2>Related Articles</h2>
+    <div class="related-grid">
+      <a href="/blog/choosing-the-right-data-conversion-tool.html" class="related-card">
+        <h3>Choosing the Right Data Conversion Tool</h3>
+        <p>Format conversion tips for JSON, XML, CSV, Base64, and EPCIS workflows.</p>
+      </a>
+      <a href="/blog/pdf-tasks-you-can-handle-in-the-browser.html" class="related-card">
+        <h3>PDF Tasks You Can Handle in the Browser</h3>
+        <p>Common document workflows that fit well in lightweight browser tools.</p>
+      </a>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>
