@@ -1,239 +1,50 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meta Tag Generator | SmartToolsHub</title>
-<meta name="description" content="Create SEO title, description, canonical, robots, Open Graph, Twitter Card and structured metadata tags in your browser.">
 <link rel="canonical" href="https://smarttoolshub-pro.netlify.app/seo-tools/meta-tag-generator.html">
 <link rel="stylesheet" href="../css/style.css">
-<style>
-.seo-shell { background:#fff; border:1px solid #e6ebf3; border-radius:14px; padding:18px; }
-.seo-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.seo-grid .wide { grid-column:1 / -1; }
-.seo-field label { display:flex; justify-content:space-between; gap:12px; font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px; }
-.seo-field input,.seo-field textarea,.seo-field select { width:100%; box-sizing:border-box; border:1px solid #dbe2ee; border-radius:10px; background:#f8faff; color:#1e2740; padding:10px 11px; font-size:13px; outline:none; }
-.seo-field textarea { min-height:86px; resize:vertical; line-height:1.45; }
-.seo-field input:focus,.seo-field textarea:focus,.seo-field select:focus { border-color:#5a4fcf; background:#fff; }
-.hint { color:#94a3b8; font-weight:600; white-space:nowrap; }
-.hint.good { color:#059669; }
-.hint.warn { color:#d97706; }
-.action-row { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
-.ghost-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; padding:8px 12px; border-radius:9px; font-size:12.5px; cursor:pointer; }
-.ghost-btn:hover { background:#e9eef8; }
-.preview-box { border:1px solid #e4e8f1; border-radius:12px; padding:14px; background:#fbfcff; margin-top:14px; }
-.serp-title { color:#1a0dab; font-size:18px; line-height:1.25; margin-bottom:3px; }
-.serp-url { color:#006621; font-size:12px; margin-bottom:5px; word-break:break-all; }
-.serp-desc { color:#4d5156; font-size:13px; line-height:1.45; }
-.output { width:100%; min-height:260px; box-sizing:border-box; border:1px solid #e0ddff; border-radius:10px; background:#f4f3ff; color:#3d3580; padding:12px; font-family:"Courier New",monospace; font-size:12.5px; line-height:1.55; resize:vertical; }
-.status { display:none; margin-top:10px; padding:10px 12px; border-radius:9px; font-size:12.5px; }
-.status.ok { display:block; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; }
-.status.err { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
-@media (max-width:800px){ .seo-grid{grid-template-columns:1fr;} }
-</style>
 </head>
 <body>
 <div id="navbar"></div>
 <section class="page-hero">
-  <div class="container"><h1>Meta Tag Generator</h1><p>Build clean SEO, social sharing, canonical and robots tags</p></div>
+  <div class="container"><h1>🏷️ Meta Tag Generator</h1><p>Generate optimized SEO meta tags for your pages</p></div>
 </section>
 <div class="sticky-breadcrumb">
   <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/seo-tools.html">SEO Tools</a> &gt; <span>Meta Tag Generator</span></div></div>
 </div>
 <div class="container"><div class="page-content">
-
-<div class="seo-shell">
-  <div class="seo-grid">
-    <div class="seo-field wide">
-      <label for="metaTitle">Page title <span id="titleHint" class="hint">0 chars</span></label>
-      <input type="text" id="metaTitle" placeholder="Free Online Tools for Everyday Work | SmartToolsHub">
-    </div>
-    <div class="seo-field wide">
-      <label for="metaDesc">Meta description <span id="descHint" class="hint">0 chars</span></label>
-      <textarea id="metaDesc" placeholder="Use 140 to 160 characters to describe the page clearly for search results."></textarea>
-    </div>
-    <div class="seo-field">
-      <label for="canonicalUrl">Canonical URL</label>
-      <input type="url" id="canonicalUrl" placeholder="https://example.com/page.html">
-    </div>
-    <div class="seo-field">
-      <label for="robotsMeta">Robots</label>
-      <select id="robotsMeta">
-        <option value="index, follow">index, follow</option>
-        <option value="noindex, follow">noindex, follow</option>
-        <option value="index, nofollow">index, nofollow</option>
-        <option value="noindex, nofollow">noindex, nofollow</option>
-      </select>
-    </div>
-    <div class="seo-field">
-      <label for="ogType">Open Graph type</label>
-      <select id="ogType">
-        <option value="website">website</option>
-        <option value="article">article</option>
-        <option value="product">product</option>
-      </select>
-    </div>
-    <div class="seo-field">
-      <label for="imageUrl">Social image URL</label>
-      <input type="url" id="imageUrl" placeholder="https://example.com/og-image.jpg">
-    </div>
-    <div class="seo-field">
-      <label for="siteName">Site name</label>
-      <input type="text" id="siteName" placeholder="SmartToolsHub">
-    </div>
-    <div class="seo-field">
-      <label for="keywords">Keywords</label>
-      <input type="text" id="keywords" placeholder="online tools, seo tools, calculators">
-    </div>
-    <div class="seo-field">
-      <label for="author">Author</label>
-      <input type="text" id="author" placeholder="SmartToolsHub">
-    </div>
-    <div class="seo-field">
-      <label for="themeColor">Theme color</label>
-      <input type="text" id="themeColor" placeholder="#5a4fcf">
-    </div>
-  </div>
-
-  <div class="action-row">
-    <button onclick="generateMeta()">Generate Tags</button>
-    <button class="secondary" onclick="loadMetaSample()">Load Sample</button>
-    <button class="secondary" onclick="clearMeta()">Clear</button>
-    <button class="ghost-btn" onclick="copyMeta()">Copy Tags</button>
-  </div>
-
-  <div class="preview-box">
-    <div id="serpTitle" class="serp-title">Your SEO title appears here</div>
-    <div id="serpUrl" class="serp-url">https://example.com/page.html</div>
-    <div id="serpDesc" class="serp-desc">Your meta description preview appears here.</div>
-  </div>
-
-  <label for="metaOutput" style="display:block;margin:14px 0 6px;font-size:12px;font-weight:700;color:#64748b;">Generated head tags</label>
-  <textarea id="metaOutput" class="output" readonly placeholder="Generated tags appear here"></textarea>
-  <div id="metaStatus" class="status"></div>
-</div>
-
 <div class="card">
-  <h2>About Meta Tag Generator</h2>
-  <p>Use this tool to create search snippets, canonical links, robots directives and social sharing metadata. Titles around 50 to 60 characters and descriptions around 140 to 160 characters usually display best in search results.</p>
+<label>Page Title</label>
+<input type="text" id="metaTitle" placeholder="e.g. SmartToolsHub - Free Online Tools">
+<label>Description (150–160 chars)</label>
+<input type="text" id="metaDesc" placeholder="Brief page description">
+<label>Keywords</label>
+<input type="text" id="metaKeywords" placeholder="e.g. online tools, calculators">
+<label>Author</label>
+<input type="text" id="metaAuthor" placeholder="e.g. SmartToolsHub">
+<div style="display:flex;gap:8px;">
+<button onclick="generateMeta()">Generate Tags</button>
+<button class="secondary" onclick="clearMeta()">Clear</button>
 </div>
-
+<div id="metaResult" style="margin-top:14px;"></div>
+</div>
+<div class="card"><h2>About Meta Tag Generator</h2><p>Meta tags help search engines understand your page. A good title (50–60 chars) and description (150–160 chars) can significantly improve click-through rates in search results.</p></div>
 <script>
-var ids = ["metaTitle","metaDesc","canonicalUrl","robotsMeta","ogType","imageUrl","siteName","keywords","author","themeColor"];
-
-function escapeAttr(value) {
-  return String(value || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
-
-function updateHints() {
-  var title = document.getElementById("metaTitle").value.trim();
-  var desc = document.getElementById("metaDesc").value.trim();
-  setHint("titleHint", title.length, 50, 60);
-  setHint("descHint", desc.length, 140, 160);
-  document.getElementById("serpTitle").textContent = title || "Your SEO title appears here";
-  document.getElementById("serpUrl").textContent = document.getElementById("canonicalUrl").value.trim() || "https://example.com/page.html";
-  document.getElementById("serpDesc").textContent = desc || "Your meta description preview appears here.";
-}
-
-function setHint(id, count, min, max) {
-  var el = document.getElementById(id);
-  el.textContent = count + " chars";
-  el.className = "hint " + (count >= min && count <= max ? "good" : count > max ? "warn" : "");
-}
-
-function line(tag) { return tag + "\n"; }
-
-function generateMeta() {
-  updateHints();
-  var title = document.getElementById("metaTitle").value.trim();
-  var desc = document.getElementById("metaDesc").value.trim();
-  var url = document.getElementById("canonicalUrl").value.trim();
-  var robots = document.getElementById("robotsMeta").value;
-  var ogType = document.getElementById("ogType").value;
-  var image = document.getElementById("imageUrl").value.trim();
-  var site = document.getElementById("siteName").value.trim();
-  var keywords = document.getElementById("keywords").value.trim();
-  var author = document.getElementById("author").value.trim();
-  var theme = document.getElementById("themeColor").value.trim();
-  var status = document.getElementById("metaStatus");
-
-  if (!title || !desc) {
-    status.className = "status err";
-    status.textContent = "Add at least a title and meta description.";
-    return;
-  }
-
-  var tags = "";
-  tags += line("<title>" + escapeAttr(title) + "</title>");
-  tags += line('<meta name="description" content="' + escapeAttr(desc) + '">');
-  tags += line('<meta name="robots" content="' + escapeAttr(robots) + '">');
-  if (url) tags += line('<link rel="canonical" href="' + escapeAttr(url) + '">');
-  if (keywords) tags += line('<meta name="keywords" content="' + escapeAttr(keywords) + '">');
-  if (author) tags += line('<meta name="author" content="' + escapeAttr(author) + '">');
-  if (theme) tags += line('<meta name="theme-color" content="' + escapeAttr(theme) + '">');
-  tags += "\n";
-  tags += line('<meta property="og:type" content="' + escapeAttr(ogType) + '">');
-  tags += line('<meta property="og:title" content="' + escapeAttr(title) + '">');
-  tags += line('<meta property="og:description" content="' + escapeAttr(desc) + '">');
-  if (url) tags += line('<meta property="og:url" content="' + escapeAttr(url) + '">');
-  if (site) tags += line('<meta property="og:site_name" content="' + escapeAttr(site) + '">');
-  if (image) tags += line('<meta property="og:image" content="' + escapeAttr(image) + '">');
-  tags += "\n";
-  tags += line('<meta name="twitter:card" content="' + (image ? "summary_large_image" : "summary") + '">');
-  tags += line('<meta name="twitter:title" content="' + escapeAttr(title) + '">');
-  tags += line('<meta name="twitter:description" content="' + escapeAttr(desc) + '">');
-  if (image) tags += line('<meta name="twitter:image" content="' + escapeAttr(image) + '">');
-
-  document.getElementById("metaOutput").value = tags.trim();
-  status.className = "status ok";
-  status.textContent = "Generated " + tags.trim().split("\n").length + " metadata lines.";
-}
-
-function copyMeta() {
-  var out = document.getElementById("metaOutput");
-  if (!out.value.trim()) generateMeta();
-  if (!out.value.trim()) return;
-  navigator.clipboard.writeText(out.value).then(function() {
-    var status = document.getElementById("metaStatus");
-    status.className = "status ok";
-    status.textContent = "Tags copied to clipboard.";
-  });
-}
-
-function loadMetaSample() {
-  document.getElementById("metaTitle").value = "Free Online Tools for Everyday Work | SmartToolsHub";
-  document.getElementById("metaDesc").value = "Use fast browser-based calculators, PDF tools, SEO utilities and developer converters without installing extra software.";
-  document.getElementById("canonicalUrl").value = "https://smarttoolshub-pro.netlify.app/all-tools.html";
-  document.getElementById("robotsMeta").value = "index, follow";
-  document.getElementById("ogType").value = "website";
-  document.getElementById("siteName").value = "SmartToolsHub";
-  document.getElementById("keywords").value = "online tools, free tools, seo tools, developer tools";
-  document.getElementById("author").value = "SmartToolsHub";
-  document.getElementById("themeColor").value = "#5a4fcf";
-  updateHints();
-  generateMeta();
-}
-
-function clearMeta() {
-  ids.forEach(function(id) { document.getElementById(id).value = ""; });
-  document.getElementById("robotsMeta").value = "index, follow";
-  document.getElementById("ogType").value = "website";
-  document.getElementById("metaOutput").value = "";
-  document.getElementById("metaStatus").className = "status";
-  updateHints();
-}
-
-ids.forEach(function(id) {
-  document.addEventListener("input", function(e) {
-    if (e.target && e.target.id === id) updateHints();
-  });
-});
-updateHints();
+function generateMeta(){var t=document.getElementById('metaTitle').value;var d=document.getElementById('metaDesc').value;var k=document.getElementById('metaKeywords').value;var a=document.getElementById('metaAuthor').value;var r=document.getElementById('metaResult');if(!t&&!d){r.textContent='Fill in at least title and description.';return;}var tags='';if(t)tags+='&lt;title&gt;'+t+'&lt;/title&gt;
+';if(d)tags+='&lt;meta name="description" content="'+d+'"&gt;
+';if(k)tags+='&lt;meta name="keywords" content="'+k+'"&gt;
+';if(a)tags+='&lt;meta name="author" content="'+a+'"&gt;
+';tags+='&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;';r.innerHTML='<pre style="background:#f4f3ff;border:1px solid #e0ddff;border-radius:9px;padding:14px;font-size:12.5px;white-space:pre-wrap;word-break:break-all;color:#4840b8;">'+tags+'</pre><button onclick="copyMeta()" style="margin-top:8px;">Copy Tags</button>';}
+function copyMeta(){var pre=document.querySelector('#metaResult pre');if(pre){navigator.clipboard.writeText(pre.textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>')).then(function(){alert('Copied!');});}}
+function clearMeta(){['metaTitle','metaDesc','metaKeywords','metaAuthor'].forEach(function(id){document.getElementById(id).value='';});document.getElementById('metaResult').innerHTML='';}
 </script>
 </div></div>
 <div id="footer"></div>
 <script src="../js/loadcomponents.js"></script>
 <script src="../js/script.js"></script>
 <script src="../js/sticky.js"></script>
-</body>
-</html>
+</body></html>
