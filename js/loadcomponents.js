@@ -182,6 +182,8 @@ var allTools = [
     
     { name: "Format Converter",        url: "/serialization-tools/json-xml-converter.html", icon: "Convert", cat: "Serialization Tool" },
     { name: "EPCIS Converter",        url: "/serialization-tools/epcis-converter.html",    icon: "EPCIS",   cat: "Serialization Tool" },
+    { name: "XML Minifier",           url: "/serialization-tools/xml-whitespace-remover.html", icon: "XML", cat: "Serialization Tool" },
+    { name: "XML Whitespace Remover", url: "/serialization-tools/xml-whitespace-remover.html", icon: "XML", cat: "Serialization Tool" },
     { name: "JSON Formatter",          url: "/developer-tools/json-formatter.html",          icon: "JSON",    cat: "Serialization Tool" },
     { name: "JSON to CSV",             url: "/developer-tools/json-to-csv.html",             icon: "CSV",     cat: "Serialization Tool" },
     { name: "Base64 Encoder Decoder",  url: "/developer-tools/base64.html",                  icon: "B64",     cat: "Serialization Tool" },
@@ -191,7 +193,6 @@ var allTools = [
     // Site Pages
     { name: "About SmartToolsHub",    url: "/about.html",                 icon: "ℹ️", cat: "Site Page" },
     { name: "Blog",                   url: "/blog.html",                  icon: "📝", cat: "Site Page" },
-    { name: "Latest Tech News",       url: "/latest-news.html",           icon: "📰", cat: "News" },
     { name: "How To Generate GLN and SGLN Values", url: "/blog/how-to-generate-gln-and-sgln-values.html", icon: "GS1", cat: "Blog" },
     { name: "Choosing the Right Data Conversion Tool", url: "/blog/choosing-the-right-data-conversion-tool.html", icon: "JSON", cat: "Blog" },
     { name: "PDF Tasks You Can Handle in the Browser", url: "/blog/pdf-tasks-you-can-handle-in-the-browser.html", icon: "PDF", cat: "Blog" },
