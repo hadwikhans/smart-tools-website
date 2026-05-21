@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Entity Encoder / Decoder | SmartToolsHub</title>
+<meta name="description" content="Encode or decode HTML entities like &amp;amp; &amp;lt; &amp;gt; instantly">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/html-entity.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🏷️ HTML Entity Encoder / Decoder</h1><p>Encode or decode HTML entities like &amp;amp; &amp;lt; &amp;gt; instantly</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>HTML Entity Encoder/Decoder</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Input</label>
+  <textarea class="tool-textarea" id="htmlInput" placeholder="Enter HTML or text to encode, or HTML entities to decode..." oninput="updateHtmlCount()"></textarea>
+  <div class="char-count" id="htmlCount">0 characters</div>
+  <div class="btn-row">
+    <button onclick="htmlEncode()">🔒 Encode HTML Entities</button>
+    <button onclick="htmlDecode()">🔓 Decode HTML Entities</button>
+    <button class="secondary" onclick="htmlClear()">Clear</button>
+    <button class="swap-btn" onclick="htmlSwap()">⇅ Swap</button>
+  </div>
+  <div id="htmlMsg"></div>
+  <label style="margin-top:12px;">Output</label>
+  <textarea class="tool-textarea output" id="htmlOutput" placeholder="Output will appear here..." readonly></textarea>
+  <div class="btn-row">
+    <button class="copy-btn" onclick="copyText('htmlOutput')">📋 Copy Output</button>
+  </div>
+</div>
+<div class="card">
+  <h2>About HTML Entity Encoder/Decoder</h2>
+  <p>HTML entities are special codes used to display reserved characters in HTML. Characters like &lt;, &gt;, &amp;, and " must be encoded to prevent them from being interpreted as HTML.</p>
+  <h3>Common Entities</h3>
+  <p>
+    <strong>&amp;amp;</strong> → &amp; &nbsp;|&nbsp;
+    <strong>&amp;lt;</strong> → &lt; &nbsp;|&nbsp;
+    <strong>&amp;gt;</strong> → &gt; &nbsp;|&nbsp;
+    <strong>&amp;quot;</strong> → " &nbsp;|&nbsp;
+    <strong>&amp;nbsp;</strong> → (space)
+  </p>
+  <h3>Common Uses</h3>
+  <p>
+    • Displaying code snippets in web pages<br>
+    • Preventing XSS (Cross-site scripting) attacks<br>
+    • Rendering special characters in HTML safely<br>
+    • Working with HTML templates
+  </p>
+</div>
+<script>
+function updateHtmlCount(){
+  var t=document.getElementById("htmlInput").value;
+  document.getElementById("htmlCount").textContent=t.length+" characters";
+}
+function htmlEncode(){
+  var input=document.getElementById("htmlInput").value;
+  var msg=document.getElementById("htmlMsg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter some text.";return;}
+  var encoded=input
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;")
+    .replace(/\//g,"&#x2F;");
+  document.getElementById("htmlOutput").value=encoded;
+  msg.className="success-msg";msg.textContent="✅ Encoded successfully!";
+}
+function htmlDecode(){
+  var input=document.getElementById("htmlInput").value;
+  var msg=document.getElementById("htmlMsg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter HTML entities.";return;}
+  var txt=document.createElement("textarea");
+  txt.innerHTML=input;
+  document.getElementById("htmlOutput").value=txt.value;
+  msg.className="success-msg";msg.textContent="✅ Decoded successfully!";
+}
+function htmlSwap(){
+  var i=document.getElementById("htmlInput");
+  var o=document.getElementById("htmlOutput");
+  var tmp=i.value; i.value=o.value; o.value=tmp;
+  updateHtmlCount();
+}
+function htmlClear(){
+  document.getElementById("htmlInput").value="";
+  document.getElementById("htmlOutput").value="";
+  document.getElementById("htmlMsg").textContent="";
+  updateHtmlCount();
+}
+function copyText(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied to clipboard!");});
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

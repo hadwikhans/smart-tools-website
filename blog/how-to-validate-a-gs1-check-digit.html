@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How To Validate a GS1 Check Digit | SmartToolsHub Blog</title>
+<meta name="description" content="See how GS1 check digit validation works using the GS1 Mod 10 method.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/blog/how-to-validate-a-gs1-check-digit.html">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>How To Validate a GS1 Check Digit</h1>
+    <p>A simple explanation of the GS1 Mod 10 approach</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/blog.html">Blog</a> &gt; <span>How To Validate a GS1 Check Digit</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+  <div class="card">
+    <h2>Why the Check Digit Matters</h2>
+    <p>The check digit helps verify that a GS1 identifier has been constructed correctly and reduces the chance of common data-entry mistakes.</p>
+    <h2>How the Calculation Works</h2>
+    <p>Starting from the right, digits are weighted by alternating multipliers. Their sum is used to determine the final digit needed to make the total align with the GS1 Mod 10 rule.</p>
+    <h2>Where You See It</h2>
+    <p>GS1 check digits appear in identifiers such as GTIN, GLN, SSCC, and other key numbering systems used in trade and logistics.</p>
+    <h2>Practical Tip</h2>
+    <p>If an identifier fails validation, first check for transposed digits, missing leading zeros, or an incorrect base length before assuming the entire number is invalid.</p>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

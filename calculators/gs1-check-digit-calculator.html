@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GS1 Check Digit Calculator | SmartToolsHub</title>
+<meta name="description" content="Calculate and validate GS1 check digits for GTIN, SSCC and related identifiers.">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.gs1-page {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.gs1-main-title {
+  font-size: 24px;
+  line-height: 1.2;
+  color: #1e2433;
+  margin-bottom: 18px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+.gs1-label {
+  font-size: 13px;
+  color: #718096;
+  margin-bottom: 8px;
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+}
+.gs1-input-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+.gs1-input-wrap {
+  position: relative;
+  min-width: 260px;
+  flex: 1;
+  height: 44px;
+}
+.gs1-input {
+  width: 100%;
+  height: 100%;
+  background: #f7f8fc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  font-size: 13.5px;
+  font-family: 'Inter', sans-serif;
+  color: #1e2433;
+  padding: 9px 40px 9px 12px;
+  margin: 0;
+}
+.gs1-input:focus {
+  border-color: #5a4fcf;
+  background: #fff;
+  outline: none;
+}
+.gs1-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #d12f2f;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.gs1-action {
+  margin: 0;
+  padding: 9px 20px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.gs1-result-panel {
+  display: none;
+  margin-top: 20px;
+  background: #f0effe;
+  border-left: 4px solid #5a4fcf;
+  border-radius: 9px;
+  padding: 18px 16px;
+}
+.gs1-result-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 16px;
+}
+.gs1-result-main {
+  font-size: 18px;
+  font-family: 'Inter', sans-serif;
+  color: #1e2433;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.gs1-digit {
+  color: #5a4fcf;
+  font-weight: 700;
+}
+.gs1-result-link {
+  display: inline-block;
+  color: #5a4fcf;
+  text-decoration: underline;
+  margin-right: 12px;
+  font-size: 13.5px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+.gs1-type-note {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4a5568;
+  font-family: 'Inter', sans-serif;
+}
+.gs1-msg {
+  margin-top: 10px;
+  color: #e53e3e;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+}
+.gs1-info h3 {
+  font-size: 16px;
+  color: #1e2433;
+  margin: 26px 0 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+}
+.gs1-info p {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.75;
+  font-family: 'Inter', sans-serif;
+}
+@media (max-width: 860px) {
+  .gs1-main-title { font-size: 22px; }
+  .gs1-input { font-size: 13.5px; }
+  .gs1-input-row { flex-wrap: wrap; }
+  .gs1-action { width: 100%; }
+  .gs1-result-grid { grid-template-columns: 1fr; }
+  .gs1-type-note { font-size: 14px; }
+  .gs1-info h3 { font-size: 16px; }
+  .gs1-info p { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>GS1 Check Digit Calculator</h1>
+    <p>Calculate and validate check digits for GS1 identifiers</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">></span> <a href="/calculators.html">Calculators</a> <span style="color:#c0cad8;">></span> <span>GS1 Check Digit Calculator</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+  <div class="gs1-page">
+    <div class="gs1-main-title">Calculate a check digit</div>
+    <label class="gs1-label" for="gs1BaseInput">GS1 key without check digit</label>
+    <div class="gs1-input-row">
+      <div class="gs1-input-wrap">
+        <input class="gs1-input" type="text" id="gs1BaseInput" placeholder="061414100000" oninput="onGs1InputChange()">
+        <button class="gs1-clear" onclick="clearGs1Calc()" title="Clear">x</button>
+      </div>
+      <button class="gs1-action" onclick="calcGs1CheckDigit()">Calculate another check digit</button>
+    </div>
+
+    <div id="gs1ResultPanel" class="gs1-result-panel">
+      <div class="gs1-result-grid">
+        <div>
+          <div class="gs1-result-main"><span id="resBase">-</span> <span id="resDigit" class="gs1-digit">-</span> <span class="gs1-digit">Your Check Digit</span></div>
+          <a class="gs1-result-link" onclick="copyFullCode()">Copy this key</a>
+          <a class="gs1-result-link" onclick="showGtin14()">See this in a 14-digit GTIN format</a>
+          <div id="gtin14Text" style="margin-top:8px;color:#4a5568;font-size:13px;"></div>
+        </div>
+        <div class="gs1-type-note" id="gs1TypeNote"></div>
+      </div>
+    </div>
+
+    <div id="gs1Msg" class="gs1-msg"></div>
+
+    <div class="gs1-info">
+      <h3>What is a check digit?</h3>
+      <p>The last digit of all fixed-length numeric GS1 identification keys is a check digit that ensures integrity of the key. Most GS1 keys need a check digit, except some specific identifiers with different structures.</p>
+      <h3>How does the check digit calculator work?</h3>
+      <p>The check digit is calculated using the GS1 Mod 10 algorithm, based on the other numbers in the key.</p>
+    </div>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+<script>
+function cleanDigits(value) {
+  return (value || "").replace(/\D/g, "");
+}
+
+function gs1CheckDigit(baseDigits) {
+  var sum = 0;
+  var digits = baseDigits.split("").reverse();
+  for (var i = 0; i < digits.length; i++) {
+    var n = Number(digits[i]);
+    var weight = (i % 2 === 0) ? 3 : 1;
+    sum += n * weight;
+  }
+  return (10 - (sum % 10)) % 10;
+}
+
+function keyTypeMessage(baseLength) {
+  if (baseLength === 7) return "You entered 7 digits, this corresponds to the GTIN-8 base format.";
+  if (baseLength === 11) return "You've entered 11 digits, this corresponds with the GTIN-12 base format.";
+  if (baseLength === 12) return "You've entered 12 digits, this corresponds with the GTIN-13 format. It could also be a GLN or the first 13 digits of a GRAI, GDTI or GCN.";
+  if (baseLength === 13) return "You've entered 13 digits, this corresponds with the GTIN-14 base format.";
+  if (baseLength === 17) return "You've entered 17 digits, this corresponds with the SSCC-18 base format.";
+  return "This key length is still valid for GS1 Mod 10 calculation. Please confirm the target key type.";
+}
+
+function calcGs1CheckDigit() {
+  var base = cleanDigits(document.getElementById("gs1BaseInput").value);
+  var msg = document.getElementById("gs1Msg");
+  var panel = document.getElementById("gs1ResultPanel");
+
+  msg.textContent = "";
+  if (!base) {
+    panel.style.display = "none";
+    msg.textContent = "Please enter a GS1 key without check digit.";
+    return;
+  }
+
+  if (base.length < 1 || base.length > 17) {
+    panel.style.display = "none";
+    msg.textContent = "Key length should be between 1 and 17 digits.";
+    return;
+  }
+
+  var digit = gs1CheckDigit(base);
+  document.getElementById("resBase").textContent = base;
+  document.getElementById("resDigit").textContent = String(digit);
+  document.getElementById("gs1TypeNote").textContent = keyTypeMessage(base.length);
+  document.getElementById("gtin14Text").textContent = "";
+  panel.style.display = "block";
+}
+
+function copyFullCode() {
+  var base = document.getElementById("resBase").textContent;
+  var digit = document.getElementById("resDigit").textContent;
+  if (!base || base === "-") return;
+  navigator.clipboard.writeText(base + digit);
+}
+
+function showGtin14() {
+  var base = document.getElementById("resBase").textContent;
+  var digit = document.getElementById("resDigit").textContent;
+  if (!base || base === "-") return;
+  var full = base + digit;
+  var gtin14 = full.padStart(14, "0");
+  document.getElementById("gtin14Text").textContent = "GTIN-14: " + gtin14;
+}
+
+function clearGs1Calc() {
+  document.getElementById("gs1BaseInput").value = "";
+  document.getElementById("gs1ResultPanel").style.display = "none";
+  document.getElementById("gs1Msg").textContent = "";
+  document.getElementById("gtin14Text").textContent = "";
+}
+
+function onGs1InputChange() {
+  var input = document.getElementById("gs1BaseInput");
+  input.value = cleanDigits(input.value);
+}
+</script>
+</body>
+</html>

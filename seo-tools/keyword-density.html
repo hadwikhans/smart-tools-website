@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keyword Density Checker | SmartToolsHub</title>
+<meta name="description" content="Analyze keyword density, phrase usage, word count and top terms for SEO content directly in your browser.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/seo-tools/keyword-density.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.kd-shell { background:#fff; border:1px solid #e6ebf3; border-radius:14px; padding:18px; }
+.kd-grid { display:grid; grid-template-columns:2fr 1fr; gap:14px; align-items:start; }
+.kd-field label { display:block; font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px; }
+.kd-field textarea,.kd-field input,.kd-field select { width:100%; box-sizing:border-box; border:1px solid #dbe2ee; border-radius:10px; background:#f8faff; color:#1e2740; padding:10px 11px; font-size:13px; outline:none; }
+.kd-field textarea { min-height:280px; resize:vertical; line-height:1.5; }
+.kd-field textarea:focus,.kd-field input:focus,.kd-field select:focus { border-color:#5a4fcf; background:#fff; }
+.action-row { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.ghost-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; padding:8px 12px; border-radius:9px; font-size:12.5px; cursor:pointer; }
+.ghost-btn:hover { background:#e9eef8; }
+.stats-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:14px 0; }
+.stat { border:1px solid #e8eaf2; border-radius:10px; padding:11px; background:#fbfcff; }
+.stat strong { display:block; color:#1e2740; font-size:20px; line-height:1.2; }
+.stat span { color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.result-table { width:100%; border-collapse:collapse; font-size:13px; }
+.result-table th,.result-table td { text-align:left; padding:9px 8px; border-bottom:1px solid #eef1f7; }
+.result-table th { color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.6px; }
+.status { display:none; margin-top:10px; padding:10px 12px; border-radius:9px; font-size:12.5px; }
+.status.ok { display:block; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; }
+.status.err { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
+@media (max-width:900px){ .kd-grid,.stats-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>Keyword Density Checker</h1><p>Measure terms, phrases, density and content length for SEO writing</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/seo-tools.html">SEO Tools</a> &gt; <span>Keyword Density</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="kd-shell">
+  <div class="kd-grid">
+    <div class="kd-field">
+      <label for="kdText">Content</label>
+      <textarea id="kdText" placeholder="Paste your article, landing page copy or product description here..."></textarea>
+    </div>
+    <div>
+      <div class="kd-field">
+        <label for="kdKeyword">Focus keyword or phrase</label>
+        <input type="text" id="kdKeyword" placeholder="e.g. free online tools">
+      </div>
+      <div class="kd-field" style="margin-top:12px;">
+        <label for="phraseSize">Top phrase length</label>
+        <select id="phraseSize">
+          <option value="1">Single words</option>
+          <option value="2">Two-word phrases</option>
+          <option value="3">Three-word phrases</option>
+        </select>
+      </div>
+      <div class="kd-field" style="margin-top:12px;">
+        <label><input type="checkbox" id="ignoreStop" checked style="width:auto;margin-right:6px;">Ignore common stop words</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-row">
+    <button onclick="checkDensity()">Analyze</button>
+    <button class="secondary" onclick="loadKDSample()">Load Sample</button>
+    <button class="secondary" onclick="clearKD()">Clear</button>
+    <button class="ghost-btn" onclick="copyKDReport()">Copy Report</button>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat"><strong id="wordCount">0</strong><span>Words</span></div>
+    <div class="stat"><strong id="charCount">0</strong><span>Characters</span></div>
+    <div class="stat"><strong id="sentenceCount">0</strong><span>Sentences</span></div>
+    <div class="stat"><strong id="readingTime">0 min</strong><span>Reading Time</span></div>
+  </div>
+
+  <div id="focusResult" class="status"></div>
+  <div id="kdResult" style="margin-top:14px;"></div>
+</div>
+
+<div class="card">
+  <h2>About Keyword Density</h2>
+  <p>Keyword density is only one quality signal. Use it to catch missing focus terms or obvious repetition, then prioritize readable copy, helpful structure and search intent.</p>
+</div>
+
+<script>
+var stopWords = {
+  a:1, an:1, and:1, are:1, as:1, at:1, be:1, by:1, for:1, from:1, has:1, he:1,
+  in:1, is:1, it:1, its:1, of:1, on:1, that:1, the:1, to:1, was:1, were:1, will:1, with:1, you:1, your:1
+};
+var latestReport = "";
+
+function wordsFrom(text) {
+  return (text.toLowerCase().match(/[a-z0-9]+(?:'[a-z0-9]+)?/g) || []);
+}
+
+function cleanPhrase(text) {
+  return wordsFrom(text).join(" ");
+}
+
+function updateKDStats(text) {
+  var words = wordsFrom(text);
+  var chars = text.length;
+  var sentences = (text.match(/[.!?]+(?:\s|$)/g) || []).length || (text.trim() ? 1 : 0);
+  document.getElementById("wordCount").textContent = words.length;
+  document.getElementById("charCount").textContent = chars;
+  document.getElementById("sentenceCount").textContent = sentences;
+  document.getElementById("readingTime").textContent = Math.max(1, Math.ceil(words.length / 220)) + " min";
+  return words;
+}
+
+function checkDensity() {
+  var text = document.getElementById("kdText").value.trim();
+  var result = document.getElementById("kdResult");
+  var focus = document.getElementById("focusResult");
+  if (!text) {
+    updateKDStats("");
+    result.innerHTML = "";
+    focus.className = "status err";
+    focus.textContent = "Paste content to analyze.";
+    return;
+  }
+
+  var words = updateKDStats(text);
+  var phraseSize = Number(document.getElementById("phraseSize").value);
+  var ignoreStop = document.getElementById("ignoreStop").checked;
+  var focusTerm = cleanPhrase(document.getElementById("kdKeyword").value);
+  var total = words.length;
+
+  if (focusTerm) {
+    var focusWords = focusTerm.split(" ");
+    var count = countPhrase(words, focusWords);
+    var density = total ? (count * focusWords.length / total) * 100 : 0;
+    focus.className = "status ok";
+    focus.textContent = '"' + focusTerm + '" appears ' + count + " time" + (count === 1 ? "" : "s") + " with " + density.toFixed(2) + "% weighted density.";
+  } else {
+    focus.className = "status";
+    focus.textContent = "";
+  }
+
+  var items = topPhrases(words, phraseSize, ignoreStop).slice(0, 20);
+  var html = '<table class="result-table"><thead><tr><th>Keyword</th><th>Count</th><th>Density</th></tr></thead><tbody>';
+  items.forEach(function(item) {
+    html += "<tr><td>" + escapeHtml(item.term) + "</td><td>" + item.count + "</td><td>" + ((item.count * phraseSize / total) * 100).toFixed(2) + "%</td></tr>";
+  });
+  html += "</tbody></table>";
+  result.innerHTML = html;
+  latestReport = buildReport(words, focusTerm, items, phraseSize, total);
+}
+
+function countPhrase(words, phraseWords) {
+  if (!phraseWords.length) return 0;
+  var count = 0;
+  for (var i = 0; i <= words.length - phraseWords.length; i++) {
+    var ok = true;
+    for (var j = 0; j < phraseWords.length; j++) {
+      if (words[i + j] !== phraseWords[j]) { ok = false; break; }
+    }
+    if (ok) count++;
+  }
+  return count;
+}
+
+function topPhrases(words, size, ignoreStop) {
+  var freq = {};
+  for (var i = 0; i <= words.length - size; i++) {
+    var part = words.slice(i, i + size);
+    if (ignoreStop && part.every(function(w) { return stopWords[w]; })) continue;
+    if (ignoreStop && size === 1 && stopWords[part[0]]) continue;
+    var key = part.join(" ");
+    if (key.length < 3) continue;
+    freq[key] = (freq[key] || 0) + 1;
+  }
+  return Object.keys(freq).map(function(term) {
+    return { term: term, count: freq[term] };
+  }).sort(function(a,b) {
+    return b.count - a.count || a.term.localeCompare(b.term);
+  });
+}
+
+function buildReport(words, focusTerm, items, phraseSize, total) {
+  var lines = [
+    "Keyword Density Report",
+    "Words: " + total,
+    "Focus keyword: " + (focusTerm || "None")
+  ];
+  lines.push("Top " + phraseSize + "-word terms:");
+  items.slice(0, 10).forEach(function(item) {
+    lines.push("- " + item.term + ": " + item.count + " (" + ((item.count * phraseSize / total) * 100).toFixed(2) + "%)");
+  });
+  return lines.join("\n");
+}
+
+function escapeHtml(value) {
+  return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function copyKDReport() {
+  if (!latestReport) checkDensity();
+  if (!latestReport) return;
+  navigator.clipboard.writeText(latestReport).then(function() {
+    var focus = document.getElementById("focusResult");
+    focus.className = "status ok";
+    focus.textContent = "Report copied to clipboard.";
+  });
+}
+
+function loadKDSample() {
+  document.getElementById("kdText").value = "SmartToolsHub provides free online tools for SEO, PDF editing, calculators and developer workflows. These browser-based tools help users finish common tasks quickly without extra software. The SEO tools include a meta tag generator and keyword density checker for better content planning.";
+  document.getElementById("kdKeyword").value = "SEO tools";
+  document.getElementById("phraseSize").value = "2";
+  checkDensity();
+}
+
+function clearKD() {
+  document.getElementById("kdText").value = "";
+  document.getElementById("kdKeyword").value = "";
+  document.getElementById("phraseSize").value = "1";
+  document.getElementById("ignoreStop").checked = true;
+  document.getElementById("kdResult").innerHTML = "";
+  document.getElementById("focusResult").className = "status";
+  latestReport = "";
+  updateKDStats("");
+}
+
+document.getElementById("kdText").addEventListener("input", function() { updateKDStats(this.value); });
+updateKDStats("");
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

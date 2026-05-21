@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XML Minifier & Whitespace Remover | SmartToolsHub</title>
+<meta name="description" content="Minify XML, remove insignificant whitespace, validate XML and copy or download compact XML output in your browser.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools/xml-whitespace-remover.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.xml-shell { background:#fff; border:1px solid #e6ebf3; border-radius:14px; padding:16px; }
+.xml-options { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:14px; color:#475569; font-size:13px; }
+.xml-options label { display:flex; align-items:center; gap:6px; }
+.action-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.ghost-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; padding:8px 12px; border-radius:9px; font-size:12.5px; cursor:pointer; }
+.ghost-btn:hover { background:#e9eef8; }
+.io-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.editor-wrap label { display:block; font-size:12px; color:#64748b; margin-bottom:6px; font-weight:700; }
+.editor { width:100%; min-height:320px; resize:vertical; box-sizing:border-box; border:1px solid #dbe2ee; border-radius:10px; background:#fbfcff; color:#1e2740; padding:12px; font-family:"Courier New",monospace; font-size:12.5px; line-height:1.55; outline:none; white-space:pre; overflow:auto; }
+.editor:focus { border-color:#5a4fcf; background:#fff; }
+.editor[readonly] { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.stats-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-top:14px; }
+.stat { border:1px solid #e8eaf2; border-radius:10px; padding:11px; background:#fbfcff; }
+.stat strong { display:block; color:#1e2740; font-size:20px; line-height:1.2; }
+.stat span { color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.status { display:none; margin-top:10px; padding:10px 12px; border-radius:9px; font-size:12.5px; white-space:pre-line; }
+.status.ok { display:block; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; }
+.status.err { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
+@media (max-width:900px){ .io-grid,.stats-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>XML Minifier Tool</h1><p>Validate XML and remove indentation, line breaks and optional comments</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/serialization-tools.html">Serialization Tools</a> &gt; <span>XML Minifier</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="xml-shell">
+  <div class="xml-options">
+    <label><input type="checkbox" id="removeComments">Remove comments</label>
+    <label><input type="checkbox" id="trimText">Trim text nodes</label>
+    <label><input type="checkbox" id="keepDeclaration" checked>Keep XML declaration</label>
+  </div>
+
+  <div class="editor-wrap" style="margin-bottom:14px;">
+    <label for="xmlFile">Import XML File</label>
+    <input id="xmlFile" type="file" accept=".xml,text/xml,application/xml" onchange="importXmlFile(this)" style="width:100%;box-sizing:border-box;border:1px solid #dbe2ee;border-radius:10px;background:#f8faff;color:#1e2740;padding:10px 11px;font-size:13px;">
+  </div>
+
+  <div class="action-row">
+    <button onclick="removeXmlWhitespace()">Minify XML</button>
+    <button class="secondary" onclick="validateXmlOnly()">Validate XML</button>
+    <button class="secondary" onclick="loadXmlSample()">Load Sample</button>
+    <button class="secondary" onclick="clearXmlFields()">Clear</button>
+    <button class="ghost-btn" onclick="copyXmlOutput()">Copy Output</button>
+    <button class="ghost-btn" onclick="downloadXmlOutput()">Download XML</button>
+  </div>
+
+  <div class="io-grid">
+    <div class="editor-wrap">
+      <label for="xmlInput">XML Input</label>
+      <textarea id="xmlInput" class="editor" wrap="off" placeholder="Paste your XML here..."></textarea>
+    </div>
+    <div class="editor-wrap">
+      <label for="xmlOutput">Minified XML Output</label>
+      <textarea id="xmlOutput" class="editor" wrap="off" readonly placeholder="Minified XML output..."></textarea>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat"><strong id="beforeSize">0</strong><span>Input Chars</span></div>
+    <div class="stat"><strong id="afterSize">0</strong><span>Output Chars</span></div>
+    <div class="stat"><strong id="savedSize">0%</strong><span>Reduced</span></div>
+    <div class="stat"><strong id="nodeCount">0</strong><span>Elements</span></div>
+  </div>
+
+  <div id="xmlStatus" class="status"></div>
+</div>
+
+<div class="card">
+  <h2>About XML Minifier</h2>
+  <p>This tool removes insignificant whitespace-only text nodes between XML elements. Text content is preserved by default, so mixed-content XML stays safer unless you explicitly choose to trim text nodes.</p>
+</div>
+
+<script>
+function parseXml(input) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(input, "application/xml");
+  var err = doc.getElementsByTagName("parsererror")[0];
+  if (err) throw new Error(err.textContent.replace(/\s+/g, " ").trim() || "Invalid XML.");
+  return doc;
+}
+
+function cleanNode(node, options) {
+  var children = Array.prototype.slice.call(node.childNodes);
+  children.forEach(function(child) {
+    if (child.nodeType === Node.COMMENT_NODE && options.removeComments) {
+      node.removeChild(child);
+      return;
+    }
+    if (child.nodeType === Node.TEXT_NODE) {
+      if (/^\s*$/.test(child.nodeValue)) {
+        node.removeChild(child);
+        return;
+      }
+      if (options.trimText) {
+        child.nodeValue = child.nodeValue.replace(/\s+/g, " ").trim();
+      }
+    }
+    if (child.childNodes && child.childNodes.length) cleanNode(child, options);
+  });
+}
+
+function getDeclaration(input) {
+  var match = input.match(/^\s*(<\?xml[^?]*\?>)/i);
+  return match ? match[1] : "";
+}
+
+function removeXmlWhitespace() {
+  var input = document.getElementById("xmlInput").value;
+  var status = document.getElementById("xmlStatus");
+  if (!input.trim()) {
+    setXmlStatus("err", "Paste XML to remove whitespace.");
+    return;
+  }
+  try {
+    var doc = parseXml(input);
+    cleanNode(doc, {
+      removeComments: document.getElementById("removeComments").checked,
+      trimText: document.getElementById("trimText").checked
+    });
+    var output = new XMLSerializer().serializeToString(doc.documentElement);
+    var declaration = getDeclaration(input);
+    if (document.getElementById("keepDeclaration").checked && declaration) {
+      output = declaration + output;
+    }
+    output = minifySerializedXml(output);
+    document.getElementById("xmlOutput").value = output;
+    updateXmlStats(input, output, doc);
+    setXmlStatus("ok", "XML minified successfully.");
+  } catch (err) {
+    setXmlStatus("err", err.message);
+  }
+}
+
+function minifySerializedXml(xml) {
+  return xml
+    .replace(/>\s+</g, "><")
+    .replace(/[\r\n\t]+/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
+function validateXmlOnly() {
+  var input = document.getElementById("xmlInput").value;
+  if (!input.trim()) {
+    setXmlStatus("err", "Paste XML to validate.");
+    return;
+  }
+  try {
+    var doc = parseXml(input);
+    updateXmlStats(input, document.getElementById("xmlOutput").value || "", doc);
+    setXmlStatus("ok", "Valid XML. Found " + doc.getElementsByTagName("*").length + " elements.");
+  } catch (err) {
+    setXmlStatus("err", err.message);
+  }
+}
+
+function updateXmlStats(input, output, doc) {
+  var before = input.length;
+  var after = output.length;
+  var saved = before && after ? Math.max(0, ((before - after) / before) * 100) : 0;
+  document.getElementById("beforeSize").textContent = before;
+  document.getElementById("afterSize").textContent = after;
+  document.getElementById("savedSize").textContent = saved.toFixed(1) + "%";
+  document.getElementById("nodeCount").textContent = doc ? doc.getElementsByTagName("*").length : 0;
+}
+
+function setXmlStatus(type, message) {
+  var status = document.getElementById("xmlStatus");
+  status.className = "status " + type;
+  status.textContent = message;
+}
+
+function loadXmlSample() {
+  document.getElementById("xmlInput").value = '<?xml version="1.0" encoding="UTF-8"?>\n<catalog>\n  <!-- sample comment -->\n  <book id="bk101">\n    <title>XML Developer Guide</title>\n    <author>SmartToolsHub</author>\n  </book>\n</catalog>';
+  removeXmlWhitespace();
+}
+
+function importXmlFile(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById("xmlInput").value = e.target.result || "";
+    document.getElementById("xmlOutput").value = "";
+    updateXmlStats(document.getElementById("xmlInput").value, "", null);
+    setXmlStatus("ok", 'Imported "' + file.name + '". Click Minify XML to compact it.');
+  };
+  reader.onerror = function() {
+    setXmlStatus("err", "Could not read the selected file.");
+  };
+  reader.readAsText(file);
+}
+
+function clearXmlFields() {
+  document.getElementById("xmlInput").value = "";
+  document.getElementById("xmlOutput").value = "";
+  document.getElementById("xmlFile").value = "";
+  updateXmlStats("", "", null);
+  document.getElementById("xmlStatus").className = "status";
+}
+
+function copyXmlOutput() {
+  var output = document.getElementById("xmlOutput").value;
+  if (!output.trim()) removeXmlWhitespace();
+  output = document.getElementById("xmlOutput").value;
+  if (!output.trim()) return;
+  navigator.clipboard.writeText(output).then(function() {
+    setXmlStatus("ok", "Output copied to clipboard.");
+  });
+}
+
+function downloadXmlOutput() {
+  var output = document.getElementById("xmlOutput").value;
+  if (!output.trim()) removeXmlWhitespace();
+  output = document.getElementById("xmlOutput").value;
+  if (!output.trim()) return;
+  var blob = new Blob([output], { type: "application/xml" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "compact.xml";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

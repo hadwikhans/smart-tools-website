@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📊 Percentage Calculator | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
+
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>📊 Percentage Calculator</h1>
+    <p>Calculate percentages of any number quickly</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <a href="/calculators.html">Calculators</a> <span style="color:#c0cad8;">›</span> <span>Percentage Calculator</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+<div class="card">
+<h2>Percentage Calculator</h2>
+<label>Percent (%)</label>
+<input type="number" id="percent" placeholder="e.g. 25">
+<label>Number</label>
+<input type="number" id="number" placeholder="e.g. 200">
+<div style="margin-top:4px;">
+<button onclick="calcPercent()">Calculate</button>
+<button class="secondary" onclick="clearPercent()">Clear</button>
+</div>
+<div id="percentResult" style="display:none;margin-top:12px;"></div>
+</div>
+<div class="card">
+<h2>About Percentage Calculator</h2>
+<p>Quickly find what percentage of a number is. Enter the percentage and the number and get the result instantly.</p>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

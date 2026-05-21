@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS Minifier & Beautifier | SmartToolsHub</title>
+<meta name="description" content="Minify or beautify CSS code to optimize your stylesheets">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/css-minifier.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🎨 CSS Minifier & Beautifier</h1><p>Minify or beautify CSS code to optimize your stylesheets</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>CSS Minifier</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Input CSS</label>
+  <textarea class="tool-textarea" id="cssInput" placeholder="Paste your CSS code here..." oninput="updateCssCount()"></textarea>
+  <div class="char-count" id="cssCount">0 characters</div>
+  <div class="btn-row">
+    <button onclick="minifyCss()">🗜️ Minify CSS</button>
+    <button onclick="beautifyCss()">✨ Beautify CSS</button>
+    <button class="secondary" onclick="cssClear()">Clear</button>
+  </div>
+  <div id="cssMsg"></div>
+  <label style="margin-top:12px;">Output</label>
+  <textarea class="tool-textarea output" id="cssOutput" placeholder="Output will appear here..." readonly></textarea>
+  <div class="btn-row">
+    <button class="copy-btn" onclick="copyText('cssOutput')">📋 Copy Output</button>
+  </div>
+</div>
+<div class="card">
+  <h2>About CSS Minifier</h2>
+  <p>Minifying CSS removes whitespace, comments and unnecessary characters to reduce file size and improve page load speed. Beautifying formats compressed CSS for readability.</p>
+</div>
+<script>
+function updateCssCount(){
+  document.getElementById("cssCount").textContent=document.getElementById("cssInput").value.length+" characters";
+}
+function minifyCss(){
+  var input=document.getElementById("cssInput").value.trim();
+  var msg=document.getElementById("cssMsg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter CSS.";return;}
+  var minified=input
+    .replace(/\/\*[\s\S]*?\*\//g,"")
+    .replace(/\s+/g," ")
+    .replace(/\s*{\s*/g,"{")
+    .replace(/\s*}\s*/g,"}")
+    .replace(/\s*:\s*/g,":")
+    .replace(/\s*;\s*/g,";")
+    .replace(/\s*,\s*/g,",")
+    .replace(/;}/g,"}")
+    .trim();
+  var savings=Math.round((1-minified.length/input.length)*100);
+  document.getElementById("cssOutput").value=minified;
+  msg.className="success-msg";msg.textContent="✅ Minified! Saved "+savings+"% ("+input.length+" → "+minified.length+" chars)";
+}
+function beautifyCss(){
+  var input=document.getElementById("cssInput").value.trim();
+  var msg=document.getElementById("cssMsg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter CSS.";return;}
+  var beautified=input
+    .replace(/\s+/g," ")
+    .replace(/{\s*/g," {
+  ")
+    .replace(/;\s*/g,";
+  ")
+    .replace(/\s*}\s*/g,"
+}
+")
+    .replace(/,\s*/g,",
+")
+    .trim();
+  document.getElementById("cssOutput").value=beautified;
+  msg.className="success-msg";msg.textContent="✅ CSS beautified successfully!";
+}
+function cssClear(){
+  document.getElementById("cssInput").value="";
+  document.getElementById("cssOutput").value="";
+  document.getElementById("cssMsg").textContent="";
+  updateCssCount();
+}
+function copyText(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied!");});
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>

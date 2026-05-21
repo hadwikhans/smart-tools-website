@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 - Page Not Found | SmartToolsHub</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.error-page { text-align:center; padding: 80px 20px; }
+.error-page h1 { font-size: 96px; font-weight: 800; color: #e2e8f0; letter-spacing: -4px; margin-bottom: 8px; }
+.error-page h2 { font-size: 24px; font-weight: 700; color: #1e2740; margin-bottom: 12px; }
+.error-page p  { font-size: 15px; color: #94a3b8; margin-bottom: 28px; }
+.error-page div { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<div class="container">
+<div class="error-page">
+  <h1>404</h1>
+  <h2>Page Not Found</h2>
+  <p>The page you're looking for doesn't exist or may have been moved.</p>
+  <div>
+    <button onclick="location.href='/index.html'">Go to Homepage</button>
+    <button class="secondary" onclick="location.href='/all-tools.html'">Browse All Tools</button>
+  </div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="js/loadcomponents.js"></script>
+<script src="js/sticky.js"></script>
+</body>
+</html>

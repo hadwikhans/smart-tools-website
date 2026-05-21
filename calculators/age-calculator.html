@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 Age Calculator | SmartToolsHub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+
+
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container">
+    <h1>📅 Age Calculator</h1>
+    <p>Calculate your exact age from date of birth</p>
+  </div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container">
+    <div class="breadcrumb"><a href="/index.html">Home</a> <span style="color:#c0cad8;">›</span> <a href="/calculators.html">Calculators</a> <span style="color:#c0cad8;">›</span> <span>Age Calculator</span></div>
+  </div>
+</div>
+<div class="container">
+<div class="page-content">
+<div class="card">
+<h2>Age Calculator</h2>
+<label>Date of Birth</label>
+<input type="date" id="dob">
+<div style="margin-top:4px;">
+<button onclick="calcAge()">Calculate</button>
+<button class="secondary" onclick="clearAge()">Clear</button>
+</div>
+<div id="ageResult" style="display:none;margin-top:12px;"></div>
+</div>
+<div class="card">
+<h2>About Age Calculator</h2>
+<p>The Age Calculator helps you calculate your exact age based on your date of birth. Simply select your birth date and the calculator will instantly show your age in years, months and days.</p>
+<h3>How to Use</h3>
+<p>1. Select your date of birth.<br>2. Click the Calculate button.<br>3. Your age will be displayed instantly.</p>
+<h3>Other Useful Tools</h3>
+<p>Try our <a href="/calculators/bmi-calculator.html">BMI Calculator</a> or <a href="/calculators/percentage-calculator.html">Percentage Calculator</a>.</p>
+</div>
+<div class="card">
+<h2>Frequently Asked Questions</h2>
+<h3>How does the Age Calculator work?</h3>
+<p>It compares your date of birth with today's date to calculate your age accurately.</p>
+<h3>Is this age calculator accurate?</h3>
+<p>Yes. It calculates your exact age including leap years.</p>
+<h3>Can I use this for official purposes?</h3>
+<p>This tool is for quick reference. Official documents should be verified with official records.</p>
+</div>
+</div>
+</div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

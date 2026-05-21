@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base64 Encoder / Decoder | SmartToolsHub</title>
+<meta name="description" content="Encode or decode Base64 strings instantly in your browser">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/developer-tools/base64.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.tool-textarea {
+    width:100%; font-family:'Courier New',monospace; font-size:13px;
+    background:#f8f9fc; border:1px solid #e2e8f0; border-radius:9px;
+    padding:12px; color:#1e2740; resize:vertical; min-height:140px;
+    box-sizing:border-box; outline:none; transition:0.15s;
+    line-height:1.6;
+}
+.tool-textarea:focus { border-color:#5a4fcf; background:#fff; }
+.tool-textarea.output { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.btn-row { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+.copy-btn {
+    background:#f0f2f8; color:#5a4fcf; border:1px solid #e2e8f0;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.copy-btn:hover { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.swap-btn {
+    background:#1e2740; color:#fff; border:none;
+    padding:7px 14px; border-radius:8px; font-size:12.5px;
+    font-weight:600; cursor:pointer; font-family:inherit;
+}
+.swap-btn:hover { background:#2d3a5e; }
+.error-msg { color:#e53e3e; font-size:13px; margin-top:6px; }
+.success-msg { color:#059669; font-size:13px; margin-top:6px; }
+.char-count { font-size:11.5px; color:#94a3b8; margin-top:4px; text-align:right; }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>🔐 Base64 Encoder / Decoder</h1><p>Encode or decode Base64 strings instantly in your browser</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/developer-tools.html">Developer Tools</a> &gt; <span>Base64 Encoder/Decoder</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="card">
+  <label>Input</label>
+  <textarea class="tool-textarea" id="b64Input" placeholder="Enter text to encode or Base64 string to decode..." oninput="updateB64Count()"></textarea>
+  <div class="char-count" id="b64Count">0 characters</div>
+  <div class="btn-row">
+    <button onclick="b64Encode()">🔒 Encode to Base64</button>
+    <button onclick="b64Decode()">🔓 Decode from Base64</button>
+    <button class="secondary" onclick="b64Clear()">Clear</button>
+    <button class="swap-btn" onclick="b64Swap()">⇅ Swap</button>
+  </div>
+  <div id="b64Msg"></div>
+  <label style="margin-top:12px;">Output</label>
+  <textarea class="tool-textarea output" id="b64Output" placeholder="Output will appear here..." readonly></textarea>
+  <div class="btn-row">
+    <button class="copy-btn" onclick="copyText('b64Output')">📋 Copy Output</button>
+  </div>
+</div>
+<div class="card">
+  <h2>About Base64 Encoder/Decoder</h2>
+  <p>Base64 is an encoding scheme that converts binary data into ASCII text format. It is widely used in web development, email systems, APIs and data storage.</p>
+  <h3>Common Uses</h3>
+  <p>
+    • Encoding images to embed directly in HTML/CSS<br>
+    • Encoding data in JWT tokens<br>
+    • Encoding credentials in HTTP Basic Authentication<br>
+    • Storing binary data in JSON or XML
+  </p>
+</div>
+<script>
+function updateB64Count(){
+  var t=document.getElementById("b64Input").value;
+  document.getElementById("b64Count").textContent=t.length+" characters";
+}
+function b64Encode(){
+  var input=document.getElementById("b64Input").value;
+  var msg=document.getElementById("b64Msg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter some text.";return;}
+  try{
+    var encoded=btoa(unescape(encodeURIComponent(input)));
+    document.getElementById("b64Output").value=encoded;
+    msg.className="success-msg";msg.textContent="✅ Encoded successfully!";
+  }catch(e){msg.className="error-msg";msg.textContent="Error: "+e.message;}
+}
+function b64Decode(){
+  var input=document.getElementById("b64Input").value.trim();
+  var msg=document.getElementById("b64Msg");
+  if(!input){msg.className="error-msg";msg.textContent="Please enter a Base64 string.";return;}
+  try{
+    var decoded=decodeURIComponent(escape(atob(input)));
+    document.getElementById("b64Output").value=decoded;
+    msg.className="success-msg";msg.textContent="✅ Decoded successfully!";
+  }catch(e){msg.className="error-msg";msg.textContent="❌ Invalid Base64 string.";}
+}
+function b64Swap(){
+  var i=document.getElementById("b64Input");
+  var o=document.getElementById("b64Output");
+  var tmp=i.value; i.value=o.value; o.value=tmp;
+  updateB64Count();
+}
+function b64Clear(){
+  document.getElementById("b64Input").value="";
+  document.getElementById("b64Output").value="";
+  document.getElementById("b64Msg").textContent="";
+  updateB64Count();
+}
+function copyText(id){
+  var t=document.getElementById(id).value;
+  if(!t){alert("Nothing to copy!");return;}
+  navigator.clipboard.writeText(t).then(function(){alert("Copied to clipboard!");});
+}
+</script>
+
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/sticky.js"></script>
+</body></html>
