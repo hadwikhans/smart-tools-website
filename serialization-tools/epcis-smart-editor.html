@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPCIS Smart Editor | SmartToolsHub</title>
+<meta name="description" content="Upload, inspect and edit EPCIS XML header, location, product and ObjectEvent details in your browser.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools/epcis-smart-editor.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.editor-shell { display:grid; grid-template-columns:1.05fr .95fr 1.05fr; gap:12px; align-items:start; }
+.panel { background:#fff; border:1px solid #e6ebf3; border-radius:14px; padding:14px; min-width:0; }
+.panel h2 { font-size:15px; margin:0 0 10px; color:#1e2740; }
+.stats-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
+.stat { border:1px solid #e8eaf2; border-radius:10px; padding:10px; background:#fbfcff; text-align:center; }
+.stat strong { display:block; color:#1e2740; font-size:22px; line-height:1.2; }
+.stat span { display:block; color:#64748b; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.field { margin-bottom:10px; }
+.field label { display:block; font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px; }
+.field input,.field select,.field textarea { width:100%; box-sizing:border-box; border:1px solid #dbe2ee; border-radius:10px; background:#f8faff; color:#1e2740; padding:10px 11px; font-size:13px; outline:none; }
+.field textarea { min-height:360px; resize:vertical; font-family:"Courier New",monospace; font-size:12.5px; line-height:1.5; white-space:pre; overflow:auto; }
+.field input:focus,.field select:focus,.field textarea:focus { border-color:#5a4fcf; background:#fff; }
+.field textarea[readonly] { background:#f4f3ff; border-color:#e0ddff; color:#3d3580; }
+.section { border:1px solid #e8eaf2; border-radius:12px; overflow:hidden; background:#fff; margin-bottom:10px; }
+.section-header { width:100%; text-align:left; background:#f1f4fb; color:#24324b; border:0; padding:11px 12px; font-size:13px; font-weight:800; cursor:pointer; }
+.section-header:hover { background:#e8edf8; }
+.section-content { display:none; padding:12px; }
+.section.open .section-content { display:block; }
+.action-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.ghost-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; padding:8px 12px; border-radius:9px; font-size:12.5px; cursor:pointer; }
+.ghost-btn:hover { background:#e9eef8; }
+.status { display:none; margin-top:10px; padding:10px 12px; border-radius:9px; font-size:12.5px; white-space:pre-line; }
+.status.ok { display:block; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; }
+.status.err { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
+@media (max-width:1100px){ .editor-shell{grid-template-columns:1fr;} .field textarea{min-height:280px;} }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>EPCIS Smart Editor</h1><p>Load EPCIS XML, edit key master data and event fields, then export updated XML</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/serialization-tools.html">Serialization Tools</a> &gt; <span>EPCIS Smart Editor</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="editor-shell">
+  <div class="panel">
+    <div class="stats-grid">
+      <div class="stat"><strong id="locationCount">0</strong><span>Locations</span></div>
+      <div class="stat"><strong id="productCount">0</strong><span>Products</span></div>
+      <div class="stat"><strong id="eventCount">0</strong><span>Events</span></div>
+    </div>
+
+    <div class="field">
+      <label for="xmlFile">Import EPCIS XML</label>
+      <input id="xmlFile" type="file" accept=".xml,text/xml,application/xml" onchange="importEpcisFile(this)">
+    </div>
+
+    <div class="field">
+      <label for="inputXML">Original XML</label>
+      <textarea id="inputXML" wrap="off" placeholder="Paste EPCIS XML here..."></textarea>
+    </div>
+
+    <div class="action-row">
+      <button onclick="loadXML()">Normalize &amp; Load XML</button>
+      <button class="secondary" onclick="loadSampleXML()">Load Sample</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="panel">
+    <div class="section open">
+      <button class="section-header" type="button" onclick="toggleSection(this)">Header Information</button>
+      <div class="section-content">
+        <div class="field"><label for="schemaVersion">Schema Version</label><input type="text" id="schemaVersion"></div>
+        <div class="field"><label for="creationDate">Creation Date</label><input type="text" id="creationDate"></div>
+        <div class="field"><label for="senderSGLN">Sender SGLN</label><input type="text" id="senderSGLN"></div>
+        <div class="field"><label for="receiverSGLN">Receiver SGLN</label><input type="text" id="receiverSGLN"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <button class="section-header" type="button" onclick="toggleSection(this)">Location Data</button>
+      <div class="section-content">
+        <div class="field"><label for="locationDropdown">Select Location</label><select id="locationDropdown" onchange="loadLocationDetails()"></select></div>
+        <div class="field"><label for="locationName">Location Name</label><input type="text" id="locationName"></div>
+        <div class="field"><label for="streetAddress">Street Address</label><input type="text" id="streetAddress"></div>
+        <div class="field"><label for="city">City</label><input type="text" id="city"></div>
+        <div class="field"><label for="state">State</label><input type="text" id="state"></div>
+        <div class="field"><label for="postalCode">Postal Code</label><input type="text" id="postalCode"></div>
+        <div class="field"><label for="countryCode">Country Code</label><input type="text" id="countryCode"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <button class="section-header" type="button" onclick="toggleSection(this)">Product Data</button>
+      <div class="section-content">
+        <div class="field"><label for="productDropdown">Select Product Vocabulary</label><select id="productDropdown" onchange="loadProductDetails()"></select></div>
+        <div class="field"><label for="tradeItemTypeCode">Trade Item Identification Type Code</label><input type="text" id="tradeItemTypeCode"></div>
+        <div class="field"><label for="tradeItemIdentification">Trade Item Identification</label><input type="text" id="tradeItemIdentification"></div>
+        <div class="field"><label for="productName">Product Name</label><input type="text" id="productName"></div>
+        <div class="field"><label for="manufacturer">Manufacturer</label><input type="text" id="manufacturer"></div>
+        <div class="field"><label for="dosageForm">Dosage Form</label><input type="text" id="dosageForm"></div>
+        <div class="field"><label for="strength">Strength</label><input type="text" id="strength"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <button class="section-header" type="button" onclick="toggleSection(this)">Event Data</button>
+      <div class="section-content">
+        <div class="field"><label for="eventDropdown">Select Event</label><select id="eventDropdown" onchange="loadEventDetails()"></select></div>
+        <div class="field"><label for="eventTime">Event Time</label><input type="text" id="eventTime"></div>
+        <div class="field"><label for="timezone">Timezone Offset</label><input type="text" id="timezone"></div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button onclick="updateXML()">Update XML</button>
+      <button class="ghost-btn" onclick="openAllSections()">Open All</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="field">
+      <label for="outputXML">Updated XML</label>
+      <textarea id="outputXML" wrap="off" readonly placeholder="Updated EPCIS XML appears here..."></textarea>
+    </div>
+    <div class="action-row">
+      <button class="secondary" onclick="copyOutputXML()">Copy XML</button>
+      <button class="ghost-btn" onclick="downloadXML()">Download XML</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>About EPCIS Smart Editor</h2>
+  <p>This editor focuses on common EPCIS XML touch points: document header values, SBDH sender and receiver identifiers, location master data, product master data, and ObjectEvent timing. It runs fully in the browser.</p>
+</div>
+
+<script>
+var xmlDoc = null;
+var serializer = new XMLSerializer();
+var locations = [];
+var products = [];
+var events = [];
+
+var SAMPLE_XML = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+'<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" xmlns:cbvmd="urn:epcglobal:cbv:mda" schemaVersion="1.2" creationDate="2026-05-21T10:00:00Z">\n' +
+'  <EPCISHeader><StandardBusinessDocumentHeader><Sender><Identifier>urn:epc:id:sgln:0361825.00000.0</Identifier></Sender><Receiver><Identifier>urn:epc:id:sgln:0096295.00403.0</Identifier></Receiver></StandardBusinessDocumentHeader></EPCISHeader>\n' +
+'  <EPCISBody><EventList><ObjectEvent><eventTime>2026-05-21T10:00:00Z</eventTime><eventTimeZoneOffset>+05:30</eventTimeZoneOffset><action>OBSERVE</action></ObjectEvent></EventList></EPCISBody>\n' +
+'  <VocabularyList><Vocabulary><VocabularyElementList>\n' +
+'    <VocabularyElement id="urn:epc:id:sgln:0361825.00000.0"><attribute id="urn:epcglobal:cbv:mda#name">Sample Location</attribute><attribute id="urn:epcglobal:cbv:mda#streetAddressOne">100 Main Road</attribute><attribute id="urn:epcglobal:cbv:mda#city">Hyderabad</attribute><attribute id="urn:epcglobal:cbv:mda#state">TS</attribute><attribute id="urn:epcglobal:cbv:mda#postalCode">500001</attribute><attribute id="urn:epcglobal:cbv:mda#countryCode">IN</attribute></VocabularyElement>\n' +
+'    <VocabularyElement id="urn:epc:idpat:sgtin:0361825.330260.*"><attribute id="urn:epcglobal:cbv:mda#additionalTradeItemIdentificationTypeCode">US_NDC532</attribute><attribute id="urn:epcglobal:cbv:mda#additionalTradeItemIdentification">61825-302-60</attribute><attribute id="urn:epcglobal:cbv:mda#regulatedProductName">Sample Product</attribute><attribute id="urn:epcglobal:cbv:mda#manufacturerOfTradeItemPartyName">Sample Manufacturer</attribute><attribute id="urn:epcglobal:cbv:mda#dosageFormType">Tablet</attribute><attribute id="urn:epcglobal:cbv:mda#strengthDescription">50mg</attribute></VocabularyElement>\n' +
+'  </VocabularyElementList></Vocabulary></VocabularyList>\n' +
+'</epcis:EPCISDocument>';
+
+function toggleSection(header) {
+  var section = header.closest(".section");
+  if (section) section.classList.toggle("open");
+}
+
+function openAllSections() {
+  document.querySelectorAll(".section").forEach(function(section) {
+    section.classList.add("open");
+  });
+}
+
+function setStatus(type, message) {
+  var status = document.getElementById("status");
+  status.className = "status " + type;
+  status.textContent = message;
+}
+
+function importEpcisFile(input) {
+  var file = input.files && input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById("inputXML").value = e.target.result || "";
+    document.getElementById("outputXML").value = "";
+    setStatus("ok", 'Imported "' + file.name + '". Click Normalize & Load XML.');
+  };
+  reader.onerror = function() {
+    setStatus("err", "Could not read the selected XML file.");
+  };
+  reader.readAsText(file);
+}
+
+function normalizeXML(xml) {
+  return xml.replace(/>\s+</g, "><").replace(/[\r\n\t]+/g, "").replace(/\s{2,}/g, " ").trim();
+}
+
+function parseXML(xml) {
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(xml, "application/xml");
+  var err = doc.getElementsByTagName("parsererror")[0];
+  if (err) throw new Error(err.textContent.replace(/\s+/g, " ").trim() || "Invalid XML.");
+  return doc;
+}
+
+function loadXML() {
+  try {
+    var rawXML = document.getElementById("inputXML").value;
+    if (!rawXML.trim()) {
+      setStatus("err", "Paste or import EPCIS XML first.");
+      return;
+    }
+    var normalized = normalizeXML(rawXML);
+    xmlDoc = parseXML(normalized);
+    document.getElementById("inputXML").value = normalized;
+    openAllSections();
+    loadHeader();
+    loadLocations();
+    loadProducts();
+    loadEvents();
+    writeOutput();
+    setStatus("ok", "XML normalized and loaded successfully.");
+  } catch (err) {
+    setStatus("err", err.message || "Error processing XML.");
+  }
+}
+
+function loadSampleXML() {
+  document.getElementById("inputXML").value = SAMPLE_XML;
+  loadXML();
+}
+
+function textOfFirst(localName) {
+  var el = xmlDoc.getElementsByTagNameNS("*", localName)[0] || xmlDoc.getElementsByTagName(localName)[0];
+  return el ? el.textContent.trim() : "";
+}
+
+function loadHeader() {
+  var root = xmlDoc.documentElement;
+  document.getElementById("schemaVersion").value = root.getAttribute("schemaVersion") || "";
+  document.getElementById("creationDate").value = root.getAttribute("creationDate") || "";
+  var identifiers = Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", "Identifier"));
+  if (!identifiers.length) identifiers = Array.prototype.slice.call(xmlDoc.getElementsByTagName("Identifier"));
+  document.getElementById("senderSGLN").value = identifiers[0] ? identifiers[0].textContent.trim() : "";
+  document.getElementById("receiverSGLN").value = identifiers[1] ? identifiers[1].textContent.trim() : "";
+}
+
+function getVocabElements() {
+  var nodes = Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", "VocabularyElement"));
+  if (!nodes.length) nodes = Array.prototype.slice.call(xmlDoc.getElementsByTagName("VocabularyElement"));
+  return nodes;
+}
+
+function attrElements(parent) {
+  var attrs = Array.prototype.slice.call(parent.getElementsByTagNameNS("*", "attribute"));
+  if (!attrs.length) attrs = Array.prototype.slice.call(parent.getElementsByTagName("attribute"));
+  return attrs;
+}
+
+function findAttributeValue(parent, keys) {
+  var attrs = attrElements(parent);
+  for (var i = 0; i < attrs.length; i++) {
+    var id = attrs[i].getAttribute("id") || "";
+    for (var j = 0; j < keys.length; j++) {
+      if (id.endsWith(keys[j]) || id.indexOf(keys[j]) !== -1) return attrs[i].textContent.trim();
+    }
+  }
+  return "";
+}
+
+function loadLocations() {
+  locations = [];
+  var dropdown = document.getElementById("locationDropdown");
+  dropdown.innerHTML = "";
+  getVocabElements().forEach(function(element) {
+    var locationName = findAttributeValue(element, ["#name"]);
+    if (!locationName) return;
+    locations.push(element);
+    addOption(dropdown, locations.length - 1, (element.getAttribute("id") || "Location") + " - " + locationName);
+  });
+  document.getElementById("locationCount").textContent = locations.length;
+  if (locations.length) loadLocationDetails();
+}
+
+function loadProducts() {
+  products = [];
+  var dropdown = document.getElementById("productDropdown");
+  dropdown.innerHTML = "";
+  getVocabElements().forEach(function(element) {
+    var productName = findAttributeValue(element, ["regulatedProductName"]);
+    if (!productName) return;
+    products.push(element);
+    addOption(dropdown, products.length - 1, (element.getAttribute("id") || "Product") + " - " + productName);
+  });
+  document.getElementById("productCount").textContent = products.length;
+  if (products.length) loadProductDetails();
+}
+
+function loadEvents() {
+  events = Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", "ObjectEvent"));
+  if (!events.length) events = Array.prototype.slice.call(xmlDoc.getElementsByTagName("ObjectEvent"));
+  var dropdown = document.getElementById("eventDropdown");
+  dropdown.innerHTML = "";
+  events.forEach(function(event, index) {
+    addOption(dropdown, index, "ObjectEvent #" + (index + 1));
+  });
+  document.getElementById("eventCount").textContent = events.length;
+  if (events.length) loadEventDetails();
+}
+
+function addOption(dropdown, value, text) {
+  var option = document.createElement("option");
+  option.value = value;
+  option.textContent = text;
+  dropdown.appendChild(option);
+}
+
+function setFields(mapping, parent) {
+  Object.keys(mapping).forEach(function(inputId) {
+    document.getElementById(inputId).value = findAttributeValue(parent, mapping[inputId]);
+  });
+}
+
+function loadLocationDetails() {
+  var location = locations[Number(document.getElementById("locationDropdown").value)];
+  if (!location) return;
+  setFields({
+    locationName: ["#name"],
+    streetAddress: ["#streetAddressOne", "#streetAddress"],
+    city: ["#city"],
+    state: ["#state"],
+    postalCode: ["#postalCode"],
+    countryCode: ["#countryCode"]
+  }, location);
+}
+
+function loadProductDetails() {
+  var product = products[Number(document.getElementById("productDropdown").value)];
+  if (!product) return;
+  setFields({
+    tradeItemTypeCode: ["additionalTradeItemIdentificationTypeCode"],
+    tradeItemIdentification: ["additionalTradeItemIdentification"],
+    productName: ["regulatedProductName"],
+    manufacturer: ["manufacturerOfTradeItemPartyName"],
+    dosageForm: ["dosageFormType"],
+    strength: ["strengthDescription"]
+  }, product);
+}
+
+function firstChildText(parent, localName) {
+  var el = parent.getElementsByTagNameNS("*", localName)[0] || parent.getElementsByTagName(localName)[0];
+  return el ? el.textContent.trim() : "";
+}
+
+function setFirstChildText(parent, localName, value) {
+  var el = parent.getElementsByTagNameNS("*", localName)[0] || parent.getElementsByTagName(localName)[0];
+  if (el) el.textContent = value;
+}
+
+function loadEventDetails() {
+  var event = events[Number(document.getElementById("eventDropdown").value)];
+  if (!event) return;
+  document.getElementById("eventTime").value = firstChildText(event, "eventTime");
+  document.getElementById("timezone").value = firstChildText(event, "eventTimeZoneOffset");
+}
+
+function updateXML() {
+  if (!xmlDoc) {
+    setStatus("err", "Load EPCIS XML before updating.");
+    return;
+  }
+  updateHeader();
+  updateLocation();
+  updateProduct();
+  updateEvent();
+  writeOutput();
+  setStatus("ok", "XML updated successfully.");
+}
+
+function updateHeader() {
+  var root = xmlDoc.documentElement;
+  root.setAttribute("schemaVersion", document.getElementById("schemaVersion").value);
+  root.setAttribute("creationDate", document.getElementById("creationDate").value);
+  var identifiers = Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", "Identifier"));
+  if (!identifiers.length) identifiers = Array.prototype.slice.call(xmlDoc.getElementsByTagName("Identifier"));
+  if (identifiers[0]) identifiers[0].textContent = document.getElementById("senderSGLN").value;
+  if (identifiers[1]) identifiers[1].textContent = document.getElementById("receiverSGLN").value;
+}
+
+function updateAttribute(parent, keys, value) {
+  attrElements(parent).forEach(function(attr) {
+    var id = attr.getAttribute("id") || "";
+    keys.forEach(function(key) {
+      if (id.endsWith(key) || id.indexOf(key) !== -1) attr.textContent = value;
+    });
+  });
+}
+
+function updateLocation() {
+  var location = locations[Number(document.getElementById("locationDropdown").value)];
+  if (!location) return;
+  updateAttribute(location, ["#name"], document.getElementById("locationName").value);
+  updateAttribute(location, ["#streetAddressOne", "#streetAddress"], document.getElementById("streetAddress").value);
+  updateAttribute(location, ["#city"], document.getElementById("city").value);
+  updateAttribute(location, ["#state"], document.getElementById("state").value);
+  updateAttribute(location, ["#postalCode"], document.getElementById("postalCode").value);
+  updateAttribute(location, ["#countryCode"], document.getElementById("countryCode").value);
+}
+
+function updateProduct() {
+  var product = products[Number(document.getElementById("productDropdown").value)];
+  if (!product) return;
+  updateAttribute(product, ["additionalTradeItemIdentificationTypeCode"], document.getElementById("tradeItemTypeCode").value);
+  updateAttribute(product, ["additionalTradeItemIdentification"], document.getElementById("tradeItemIdentification").value);
+  updateAttribute(product, ["regulatedProductName"], document.getElementById("productName").value);
+  updateAttribute(product, ["manufacturerOfTradeItemPartyName"], document.getElementById("manufacturer").value);
+  updateAttribute(product, ["dosageFormType"], document.getElementById("dosageForm").value);
+  updateAttribute(product, ["strengthDescription"], document.getElementById("strength").value);
+}
+
+function updateEvent() {
+  var event = events[Number(document.getElementById("eventDropdown").value)];
+  if (!event) return;
+  setFirstChildText(event, "eventTime", document.getElementById("eventTime").value);
+  setFirstChildText(event, "eventTimeZoneOffset", document.getElementById("timezone").value);
+}
+
+function writeOutput() {
+  document.getElementById("outputXML").value = normalizeXML(serializer.serializeToString(xmlDoc));
+}
+
+function copyOutputXML() {
+  var output = document.getElementById("outputXML").value;
+  if (!output.trim()) {
+    setStatus("err", "No updated XML to copy.");
+    return;
+  }
+  navigator.clipboard.writeText(output).then(function() {
+    setStatus("ok", "Updated XML copied to clipboard.");
+  });
+}
+
+function downloadXML() {
+  var output = document.getElementById("outputXML").value;
+  if (!output.trim()) {
+    setStatus("err", "No updated XML to download.");
+    return;
+  }
+  var blob = new Blob([output], { type: "application/xml" });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
+  link.href = url;
+  link.download = "updated_epcis.xml";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function clearFieldList(ids) {
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+}
+
+function clearAll() {
+  xmlDoc = null;
+  locations = [];
+  products = [];
+  events = [];
+  clearFieldList(["xmlFile","inputXML","outputXML","schemaVersion","creationDate","senderSGLN","receiverSGLN","locationName","streetAddress","city","state","postalCode","countryCode","tradeItemTypeCode","tradeItemIdentification","productName","manufacturer","dosageForm","strength","eventTime","timezone"]);
+  ["locationDropdown","productDropdown","eventDropdown"].forEach(function(id) { document.getElementById(id).innerHTML = ""; });
+  document.getElementById("locationCount").textContent = "0";
+  document.getElementById("productCount").textContent = "0";
+  document.getElementById("eventCount").textContent = "0";
+  document.getElementById("status").className = "status";
+}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>
