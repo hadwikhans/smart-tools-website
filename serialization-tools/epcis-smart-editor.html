@@ -260,11 +260,17 @@ function findAttributeValue(parent, keys) {
   var attrs = attrElements(parent);
   for (var i = 0; i < attrs.length; i++) {
     var id = attrs[i].getAttribute("id") || "";
+    var localId = id.split("#").pop();
     for (var j = 0; j < keys.length; j++) {
-      if (id.endsWith(keys[j]) || id.indexOf(keys[j]) !== -1) return attrs[i].textContent.trim();
+      if (attributeIdMatches(id, localId, keys[j])) return attrs[i].textContent.trim();
     }
   }
   return "";
+}
+
+function attributeIdMatches(id, localId, key) {
+  if (key.charAt(0) === "#") return id.endsWith(key);
+  return localId === key || id.endsWith("#" + key);
 }
 
 function loadLocations() {
@@ -389,8 +395,9 @@ function updateHeader() {
 function updateAttribute(parent, keys, value) {
   attrElements(parent).forEach(function(attr) {
     var id = attr.getAttribute("id") || "";
+    var localId = id.split("#").pop();
     keys.forEach(function(key) {
-      if (id.endsWith(key) || id.indexOf(key) !== -1) attr.textContent = value;
+      if (attributeIdMatches(id, localId, key)) attr.textContent = value;
     });
   });
 }
