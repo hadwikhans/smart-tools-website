@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GS1 URN Converter | SmartToolsHub</title>
+<meta name="description" content="Convert EPC URNs, GS1 element strings and EPCIS XML identifiers into GS1, URN, human-readable and JSON formats.">
+<link rel="canonical" href="https://smarttoolshub-pro.netlify.app/serialization-tools/gs1-urn-converter.html">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+.urn-shell { display:grid; grid-template-columns:.9fr 1.05fr 1.05fr; gap:12px; align-items:start; }
+.panel { background:#fff; border:1px solid #e6ebf3; border-radius:14px; padding:14px; min-width:0; }
+.stats-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
+.stat { border:1px solid #e8eaf2; border-radius:10px; padding:10px; background:#fbfcff; text-align:center; }
+.stat strong { display:block; color:#1e2740; font-size:22px; line-height:1.2; }
+.stat span { color:#64748b; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+.field { margin-bottom:10px; }
+.field label { display:block; font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px; }
+.field input,.field select,.field textarea { width:100%; box-sizing:border-box; border:1px solid #dbe2ee; border-radius:10px; background:#f8faff; color:#1e2740; padding:10px 11px; font-size:13px; outline:none; }
+.field textarea { min-height:310px; resize:vertical; font-family:"Courier New",monospace; font-size:12.5px; line-height:1.5; white-space:pre; overflow:auto; }
+.field input:focus,.field select:focus,.field textarea:focus { border-color:#5a4fcf; background:#fff; }
+.drop-zone { border:2px dashed #c7d1e2; background:#fbfcff; color:#64748b; border-radius:12px; padding:14px; text-align:center; font-size:13px; margin-bottom:10px; }
+.drop-zone.drag { border-color:#5a4fcf; background:#f4f3ff; color:#4840b8; }
+.action-row,.tabs { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.ghost-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; padding:8px 12px; border-radius:9px; font-size:12.5px; cursor:pointer; }
+.ghost-btn:hover { background:#e9eef8; }
+.tab-btn { background:#f1f4fb; color:#314261; border:1px solid #d9e2f1; }
+.tab-btn.active { background:#5a4fcf; color:#fff; border-color:#5a4fcf; }
+.output-box { display:none; margin-top:10px; }
+.output-box.active { display:block; }
+.table-wrap { max-height:520px; overflow:auto; border:1px solid #e8eaf2; border-radius:12px; }
+.result-table { width:100%; border-collapse:collapse; font-size:12px; }
+.result-table th,.result-table td { border-bottom:1px solid #edf1f7; padding:9px 8px; text-align:left; vertical-align:top; }
+.result-table th { position:sticky; top:0; background:#f1f4fb; color:#314261; z-index:1; font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+.ok { color:#047857; font-weight:800; }
+.bad { color:#b91c1c; font-weight:800; }
+.status { display:none; margin-top:10px; padding:10px 12px; border-radius:9px; font-size:12.5px; white-space:pre-line; }
+.status.ok-box { display:block; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; }
+.status.err-box { display:block; color:#991b1b; background:#fef2f2; border:1px solid #fecaca; }
+@media (max-width:1100px){ .urn-shell{grid-template-columns:1fr;} .field textarea{min-height:240px;} }
+</style>
+</head>
+<body>
+<div id="navbar"></div>
+<section class="page-hero">
+  <div class="container"><h1>GS1 URN Converter</h1><p>Convert EPC URNs, GS1 element strings and EPCIS XML identifiers</p></div>
+</section>
+<div class="sticky-breadcrumb">
+  <div class="container"><div class="breadcrumb"><a href="/index.html">Home</a> &gt; <a href="/serialization-tools.html">Serialization Tools</a> &gt; <span>GS1 URN Converter</span></div></div>
+</div>
+<div class="container"><div class="page-content">
+
+<div class="urn-shell">
+  <div class="panel">
+    <div class="stats-grid">
+      <div class="stat"><strong id="totalCount">0</strong><span>Total</span></div>
+      <div class="stat"><strong id="successCount">0</strong><span>Success</span></div>
+      <div class="stat"><strong id="failedCount">0</strong><span>Failed</span></div>
+    </div>
+
+    <div class="drop-zone" id="dropZone">Drag and drop XML, CSV, JSON or TXT here</div>
+
+    <div class="field">
+      <label for="fileUpload">Import File</label>
+      <input type="file" id="fileUpload" accept=".txt,.xml,.json,.csv,text/plain,application/xml,application/json,text/csv">
+    </div>
+
+    <div class="field">
+      <label for="mode">Conversion Mode</label>
+      <select id="mode">
+        <option value="AUTO">Auto Detect</option>
+        <option value="URN_TO_GS1">URN to GS1 Element String</option>
+        <option value="GS1_TO_URN">GS1 Element String to URN</option>
+        <option value="XML_PARSE">EPCIS XML to Extract Identifiers</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="companyPrefixLength">Company Prefix Length</label>
+      <select id="companyPrefixLength">
+        <option value="6">6 digits</option>
+        <option value="7" selected>7 digits</option>
+        <option value="8">8 digits</option>
+        <option value="9">9 digits</option>
+        <option value="10">10 digits</option>
+        <option value="11">11 digits</option>
+        <option value="12">12 digits</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="inputData">Input URNs / GS1 Data</label>
+      <textarea id="inputData" wrap="off" placeholder="Paste EPC URNs, GS1 element strings, CSV rows or EPCIS XML here..."></textarea>
+    </div>
+
+    <div class="action-row">
+      <button onclick="convertData()">Convert</button>
+      <button class="secondary" onclick="loadSampleData()">Load Sample</button>
+      <button class="secondary" onclick="clearAll()">Clear</button>
+    </div>
+    <div id="statusBox" class="status"></div>
+  </div>
+
+  <div class="panel">
+    <h2 style="font-size:15px;margin:0 0 10px;">Detected Records</h2>
+    <div class="table-wrap">
+      <table id="resultsTable" class="result-table">
+        <thead><tr><th>Input</th><th>Output</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="tabs">
+      <button type="button" class="tab-btn active" onclick="showTab('elementTab',this)">Element String</button>
+      <button type="button" class="tab-btn" onclick="showTab('humanTab',this)">Human Readable</button>
+      <button type="button" class="tab-btn" onclick="showTab('jsonTab',this)">JSON</button>
+    </div>
+
+    <div id="elementTab" class="output-box active">
+      <div class="field"><textarea id="elementOutput" wrap="off" readonly placeholder="Converted output appears here..."></textarea></div>
+    </div>
+    <div id="humanTab" class="output-box">
+      <div class="field"><textarea id="humanOutput" wrap="off" readonly placeholder="Human readable output appears here..."></textarea></div>
+    </div>
+    <div id="jsonTab" class="output-box">
+      <div class="field"><textarea id="jsonOutput" wrap="off" readonly placeholder="JSON output appears here..."></textarea></div>
+    </div>
+
+    <div class="action-row">
+      <button class="secondary" onclick="copyOutput()">Copy</button>
+      <button class="ghost-btn" onclick="downloadCSV()">CSV</button>
+      <button class="ghost-btn" onclick="downloadJSON()">JSON</button>
+      <button class="ghost-btn" onclick="downloadTXT()">TXT</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>About GS1 URN Converter</h2>
+  <p>Convert between EPC pure identity URNs and common GS1 element strings for SGTIN, SSCC and SGLN. You can also paste EPCIS XML to extract EPC, source, destination, read point and business location identifiers before converting them.</p>
+</div>
+
+<script>
+var conversionResults = [];
+
+document.getElementById("fileUpload").addEventListener("change", function(e) {
+  var file = e.target.files && e.target.files[0];
+  if (file) readFileIntoInput(file);
+});
+
+var dropZone = document.getElementById("dropZone");
+dropZone.addEventListener("dragover", function(e) {
+  e.preventDefault();
+  dropZone.classList.add("drag");
+});
+dropZone.addEventListener("dragleave", function() {
+  dropZone.classList.remove("drag");
+});
+dropZone.addEventListener("drop", function(e) {
+  e.preventDefault();
+  dropZone.classList.remove("drag");
+  var file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file) readFileIntoInput(file);
+});
+
+function readFileIntoInput(file) {
+  var reader = new FileReader();
+  reader.onload = function(evt) {
+    document.getElementById("inputData").value = evt.target.result || "";
+    setStatus("ok", 'Imported "' + file.name + '".');
+  };
+  reader.onerror = function() {
+    setStatus("err", "Could not read selected file.");
+  };
+  reader.readAsText(file);
+}
+
+function showTab(tabId, btn) {
+  document.querySelectorAll(".output-box").forEach(function(box) { box.classList.remove("active"); });
+  document.querySelectorAll(".tab-btn").forEach(function(tab) { tab.classList.remove("active"); });
+  document.getElementById(tabId).classList.add("active");
+  btn.classList.add("active");
+}
+
+function setStatus(type, message) {
+  var box = document.getElementById("statusBox");
+  box.className = "status " + (type === "ok" ? "ok-box" : "err-box");
+  box.textContent = message;
+}
+
+function convertData() {
+  var input = document.getElementById("inputData").value;
+  if (!input.trim()) {
+    setStatus("err", "Enter or import data to convert.");
+    return;
+  }
+
+  var mode = document.getElementById("mode").value;
+  if (mode === "XML_PARSE" || (mode === "AUTO" && looksLikeXml(input))) {
+    processEPCISXML(input);
+  } else {
+    processTextInput(input);
+  }
+}
+
+function looksLikeXml(input) {
+  return /<\s*(epcis:)?EPCISDocument[\s>]/i.test(input) || /<(epc|source|destination|bizLocation|readPoint)[\s>]/i.test(input);
+}
+
+function processTextInput(input) {
+  var lines = input
+    .replace(/\r/g, "\n")
+    .split(/[\n,]+/)
+    .map(function(x) { return x.trim(); })
+    .filter(Boolean);
+  renderResults(lines);
+}
+
+function processEPCISXML(xmlString) {
+  try {
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(xmlString, "application/xml");
+    if (xmlDoc.getElementsByTagName("parsererror")[0]) throw new Error("Invalid XML input.");
+    var extracted = [];
+    ["epc", "source", "destination"].forEach(function(name) {
+      Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", name)).forEach(function(node) {
+        pushIfIdentifier(extracted, node.textContent);
+      });
+      Array.prototype.slice.call(xmlDoc.getElementsByTagName(name)).forEach(function(node) {
+        pushIfIdentifier(extracted, node.textContent);
+      });
+    });
+    ["bizLocation", "readPoint"].forEach(function(parentName) {
+      var parents = Array.prototype.slice.call(xmlDoc.getElementsByTagNameNS("*", parentName));
+      parents = parents.concat(Array.prototype.slice.call(xmlDoc.getElementsByTagName(parentName)));
+      parents.forEach(function(parent) {
+        var id = parent.getElementsByTagNameNS("*", "id")[0] || parent.getElementsByTagName("id")[0];
+        if (id) pushIfIdentifier(extracted, id.textContent);
+      });
+    });
+    renderResults(Array.from(new Set(extracted)));
+  } catch (err) {
+    setStatus("err", err.message || "Could not parse XML.");
+  }
+}
+
+function pushIfIdentifier(list, value) {
+  value = String(value || "").trim();
+  if (/^(urn:epc:id:|00|01|414|\(00\)|\(01\)|\(414\))/.test(value)) list.push(value);
+}
+
+function renderResults(lines) {
+  conversionResults = [];
+  var tbody = document.querySelector("#resultsTable tbody");
+  tbody.innerHTML = "";
+  var elementText = "";
+  var humanText = "";
+  var success = 0;
+  var failed = 0;
+
+  lines.forEach(function(line) {
+    var result = detectAndConvert(line);
+    conversionResults.push(result);
+    var row = tbody.insertRow();
+    row.insertCell(0).textContent = result.input;
+    row.insertCell(1).textContent = result.output;
+    row.insertCell(2).innerHTML = result.status === "SUCCESS" ? '<span class="ok">SUCCESS</span>' : '<span class="bad">FAILED</span>';
+    if (result.status === "SUCCESS") success++; else failed++;
+    elementText += "INPUT:\n" + result.input + "\n\nOUTPUT:\n" + result.output + "\n\n========================================\n\n";
+    humanText += result.humanReadable + "\n========================================\n\n";
+  });
+
+  document.getElementById("elementOutput").value = elementText.trim();
+  document.getElementById("humanOutput").value = humanText.trim();
+  document.getElementById("jsonOutput").value = JSON.stringify(conversionResults, null, 2);
+  document.getElementById("totalCount").textContent = conversionResults.length;
+  document.getElementById("successCount").textContent = success;
+  document.getElementById("failedCount").textContent = failed;
+  setStatus("ok", "Converted " + conversionResults.length + " record" + (conversionResults.length === 1 ? "" : "s") + ".");
+}
+
+function detectAndConvert(input) {
+  input = input.trim();
+  var mode = document.getElementById("mode").value;
+  if (mode !== "GS1_TO_URN" && input.indexOf("urn:epc:id:sgtin:") === 0) return convertSGTIN(input);
+  if (mode !== "GS1_TO_URN" && input.indexOf("urn:epc:id:sscc:") === 0) return convertSSCC(input);
+  if (mode !== "GS1_TO_URN" && input.indexOf("urn:epc:id:sgln:") === 0) return convertSGLN(input);
+  if (mode !== "URN_TO_GS1" && /^(\(01\)|01)/.test(input)) return convertGS1ToSGTIN(input);
+  if (mode !== "URN_TO_GS1" && /^(\(00\)|00)/.test(input)) return convertGS1ToSSCC(input);
+  if (mode !== "URN_TO_GS1" && /^(\(414\)|414)/.test(input)) return convertGS1ToSGLN(input);
+  return failedResult(input, "Unsupported input format.");
+}
+
+function failedResult(input, reason) {
+  return { input: input, output: reason, status: "FAILED", humanReadable: reason + "\nInput: " + input };
+}
+
+function convertSGTIN(urn) {
+  var parts = urn.replace("urn:epc:id:sgtin:", "").split(".");
+  if (parts.length !== 3) return failedResult(urn, "Invalid SGTIN URN.");
+  var cp = parts[0];
+  var itemRef = parts[1];
+  var serial = parts[2];
+  var base = cp + itemRef;
+  if (!/^\d{13}$/.test(base)) return failedResult(urn, "SGTIN company prefix + item reference must be 13 digits.");
+  var gtin = base + calculateCheckDigit(base);
+  return successResult(urn, "(01)" + gtin + "(21)" + serial, "SGTIN", [
+    ["GTIN", gtin],
+    ["Company Prefix", cp],
+    ["Item Reference", itemRef],
+    ["Serial", serial]
+  ]);
+}
+
+function convertSSCC(urn) {
+  var parts = urn.replace("urn:epc:id:sscc:", "").split(".");
+  if (parts.length !== 2) return failedResult(urn, "Invalid SSCC URN.");
+  var cp = parts[0];
+  var serialRef = parts[1];
+  var base = cp + serialRef;
+  if (!/^\d{17}$/.test(base)) return failedResult(urn, "SSCC company prefix + serial reference must be 17 digits.");
+  var sscc = base + calculateCheckDigit(base);
+  return successResult(urn, "(00)" + sscc, "SSCC", [
+    ["SSCC", sscc],
+    ["Company Prefix", cp],
+    ["Serial Reference", serialRef]
+  ]);
+}
+
+function convertSGLN(urn) {
+  var parts = urn.replace("urn:epc:id:sgln:", "").split(".");
+  if (parts.length !== 3) return failedResult(urn, "Invalid SGLN URN.");
+  var cp = parts[0];
+  var locationRef = parts[1];
+  var extension = parts[2];
+  var base = cp + locationRef;
+  if (!/^\d{12}$/.test(base)) return failedResult(urn, "SGLN company prefix + location reference must be 12 digits.");
+  var gln = base + calculateCheckDigit(base);
+  var output = "(414)" + gln + (extension && extension !== "0" ? "(254)" + extension : "");
+  return successResult(urn, output, "SGLN", [
+    ["GLN", gln],
+    ["Company Prefix", cp],
+    ["Location Reference", locationRef],
+    ["Extension", extension]
+  ]);
+}
+
+function convertGS1ToSGTIN(value) {
+  var raw = stripElementString(value);
+  var gtin = readAI(raw, "01", 14);
+  var serial = readVariableAI(raw, "21");
+  if (!gtin || !serial) return failedResult(value, "Missing AI 01 GTIN or AI 21 serial.");
+  var body = gtin.slice(0, 13);
+  var cpLen = companyPrefixLength();
+  var cp = body.slice(0, cpLen);
+  var itemRef = body.slice(cpLen);
+  var urn = "urn:epc:id:sgtin:" + cp + "." + itemRef + "." + serial;
+  return successResult(value, urn, "SGTIN URN", [
+    ["GTIN", gtin],
+    ["Company Prefix", cp],
+    ["Item Reference", itemRef],
+    ["Serial", serial]
+  ]);
+}
+
+function convertGS1ToSSCC(value) {
+  var raw = stripElementString(value);
+  var sscc = readAI(raw, "00", 18);
+  if (!sscc) return failedResult(value, "Missing AI 00 SSCC.");
+  var body = sscc.slice(0, 17);
+  var cpLen = companyPrefixLength();
+  var cp = body.slice(0, cpLen);
+  var serialRef = body.slice(cpLen);
+  var urn = "urn:epc:id:sscc:" + cp + "." + serialRef;
+  return successResult(value, urn, "SSCC URN", [
+    ["SSCC", sscc],
+    ["Company Prefix", cp],
+    ["Serial Reference", serialRef]
+  ]);
+}
+
+function convertGS1ToSGLN(value) {
+  var raw = stripElementString(value);
+  var gln = readAI(raw, "414", 13);
+  if (!gln) return failedResult(value, "Missing AI 414 GLN.");
+  var ext = readVariableAI(raw, "254") || "0";
+  var body = gln.slice(0, 12);
+  var cpLen = companyPrefixLength();
+  var cp = body.slice(0, cpLen);
+  var locationRef = body.slice(cpLen);
+  var urn = "urn:epc:id:sgln:" + cp + "." + locationRef + "." + ext;
+  return successResult(value, urn, "SGLN URN", [
+    ["GLN", gln],
+    ["Company Prefix", cp],
+    ["Location Reference", locationRef],
+    ["Extension", ext]
+  ]);
+}
+
+function successResult(input, output, type, rows) {
+  return {
+    input: input,
+    output: output,
+    status: "SUCCESS",
+    humanReadable: type + "\n" + rows.map(function(row) { return row[0] + " : " + row[1]; }).join("\n")
+  };
+}
+
+function companyPrefixLength() {
+  return Number(document.getElementById("companyPrefixLength").value);
+}
+
+function stripElementString(value) {
+  return String(value || "").replace(/\s+/g, "").replace(/[()]/g, "");
+}
+
+function readAI(raw, ai, length) {
+  var pos = raw.indexOf(ai);
+  if (pos < 0) return "";
+  return raw.slice(pos + ai.length, pos + ai.length + length);
+}
+
+function readVariableAI(raw, ai) {
+  var pos = raw.indexOf(ai);
+  if (pos < 0) return "";
+  return raw.slice(pos + ai.length);
+}
+
+function calculateCheckDigit(number) {
+  var sum = 0;
+  var reverse = String(number).split("").reverse();
+  for (var i = 0; i < reverse.length; i++) {
+    var digit = parseInt(reverse[i], 10);
+    if (Number.isNaN(digit)) return "";
+    sum += i % 2 === 0 ? digit * 3 : digit;
+  }
+  return String((10 - (sum % 10)) % 10);
+}
+
+function copyOutput() {
+  var active = document.querySelector(".output-box.active textarea");
+  if (!active || !active.value.trim()) {
+    setStatus("err", "No output to copy.");
+    return;
+  }
+  navigator.clipboard.writeText(active.value).then(function() {
+    setStatus("ok", "Output copied to clipboard.");
+  });
+}
+
+function downloadCSV() {
+  var csv = "Input,Output,Status\n" + conversionResults.map(function(r) {
+    return '"' + csvEscape(r.input) + '","' + csvEscape(r.output) + '","' + r.status + '"';
+  }).join("\n");
+  downloadFile(csv, "gs1-urn-results.csv", "text/csv");
+}
+
+function downloadJSON() {
+  downloadFile(JSON.stringify(conversionResults, null, 2), "gs1-urn-results.json", "application/json");
+}
+
+function downloadTXT() {
+  downloadFile(document.getElementById("elementOutput").value, "gs1-urn-results.txt", "text/plain");
+}
+
+function csvEscape(value) {
+  return String(value || "").replace(/"/g, '""');
+}
+
+function downloadFile(content, fileName, type) {
+  if (!content.trim()) {
+    setStatus("err", "No output to download.");
+    return;
+  }
+  var blob = new Blob([content], { type: type });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function loadSampleData() {
+  document.getElementById("companyPrefixLength").value = "7";
+  document.getElementById("inputData").value = [
+    "urn:epc:id:sgtin:0361825.330260.SERIAL123",
+    "urn:epc:id:sscc:0361825.0000000001",
+    "urn:epc:id:sgln:0361825.00000.0",
+    "(01)03618253302603(21)SERIAL123"
+  ].join("\n");
+  convertData();
+}
+
+function clearAll() {
+  conversionResults = [];
+  document.getElementById("inputData").value = "";
+  document.getElementById("fileUpload").value = "";
+  document.getElementById("elementOutput").value = "";
+  document.getElementById("humanOutput").value = "";
+  document.getElementById("jsonOutput").value = "";
+  document.querySelector("#resultsTable tbody").innerHTML = "";
+  document.getElementById("totalCount").textContent = "0";
+  document.getElementById("successCount").textContent = "0";
+  document.getElementById("failedCount").textContent = "0";
+  document.getElementById("statusBox").className = "status";
+}
+</script>
+</div></div>
+<div id="footer"></div>
+<script src="../js/loadcomponents.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/sticky.js"></script>
+</body>
+</html>

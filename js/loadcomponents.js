@@ -183,6 +183,7 @@ var allTools = [
     { name: "Format Converter",        url: "/serialization-tools/json-xml-converter.html", icon: "Convert", cat: "Serialization Tool" },
     { name: "EPCIS Converter",        url: "/serialization-tools/epcis-converter.html",    icon: "EPCIS",   cat: "Serialization Tool" },
     { name: "EPCIS Smart Editor",     url: "/serialization-tools/epcis-smart-editor.html", icon: "EPCIS", cat: "Serialization Tool" },
+    { name: "GS1 URN Converter",      url: "/serialization-tools/gs1-urn-converter.html", icon: "GS1", cat: "Serialization Tool" },
     { name: "XML Minifier",           url: "/serialization-tools/xml-whitespace-remover.html", icon: "XML", cat: "Serialization Tool" },
     { name: "XML Whitespace Remover", url: "/serialization-tools/xml-whitespace-remover.html", icon: "XML", cat: "Serialization Tool" },
     { name: "JSON Formatter",          url: "/developer-tools/json-formatter.html",          icon: "JSON",    cat: "Serialization Tool" },
