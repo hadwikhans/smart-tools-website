@@ -303,13 +303,17 @@ function convertSGTIN(urn) {
   var cp = parts[0];
   var itemRef = parts[1];
   var serial = parts[2];
-  var base = cp + itemRef;
-  if (!/^\d{13}$/.test(base)) return failedResult(urn, "SGTIN company prefix + item reference must be 13 digits.");
+  if (!/^\d+$/.test(cp + itemRef) || itemRef.length < 1) return failedResult(urn, "Invalid SGTIN company prefix or item reference.");
+  var indicator = itemRef.charAt(0);
+  var itemReference = itemRef.slice(1);
+  var base = indicator + cp + itemReference;
+  if (!/^\d{13}$/.test(base)) return failedResult(urn, "SGTIN indicator + company prefix + item reference must be 13 digits.");
   var gtin = base + calculateCheckDigit(base);
   return successResult(urn, "(01)" + gtin + "(21)" + serial, "SGTIN", [
     ["GTIN", gtin],
+    ["Indicator", indicator],
     ["Company Prefix", cp],
-    ["Item Reference", itemRef],
+    ["Item Reference", itemReference],
     ["Serial", serial]
   ]);
 }
@@ -319,13 +323,17 @@ function convertSSCC(urn) {
   if (parts.length !== 2) return failedResult(urn, "Invalid SSCC URN.");
   var cp = parts[0];
   var serialRef = parts[1];
-  var base = cp + serialRef;
-  if (!/^\d{17}$/.test(base)) return failedResult(urn, "SSCC company prefix + serial reference must be 17 digits.");
+  if (!/^\d+$/.test(cp + serialRef) || serialRef.length < 1) return failedResult(urn, "Invalid SSCC company prefix or serial reference.");
+  var extension = serialRef.charAt(0);
+  var serialNumber = serialRef.slice(1);
+  var base = extension + cp + serialNumber;
+  if (!/^\d{17}$/.test(base)) return failedResult(urn, "SSCC extension + company prefix + serial number must be 17 digits.");
   var sscc = base + calculateCheckDigit(base);
   return successResult(urn, "(00)" + sscc, "SSCC", [
     ["SSCC", sscc],
+    ["Extension", extension],
     ["Company Prefix", cp],
-    ["Serial Reference", serialRef]
+    ["Serial Number", serialNumber]
   ]);
 }
 
@@ -354,11 +362,13 @@ function convertGS1ToSGTIN(value) {
   if (!gtin || !serial) return failedResult(value, "Missing AI 01 GTIN or AI 21 serial.");
   var body = gtin.slice(0, 13);
   var cpLen = companyPrefixLength();
-  var cp = body.slice(0, cpLen);
-  var itemRef = body.slice(cpLen);
+  var indicator = body.charAt(0);
+  var cp = body.slice(1, 1 + cpLen);
+  var itemRef = indicator + body.slice(1 + cpLen);
   var urn = "urn:epc:id:sgtin:" + cp + "." + itemRef + "." + serial;
   return successResult(value, urn, "SGTIN URN", [
     ["GTIN", gtin],
+    ["Indicator", indicator],
     ["Company Prefix", cp],
     ["Item Reference", itemRef],
     ["Serial", serial]
@@ -371,13 +381,16 @@ function convertGS1ToSSCC(value) {
   if (!sscc) return failedResult(value, "Missing AI 00 SSCC.");
   var body = sscc.slice(0, 17);
   var cpLen = companyPrefixLength();
-  var cp = body.slice(0, cpLen);
-  var serialRef = body.slice(cpLen);
+  var extension = body.charAt(0);
+  var cp = body.slice(1, 1 + cpLen);
+  var serialNumber = body.slice(1 + cpLen);
+  var serialRef = extension + serialNumber;
   var urn = "urn:epc:id:sscc:" + cp + "." + serialRef;
   return successResult(value, urn, "SSCC URN", [
     ["SSCC", sscc],
+    ["Extension", extension],
     ["Company Prefix", cp],
-    ["Serial Reference", serialRef]
+    ["Serial Number", serialNumber]
   ]);
 }
 
@@ -488,10 +501,10 @@ function downloadFile(content, fileName, type) {
 function loadSampleData() {
   document.getElementById("companyPrefixLength").value = "7";
   document.getElementById("inputData").value = [
-    "urn:epc:id:sgtin:0361825.330260.SERIAL123",
-    "urn:epc:id:sscc:0361825.0000000001",
+    "urn:epc:id:sgtin:0614141.000000.XSTRFDKHRA012F",
+    "urn:epc:id:sscc:0614141.0000000013",
     "urn:epc:id:sgln:0361825.00000.0",
-    "(01)03618253302603(21)SERIAL123"
+    "(01)00614141000005(21)XSTRFDKHRA012F"
   ].join("\n");
   convertData();
 }
