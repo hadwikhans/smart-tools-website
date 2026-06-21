@@ -49,7 +49,7 @@ function initAds() {
     ad.setAttribute("data-ad-client", client);
     ad.setAttribute("data-ad-slot", footerSlot);
 
-    if (!document.querySelector('script[data-smarttoolshub-adsense]')) {
+    if (!document.querySelector('script[src*="pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"][src*="' + client + '"]')) {
         var script = document.createElement("script");
         script.async = true;
         script.crossOrigin = "anonymous";
