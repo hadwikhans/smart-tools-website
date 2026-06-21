@@ -290,13 +290,14 @@ button.secondary:hover { background: #e2deff; }
     background: #f0effe;
 }
 
-/* ── AD PLACEHOLDERS ── */
+/* ── AD SLOTS ── */
 .ad-slot {
     background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
     border: 1.5px dashed #c7d2fe;
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 18px 20px;
     text-align: center;
+    min-height: 96px;
 }
 .ad-slot-label {
     display: inline-block;
@@ -310,12 +311,10 @@ button.secondary:hover { background: #e2deff; }
     border-radius: 999px;
     margin-bottom: 10px;
 }
-.ad-slot h3 {
-    margin: 0 0 6px;
-    color: #1e2433;
-    font-size: 16px;
+.ad-slot .adsbygoogle {
+    min-height: 90px;
 }
-.ad-slot p {
+.ad-fallback {
     margin: 0;
     color: #64748b;
     font-size: 13px;

@@ -1,0 +1,4 @@
+window.SMARTTOOLSHUB_ADSENSE_CLIENT = "";
+window.SMARTTOOLSHUB_ADSENSE_SLOTS = {
+    footer: ""
+};

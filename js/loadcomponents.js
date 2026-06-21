@@ -1,8 +1,18 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
     loadComponent("navbar", "/components/navbar.html", initNavbar);
-    loadComponent("footer", "/components/footer.html", null);
+    loadAdsConfig(function() {
+        loadComponent("footer", "/components/footer.html", initAds);
+    });
     initEnterShortcut();
 });
+
+function loadAdsConfig(callback) {
+    var script = document.createElement("script");
+    script.src = "/js/ads.js";
+    script.onload = callback;
+    script.onerror = callback;
+    document.head.appendChild(script);
+}
 
 function loadComponent(elementId, filePath, callback) {
     var el = document.getElementById(elementId);
@@ -27,6 +37,29 @@ function initNavbar() {
     initSearch();
     initSideMenu();
 
+}
+
+function initAds() {
+    var client = window.SMARTTOOLSHUB_ADSENSE_CLIENT || "";
+    var slots = window.SMARTTOOLSHUB_ADSENSE_SLOTS || {};
+    var footerSlot = slots.footer || "";
+    var ad = document.querySelector('[data-ad-zone="footer"] .adsbygoogle');
+    if (!ad || !client || !footerSlot) return;
+
+    ad.setAttribute("data-ad-client", client);
+    ad.setAttribute("data-ad-slot", footerSlot);
+
+    if (!document.querySelector('script[data-smarttoolshub-adsense]')) {
+        var script = document.createElement("script");
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        script.dataset.smarttoolshubAdsense = "true";
+        script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + encodeURIComponent(client);
+        document.head.appendChild(script);
+    }
+
+    window.adsbygoogle = window.adsbygoogle || [];
+    window.adsbygoogle.push({});
 }
 
 function initSideMenu() {
