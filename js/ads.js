@@ -1,4 +1,4 @@
 window.SMARTTOOLSHUB_ADSENSE_CLIENT = "ca-pub-4422310428153290";
 window.SMARTTOOLSHUB_ADSENSE_SLOTS = {
-    footer: ""
+    footer: "1748583555"
 };
